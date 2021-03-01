@@ -1,0 +1,145 @@
+<div class="survey-container">
+  <form (ngSubmit)="onSubmit(suveryForm)" #suveryForm="ngForm">
+    <div class="actualQuestion">
+      <!-- QUESTION RADIO BUTTON -->
+      <h3 for="">{{ questions[actualQuestion].label2 }}</h3>
+
+      <div
+        *ngIf="questions[actualQuestion].type == 'radio'"
+        class="type-question"
+      >
+        <div
+          *ngFor="let option of questions[actualQuestion].values; let o = index"
+          class="form-check options"
+        >
+          <input
+            type="radio"
+            [value]="'option' + '-' + (o + 1)"
+            [name]="'radio-' + actualQuestion"
+            class="form-check-input"
+          />
+          <label class="form-check-label">{{ option.label2 }}</label>
+        </div>
+        <div class="form-check options" *ngIf="questions[actualQuestion].otro">
+          <input
+            type="radio"
+            [value]="'option-otro'"
+            [name]="'radio-' + actualQuestion"
+            class="form-check-input"
+          />
+          <label class="form-check-label">Otros</label>
+        </div>
+      </div>
+
+      <!-- QUESTION CHECKBOX -->
+      <div
+        *ngIf="questions[actualQuestion].type == 'checkbox'"
+        class="type-question"
+      >
+        <div
+          *ngFor="let option of questions[actualQuestion].values; let o = index"
+          class="form-check options"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            [value]="'option-' + actualQuestion + '-' + o"
+          />
+          <label class="form-check-label">
+            {{ option.label2 }}
+          </label>
+        </div>
+        <div class="form-check options" *ngIf="questions[actualQuestion].otro">
+          <input
+            type="radio"
+            [value]="'option-otro'"
+            [name]="'radio-' + actualQuestion"
+            class="form-check-input"
+          />
+          <label class="form-check-label">Otros</label>
+        </div>
+      </div>
+
+      <!-- QUESTION SELECT -->
+      <div
+        *ngIf="questions[actualQuestion].type == 'autocomplete'"
+        class="type-question"
+      >
+        <br />
+        <select class="form-select" aria-label="Default select example">
+          <option
+            *ngFor="
+              let option of questions[actualQuestion].values;
+              let o = index
+            "
+          >
+            {{ option.label2 }}
+          </option>
+          <option value="" *ngIf="questions[actualQuestion].otro">Otros</option>
+        </select>
+      </div>
+      <!-- QUESTION TEXT -->
+      <div
+        *ngIf="questions[actualQuestion].type == 'text'"
+        class="type-question"
+      >
+        <input
+          class="form-control"
+          type="text"
+          placeholder="{{ questions[actualQuestion].placeholder }}"
+          aria-label="default input example"
+        />
+      </div>
+      <!-- QUESTION EMAIL -->
+      <div
+        *ngIf="questions[actualQuestion].type == 'email'"
+        class="type-question"
+      >
+        <input
+          class="form-control"
+          type="email"
+          placeholder="{{ questions[actualQuestion].placeholder }}"
+          aria-label="default input example"
+        />
+      </div>
+
+      <!-- QUESTION NUMBER -->
+      <div
+        *ngIf="questions[actualQuestion].type == 'number'"
+        class="type-question"
+      >
+        <input
+          class="form-control"
+          type="number"
+          aria-label="default input example"
+        />
+      </div>
+      <!-- QUESTION DATE -->
+      <div
+        *ngIf="questions[actualQuestion].type == 'date'"
+        class="type-question"
+      >
+        <input
+          class="form-control"
+          type="date"
+          aria-label="default input example"
+        />
+      </div>
+      <!-- QUESTION  TEXT AREA -->
+      <div
+        *ngIf="questions[actualQuestion].type == 'textarea'"
+        class="type-question"
+      >
+        <div class="" style="width: 100%">
+          <textarea
+            class="form-control"
+            placeholder="{{ questions[actualQuestion].placeholder }}"
+            style="height: 100px"
+          ></textarea>
+        </div>
+      </div>
+      <button class="btn btn-primary" (click)="next()">Next</button>
+    </div>
+  </form>
+</div>
