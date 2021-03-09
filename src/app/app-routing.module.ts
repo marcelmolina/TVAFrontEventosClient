@@ -1,3 +1,5 @@
+import { EventosComponent } from './eventos/eventos.component';
+import { AppComponent } from './app.component';
 import { VideoComponent } from './video/video.component';
 import { SurveyComponent } from './survey/survey.component';
 import { ElectionComponent } from './election/election.component';
@@ -7,12 +9,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', component: MessageComponent },
-  { path: 'election', component: ElectionComponent },
-  { path: 'message', component: MessageComponent },
-  { path: 'result', component: ResultComponent },
-  { path: 'survey', component: SurveyComponent },
-  { path: 'video', component: VideoComponent }
+  { path: "eventos", component: EventosComponent },
+  { path: "eventos/:id", component: EventosComponent },
+  { path: "eventos/:id/:token", component: EventosComponent },
+  {
+    path: "",
+    redirectTo: "eventos",
+    pathMatch: "full",
+  },
+  {
+    path: "**",
+    redirectTo: "eventos",
+    pathMatch: "full",
+  },
 ];
 
 @NgModule({

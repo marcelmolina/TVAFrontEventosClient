@@ -1,6 +1,11 @@
 <div class="survey-container">
   <form (ngSubmit)="onSubmit(suveryForm)" #suveryForm="ngForm">
-    <div class="actualQuestion">
+    <div
+      class="actualQuestion"
+      [ngClass]="{
+        'colum-question': questions[actualQuestion].values.length <= 4
+      }"
+    >
       <!-- QUESTION RADIO BUTTON -->
       <h3 for="">{{ questions[actualQuestion].label2 }}</h3>
 
@@ -139,7 +144,7 @@
           ></textarea>
         </div>
       </div>
-      <button class="btn btn-primary" (click)="next()">Next</button>
+      <button class="btn btn-primary" (click)="next()">Continuar</button>
     </div>
   </form>
 </div>

@@ -9,6 +9,7 @@ import { VideoComponent } from './video/video.component';
 import { MessageComponent } from './message/message.component';
 import { ResultComponent } from './result/result.component';
 import { FormsModule } from '@angular/forms';
+import { EventosComponent } from './eventos/eventos.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     SurveyComponent,
     VideoComponent,
     MessageComponent,
-    ResultComponent
+    ResultComponent,
+    EventosComponent
 
   ],
   imports: [

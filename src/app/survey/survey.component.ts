@@ -33,7 +33,16 @@ export class SurveyComponent implements OnInit {
           {
             label: '',
             label2: 'Opción 2'
-          }
+          },
+          {
+            label: '',
+            label2: 'Opción 2'
+          },
+          {
+            label: '',
+            label2: 'Opción 2'
+          },
+
         ]
       },
       {
