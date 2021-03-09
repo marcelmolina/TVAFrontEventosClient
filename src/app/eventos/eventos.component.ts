@@ -9,14 +9,52 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EventosComponent implements OnInit {
   backgroundImage: string;
-  constructor(private router: ActivatedRoute, private evento: EventoService) {
-    this.backgroundImage = "assets/img/fondo1.jpg";
+  constructor(private route: ActivatedRoute) {
+    this.backgroundImage = 'assets/img/fondo1.jpg';
   }
 
   ngOnInit(): void {
-    this.router.paramMap.subscribe((params) => {
-      console.log(params.get("token"));
-    })
-  }
+    this.route.queryParams.subscribe(params => {
+      if (
+        params['token'] != undefined &&
+        params['id'] != undefined &&
+        params['cookie-id'] != undefined
+      ) {
+        var token = params['token'];
+        var id = params['id'];
+        var cookieID = params['cookie-id'];
 
+        console.log(token, id, cookieID);
+
+        window.history.replaceState({}, document.title, '/');
+
+        // fetch(
+        //   'https://6mx1tdn5jb.execute-api.us-east-2.amazonaws.com/dev/validate/token',
+        //   {
+        //     method: 'POST',
+        //     headers: {
+        //       Authorization: 'Bearer ' + params['token'],
+        //       Accept: '*/*'
+        //     },
+        //     body: params['cookie-id']
+        //   }
+        // )
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     if (data.isAuth) {
+        //       localStorage.setItem(
+        //         'objTVA',
+        //         JSON.stringify({
+        //           token: token,
+        //           cookieID: cookieID,
+        //           eventID: id
+        //         })
+        //       );
+        //     } else {
+        //       window.location.href = 'https://d3eyeduwkwyhna.cloudfront.net/';
+        //     }
+        //   });
+      }
+    });
+  }
 }
