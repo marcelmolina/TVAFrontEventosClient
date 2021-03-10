@@ -1,6 +1,7 @@
 import { EventoService } from './../evento.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-eventos',
@@ -9,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class EventosComponent implements OnInit {
   backgroundImage: string;
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private _apiService: ApiService) {
     this.backgroundImage = 'assets/img/fondo1.jpg';
   }
 
@@ -28,32 +29,38 @@ export class EventosComponent implements OnInit {
 
         window.history.replaceState({}, document.title, '/');
 
-        // fetch(
-        //   'https://6mx1tdn5jb.execute-api.us-east-2.amazonaws.com/dev/validate/token',
-        //   {
-        //     method: 'POST',
-        //     headers: {
-        //       Authorization: 'Bearer ' + params['token'],
-        //       Accept: '*/*'
-        //     },
-        //     body: params['cookie-id']
-        //   }
-        // )
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     if (data.isAuth) {
-        //       localStorage.setItem(
-        //         'objTVA',
-        //         JSON.stringify({
-        //           token: token,
-        //           cookieID: cookieID,
-        //           eventID: id
-        //         })
-        //       );
-        //     } else {
-        //       window.location.href = 'https://d3eyeduwkwyhna.cloudfront.net/';
-        //     }
-        //   });
+        fetch(
+          'https://6mx1tdn5jb.execute-api.us-east-2.amazonaws.com/dev/validate/token',
+          {
+            method: 'POST',
+            headers: {
+              Authorization: 'Bearer ' + params['token'],
+              Accept: '*/*'
+            },
+            body: params['cookie-id']
+          }
+        )
+          .then(response => response.json())
+          .then(data => {
+            if (data.isAuth) {
+              console.log(data);
+
+              localStorage.setItem(
+                'objTVA',
+                JSON.stringify({
+                  token: token,
+                  cookieID: cookieID,
+                  eventID: id
+                })
+              );
+
+              this._apiService.getEventById(id, token).subscribe(response => {
+                console.log(response);
+              });
+            } else {
+              window.location.href = 'https://d3eyeduwkwyhna.cloudfront.net/';
+            }
+          });
       }
     });
   }

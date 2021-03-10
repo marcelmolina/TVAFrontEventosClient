@@ -10,6 +10,7 @@ import { MessageComponent } from './message/message.component';
 import { ResultComponent } from './result/result.component';
 import { FormsModule } from '@angular/forms';
 import { EventosComponent } from './eventos/eventos.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,14 +21,9 @@ import { EventosComponent } from './eventos/eventos.component';
     MessageComponent,
     ResultComponent,
     EventosComponent
-
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
