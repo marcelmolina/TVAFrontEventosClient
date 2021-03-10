@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Answer } from './answer.model'
 @Component({
   selector: 'app-survey',
   templateUrl: './survey.component.html',
@@ -9,173 +9,96 @@ export class SurveyComponent implements OnInit {
 
 
 
+  @Input() block: any;
   actualQuestion: number;
   questions: Array<any>
+  answer: Answer;
+  @Output() action = new EventEmitter<any>();
   constructor() {
     this.actualQuestion = 0;
     this.questions = [
-      {
-        type: 'radio',
-        icon: 'far fa-check-circle',
-        label: '',
-        label2: 'Selección simple',
-        description: '',
-        required: true,
-        active: true,
-        descriptionActive: false,
-        lastAdded: false,
-        otro: true,
-        values: [
-          {
-            label: '',
-            label2: 'Opción 1'
-          },
-          {
-            label: '',
-            label2: 'Opción 2'
-          },
-          {
-            label: '',
-            label2: 'Opción 2'
-          },
-          {
-            label: '',
-            label2: 'Opción 2'
-          },
 
-        ]
-      },
-      {
-        type: 'checkbox',
-        lastAdded: false,
-        required: true,
-        descriptionActive: false,
-        label: '',
-        label2: 'Selección múltiple',
-        icon: 'far fa-check-square',
-        active: true,
-        description: '',
-        inline: true,
-        otro: false,
-        min: 2,
-        max: 2,
-        values: [
-          {
-            label: '',
-            label2: 'Opción 1'
-          },
-          {
-            label: '',
-            label2: 'Opción 2'
-          }
-        ]
-      },
-      {
-        type: 'autocomplete',
-        icon: 'far fa-caret-square-down',
-        label: '',
-        label2: 'Lista desplegable',
-        required: true,
-        descriptionActive: false,
-        active: true,
-        otro: false,
-        description: '',
-        placeholder: 'Select',
-        className: 'form-control',
-        values: [
-          {
-            label: '',
-            label2: 'Opción 1'
-          },
-          {
-            label: '',
-            label2: 'Opción 2'
-          }
-        ]
-      },
-      {
-        type: 'text',
-        icon: 'fas fa-align-center',
-        label: '',
-        label2: 'Texto',
-        required: true,
-        descriptionActive: false,
-        active: true,
-        description: '',
-        placeholder: '',
-        className: 'form-control',
-        subtype: 'text',
-        regex: '',
-        handle: true
-      },
-      {
-        type: 'email',
-        icon: 'far fa-envelope',
-        required: true,
-        active: true,
-        descriptionActive: false,
-        label: '',
-        label2: 'Email',
-        description: '',
-        placeholder: '',
-        className: 'form-control',
-        subtype: 'text',
-        regex: '^([a-zA-Z0-9_.-]+)@([a-zA-Z0-9_.-]+).([a-zA-Z]{2,5})$',
-        errorText: 'Please enter a valid email',
-        handle: true
-      },
-      {
-        type: 'number',
-        label: '',
-        label2: 'Numérico',
-        icon: 'fas fa-hashtag',
-        description: '',
-        required: true,
-        active: true,
-        descriptionActive: false,
-        placeholder: '',
-        className: 'form-control',
-        value: '20',
-        min: 1,
-        max: 1
-      },
-      {
-        type: 'date',
-        icon: 'far fa-calendar-alt',
-        label: '',
-        label2: 'Fechas',
-        required: true,
-        active: true,
-        descriptionActive: false,
-        placeholder: '',
-        className: 'form-control',
-        dateStart: new Date(),
-        dateEnd: ''
-      },
-      {
-        type: 'textarea',
-        required: true,
-        descriptionActive: false,
-        active: true,
-        icon: 'fas fa-align-right',
-        label: '',
-        label2: 'Párrafo',
-        min: 0,
-        max: null
-      }
-    ]
+    ];
+    this.answer = {
+      label: '',
+      value: ''
+    };
   }
 
   ngOnInit(): void {
+
+    if (this.block) {
+
+      this.loadQuestions(this.block.questions);
+    }
+
   }
 
   onSubmit(form) {
 
   }
-  next() {
+
+  next(suveryForm, positionQuestion, type) {
+    let answer;
+    let values = [];
+    console.log(suveryForm);
+
+    console.log(suveryForm.value);
+    for (const property in suveryForm.value) {
+      if (this.questions[positionQuestion].type == 'checkbox') {
+        if (suveryForm.value[property] == true) {
+          values.push(
+            {
+              label: property,
+              value: suveryForm.value[property]
+            }
+          )
+        }
+      } else {
+        if (this.questions[positionQuestion].type == 'radio' || this.questions[positionQuestion].type == 'autocomplete') {
+          values.push(
+            {
+              label: property,
+              value: suveryForm.value[property]
+            }
+          )
+        }
+      }
+    }
+
+    if (this.questions[positionQuestion].type != 'checkbox' && this.questions[positionQuestion].type != 'autocomplete' && this.questions[positionQuestion].type != 'radio') {
+      let valueNormal = this.answer.value;
+      answer = {
+        type: type,
+        values: valueNormal
+      }
+    } else {
+      answer = {
+        type: type,
+        values: values
+      }
+    }
+
+
+    console.log(answer);
+
+    this.action.emit(
+      {
+        name: 'SAVE_QUESTION',
+        data: answer,
+        positionQuestion: positionQuestion
+      }
+    )
+    this.answer.value = '';
     if (this.actualQuestion < this.questions.length - 1) {
       this.actualQuestion++;
     }
 
   }
+  loadQuestions(blocks) {
+    for (let index = 0; index < blocks.length; index++) {
+      this.questions.push(blocks[index].question);
+    }
+  }
 }
+

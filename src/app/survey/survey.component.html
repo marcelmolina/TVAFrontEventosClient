@@ -1,7 +1,8 @@
-<div class="survey-container">
+<div class="survey-container" *ngIf="questions">
   <form (ngSubmit)="onSubmit(suveryForm)" #suveryForm="ngForm">
     <div
       class="actualQuestion"
+      *ngIf="questions[actualQuestion].values"
       [ngClass]="{
         'colum-question': questions[actualQuestion].values.length <= 4
       }"
@@ -19,9 +20,10 @@
         >
           <input
             type="radio"
-            [value]="'option' + '-' + (o + 1)"
-            [name]="'radio-' + actualQuestion"
+            [value]="'radio-option' + '-' + (o + 1) + '-' + actualQuestion"
             class="form-check-input"
+            [name]="questions[actualQuestion].label2"
+            [(ngModel)]="answer.value"
           />
           <label class="form-check-label">{{ option.label2 }}</label>
         </div>
@@ -48,8 +50,9 @@
           <input
             class="form-check-input"
             type="checkbox"
-            value=""
-            [value]="'option-' + actualQuestion + '-' + o"
+            #checkBox="ngModel"
+            name="{{ option.label2 }}"
+            ngModel
           />
           <label class="form-check-label">
             {{ option.label2 }}
@@ -72,18 +75,38 @@
         class="type-question"
       >
         <br />
-        <select class="form-select" aria-label="Default select example">
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          name="{{ questions[actualQuestion].label2 }}"
+          [(ngModel)]="answer.value"
+        >
           <option
             *ngFor="
               let option of questions[actualQuestion].values;
               let o = index
             "
+            [value]="'select-option' + '-' + (o + 1) + '-' + actualQuestion"
           >
             {{ option.label2 }}
           </option>
           <option value="" *ngIf="questions[actualQuestion].otro">Otros</option>
         </select>
       </div>
+      <button
+        class="btn btn-primary"
+        (click)="
+          next(suveryForm, actualQuestion, questions[actualQuestion].type)
+        "
+      >
+        Continuar
+      </button>
+    </div>
+    <div
+      *ngIf="!questions[actualQuestion].values"
+      class="actualQuestion colum-question"
+    >
+      <h3 for="">{{ questions[actualQuestion].label2 }}</h3>
       <!-- QUESTION TEXT -->
       <div
         *ngIf="questions[actualQuestion].type == 'text'"
@@ -92,8 +115,10 @@
         <input
           class="form-control"
           type="text"
+          name="{{ questions[actualQuestion].type }}"
           placeholder="{{ questions[actualQuestion].placeholder }}"
           aria-label="default input example"
+          [(ngModel)]="answer.value"
         />
       </div>
       <!-- QUESTION EMAIL -->
@@ -104,20 +129,23 @@
         <input
           class="form-control"
           type="email"
+          name="{{ questions[actualQuestion].type }}"
           placeholder="{{ questions[actualQuestion].placeholder }}"
           aria-label="default input example"
+          [(ngModel)]="answer.value"
         />
       </div>
-
       <!-- QUESTION NUMBER -->
       <div
         *ngIf="questions[actualQuestion].type == 'number'"
         class="type-question"
       >
         <input
+          name="{{ questions[actualQuestion].type }}"
           class="form-control"
           type="number"
           aria-label="default input example"
+          [(ngModel)]="answer.value"
         />
       </div>
       <!-- QUESTION DATE -->
@@ -126,9 +154,11 @@
         class="type-question"
       >
         <input
+          name="{{ questions[actualQuestion].type }}"
           class="form-control"
           type="date"
           aria-label="default input example"
+          [(ngModel)]="answer.value"
         />
       </div>
       <!-- QUESTION  TEXT AREA -->
@@ -138,13 +168,23 @@
       >
         <div class="" style="width: 100%">
           <textarea
+            name="{{ questions[actualQuestion].type }}"
             class="form-control"
             placeholder="{{ questions[actualQuestion].placeholder }}"
             style="height: 100px"
+            [(ngModel)]="answer.value"
           ></textarea>
         </div>
       </div>
-      <button class="btn btn-primary" (click)="next()">Continuar</button>
+
+      <button
+        class="btn btn-primary"
+        (click)="
+          next(suveryForm, actualQuestion, questions[actualQuestion].type)
+        "
+      >
+        Continuar
+      </button>
     </div>
   </form>
 </div>

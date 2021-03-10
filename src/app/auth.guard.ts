@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
       return true;
     } else {
       console.log("Voy al login");
-
       // window.location.href = "";
       return false;
     }

@@ -3,8 +3,23 @@
   [ngStyle]="{
     background: 'url(' + backgroundImage + ') no-repeat center center / cover'
   }"
+  *ngIf="blocks"
 >
-  <div class="content-component">
+  <!-- <div class="content-component">
     <app-survey></app-survey>
+  </div> -->
+
+  <div class="content-component" *ngFor="let item of blocks; let i = index">
+    <app-survey
+      [block]="item"
+      *ngIf="item.type == 'surveys' && actualStep == i"
+      (action)="actions($event)"
+    ></app-survey>
+    <app-election
+      *ngIf="item.type == 'elections' && actualStep == i"
+    ></app-election>
+    <app-message
+      *ngIf="item.type == 'message' && actualStep == i"
+    ></app-message>
   </div>
 </div>
