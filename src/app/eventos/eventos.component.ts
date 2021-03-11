@@ -17,7 +17,7 @@ export class EventosComponent implements OnInit {
   myToken: any;
   question: Question;
   constructor(private route: ActivatedRoute, private _apiService: ApiService) {
-    this.actualStep = 2;
+    this.actualStep = 1;
     this.backgroundImage = 'assets/img/fondo1.jpg';
     this.question = {
       event_id: '',
