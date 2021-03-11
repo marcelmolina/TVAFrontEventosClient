@@ -17,9 +17,11 @@
     ></app-survey>
     <app-election
       *ngIf="item.type == 'elections' && actualStep == i"
+      (action)="actions($event)"
     ></app-election>
     <app-message
       *ngIf="item.type == 'message' && actualStep == i"
+      (action)="actions($event)"
     ></app-message>
   </div>
 </div>

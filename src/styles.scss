@@ -26,6 +26,11 @@ body {
     background-color: #be3f6c;
     border-color: #be3f6c;
   }
+  &:disabled {
+    color: #fff;
+    background-color: #b02756;
+    border-color: #b02756;
+  }
 }
 
 .form-check-input:checked {

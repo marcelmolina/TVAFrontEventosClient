@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-message',
@@ -8,8 +8,15 @@ import { Component, OnInit } from '@angular/core';
 export class MessageComponent implements OnInit {
 
   constructor() { }
-
+  @Output() action = new EventEmitter<any>();
   ngOnInit(): void {
+  }
+  next() {
+    this.action.emit(
+      {
+        name: 'NEXT'
+      }
+    )
   }
 
 }

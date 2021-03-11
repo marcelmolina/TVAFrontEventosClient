@@ -12,6 +12,13 @@ export class SurveyComponent implements OnInit {
   @Input() block: any;
   actualQuestion: number;
   questions: Array<any>
+  minCheck: any;
+  maxCheck: any;
+  minNumber: any;
+  maxNumber: any;
+  minDate: any;
+  maxDate: any;
+  contCheck: number;
   answer: Answer;
   @Output() action = new EventEmitter<any>();
   constructor() {
@@ -23,6 +30,7 @@ export class SurveyComponent implements OnInit {
       label: '',
       value: ''
     };
+    this.contCheck = 0;
   }
 
   ngOnInit(): void {
@@ -79,19 +87,35 @@ export class SurveyComponent implements OnInit {
       }
     }
 
-
-    console.log(answer);
-
-    this.action.emit(
-      {
-        name: 'SAVE_QUESTION',
-        data: answer,
-        positionQuestion: positionQuestion
-      }
-    )
+    /*   this.action.emit(
+        {
+          name: 'SAVE_QUESTION',
+          data: answer,
+          positionQuestion: positionQuestion
+        }
+      ) */
     this.answer.value = '';
     if (this.actualQuestion < this.questions.length - 1) {
       this.actualQuestion++;
+      if (this.questions[this.actualQuestion].type == 'checkbox') {
+        this.maxCheck = this.questions[this.actualQuestion].max;
+        this.minCheck = this.questions[this.actualQuestion].min;
+      }
+      if (this.questions[this.actualQuestion].type == 'number') {
+        this.maxNumber = this.questions[this.actualQuestion].max;
+        this.minNumber = this.questions[this.actualQuestion].min;
+      }
+      if (this.questions[this.actualQuestion].type == 'date') {
+        this.maxDate = this.questions[this.actualQuestion].dateEnd;
+        this.minDate = this.questions[this.actualQuestion].dateStart;
+      }
+
+    } else {
+      this.action.emit(
+        {
+          name: 'NEXT'
+        }
+      )
     }
 
   }
@@ -99,6 +123,42 @@ export class SurveyComponent implements OnInit {
     for (let index = 0; index < blocks.length; index++) {
       this.questions.push(blocks[index].question);
     }
+    if (this.questions[this.actualQuestion].type == 'checkbox') {
+      this.maxCheck = this.questions[this.actualQuestion].max;
+      this.minCheck = this.questions[this.actualQuestion].min;
+    }
+
+    if (this.questions[this.actualQuestion].type == 'number') {
+      this.maxNumber = this.questions[this.actualQuestion].max;
+      this.minNumber = this.questions[this.actualQuestion].min;
+    }
+    if (this.questions[this.actualQuestion].type == 'date') {
+      this.maxDate = this.questions[this.actualQuestion].dateEnd;
+      this.minDate = this.questions[this.actualQuestion].dateStart;
+    }
+
+
+    console.log(this.questions);
+
+  }
+  onChangeCheck(event) {
+    if (event.control.value == true) {
+      this.contCheck++;
+    } else {
+      this.contCheck--;
+    }
+  }
+  onChangeNumber(event) {
+    if (event.form.value.number < this.minNumber || event.form.value.number > this.maxNumber && this.questions[this.actualQuestion].required) {
+      event.form.status = "INVALID";
+    }
+  }
+  onChangeDate(event) {
+
+    if (event.form.value.date < this.minDate || event.form.value.date > this.maxDate && this.questions[this.actualQuestion].required) {
+      event.form.status = "INVALID";
+    }
+
   }
 }
 

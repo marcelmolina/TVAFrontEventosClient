@@ -8,7 +8,7 @@
       }"
     >
       <!-- QUESTION RADIO BUTTON -->
-      <h3 for="">{{ questions[actualQuestion].label2 }}</h3>
+      <h3 for="">{{ questions[actualQuestion].label }}</h3>
 
       <div
         *ngIf="questions[actualQuestion].type == 'radio'"
@@ -24,6 +24,7 @@
             class="form-check-input"
             [name]="questions[actualQuestion].label2"
             [(ngModel)]="answer.value"
+            required="{{ questions[actualQuestion].required }}"
           />
           <label class="form-check-label">{{ option.label2 }}</label>
         </div>
@@ -52,6 +53,7 @@
             type="checkbox"
             #checkBox="ngModel"
             name="{{ option.label2 }}"
+            (change)="onChangeCheck(checkBox)"
             ngModel
           />
           <label class="form-check-label">
@@ -80,6 +82,7 @@
           aria-label="Default select example"
           name="{{ questions[actualQuestion].label2 }}"
           [(ngModel)]="answer.value"
+          required="{{ questions[actualQuestion].required }}"
         >
           <option
             *ngFor="
@@ -98,6 +101,21 @@
         (click)="
           next(suveryForm, actualQuestion, questions[actualQuestion].type)
         "
+        [disabled]="suveryForm.invalid"
+        *ngIf="questions[actualQuestion].type != 'checkbox'"
+      >
+        Continuar
+      </button>
+      <button
+        class="btn btn-primary"
+        (click)="
+          next(suveryForm, actualQuestion, questions[actualQuestion].type)
+        "
+        [disabled]="
+          contCheck < minCheck ||
+          (contCheck > maxCheck && questions[actualQuestion].required)
+        "
+        *ngIf="questions[actualQuestion].type == 'checkbox'"
       >
         Continuar
       </button>
@@ -106,7 +124,7 @@
       *ngIf="!questions[actualQuestion].values"
       class="actualQuestion colum-question"
     >
-      <h3 for="">{{ questions[actualQuestion].label2 }}</h3>
+      <h3 for="">{{ questions[actualQuestion].label }}</h3>
       <!-- QUESTION TEXT -->
       <div
         *ngIf="questions[actualQuestion].type == 'text'"
@@ -119,6 +137,7 @@
           placeholder="{{ questions[actualQuestion].placeholder }}"
           aria-label="default input example"
           [(ngModel)]="answer.value"
+          required="{{ questions[actualQuestion].required }}"
         />
       </div>
       <!-- QUESTION EMAIL -->
@@ -133,6 +152,8 @@
           placeholder="{{ questions[actualQuestion].placeholder }}"
           aria-label="default input example"
           [(ngModel)]="answer.value"
+          required="{{ questions[actualQuestion].required }}"
+          pattern="([a-z0-9._%+-]|[A-Z0-9._%+-])+@([a-z0-9._%+-]|[A-Z0-9._%+-])+\.([a-z]|[A-Z]){2,4}$"
         />
       </div>
       <!-- QUESTION NUMBER -->
@@ -146,6 +167,11 @@
           type="number"
           aria-label="default input example"
           [(ngModel)]="answer.value"
+          required="{{ questions[actualQuestion].required }}"
+          min="{{ questions[actualQuestion].min }}"
+          max="{{ questions[actualQuestion].max }}"
+          onkeypress="return (event.keyCode != 32 && ( (event.keyCode >= 48) && (event.keyCode <=57) ))"
+          (ngModelChange)="onChangeNumber(suveryForm)"
         />
       </div>
       <!-- QUESTION DATE -->
@@ -159,6 +185,9 @@
           type="date"
           aria-label="default input example"
           [(ngModel)]="answer.value"
+          (change)="onChangeDate(suveryForm)"
+          min="{{ questions[actualQuestion].dateStart }}"
+          max="{{ questions[actualQuestion].dateEnd }}"
         />
       </div>
       <!-- QUESTION  TEXT AREA -->
@@ -182,6 +211,7 @@
         (click)="
           next(suveryForm, actualQuestion, questions[actualQuestion].type)
         "
+        [disabled]="suveryForm.invalid"
       >
         Continuar
       </button>
