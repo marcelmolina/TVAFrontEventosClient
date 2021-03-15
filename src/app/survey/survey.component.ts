@@ -19,9 +19,12 @@ export class SurveyComponent implements OnInit {
   minDate: any;
   maxDate: any;
   contCheck: number;
+  activeRadio: any;
+  activeCheck: any;
   answer: Answer;
   @Output() action = new EventEmitter<any>();
   constructor() {
+    this.activeCheck = [];
     this.actualQuestion = 0;
     this.questions = [
 
@@ -47,18 +50,22 @@ export class SurveyComponent implements OnInit {
   }
 
   next(suveryForm, positionQuestion, type) {
+    this.activeRadio = null;
     let answer;
     let values = [];
-    console.log(suveryForm);
 
-    console.log(suveryForm.value);
+
     for (const property in suveryForm.value) {
       if (this.questions[positionQuestion].type == 'checkbox') {
-        if (suveryForm.value[property] == true) {
+
+        let check = suveryForm.form.controls[property].value;
+
+
+        if (check) {
           values.push(
             {
               label: property,
-              value: suveryForm.value[property]
+              value: check
             }
           )
         }
@@ -87,19 +94,24 @@ export class SurveyComponent implements OnInit {
       }
     }
 
-    /*   this.action.emit(
-        {
-          name: 'SAVE_QUESTION',
-          data: answer,
-          positionQuestion: positionQuestion
-        }
-      ) */
+    this.action.emit(
+      {
+        name: 'SAVE_QUESTION',
+        data: answer,
+        positionQuestion: positionQuestion
+      }
+    )
     this.answer.value = '';
     if (this.actualQuestion < this.questions.length - 1) {
       this.actualQuestion++;
       if (this.questions[this.actualQuestion].type == 'checkbox') {
         this.maxCheck = this.questions[this.actualQuestion].max;
         this.minCheck = this.questions[this.actualQuestion].min;
+
+
+        for (let index = 0; index < this.questions[this.actualQuestion].values.length; index++) {
+          this.activeCheck.push(false);
+        }
       }
       if (this.questions[this.actualQuestion].type == 'number') {
         this.maxNumber = this.questions[this.actualQuestion].max;
@@ -126,6 +138,9 @@ export class SurveyComponent implements OnInit {
     if (this.questions[this.actualQuestion].type == 'checkbox') {
       this.maxCheck = this.questions[this.actualQuestion].max;
       this.minCheck = this.questions[this.actualQuestion].min;
+      for (let index = 0; index < this.questions[this.actualQuestion].values.length; index++) {
+        this.activeCheck.push(false);
+      }
     }
 
     if (this.questions[this.actualQuestion].type == 'number') {
@@ -137,16 +152,16 @@ export class SurveyComponent implements OnInit {
       this.minDate = this.questions[this.actualQuestion].dateStart;
     }
 
-
-    console.log(this.questions);
-
   }
-  onChangeCheck(event) {
+  onChangeCheck(event, suveryForm) {
+
+
     if (event.control.value == true) {
       this.contCheck++;
     } else {
       this.contCheck--;
     }
+
   }
   onChangeNumber(event) {
     if (event.form.value.number < this.minNumber || event.form.value.number > this.maxNumber && this.questions[this.actualQuestion].required) {
@@ -158,7 +173,29 @@ export class SurveyComponent implements OnInit {
     if (event.form.value.date < this.minDate || event.form.value.date > this.maxDate && this.questions[this.actualQuestion].required) {
       event.form.status = "INVALID";
     }
-
   }
+  clickRadio(q) {
+    this.activeRadio = q;
+    let radio: any;
+    for (let index = 0; index < this.questions[this.actualQuestion].values.length; index++) {
+      radio = document.getElementById("radio-option-" + (index + 1) + "-" + this.actualQuestion);
+      radio.checked = false;
+    }
+    radio = document.getElementById("radio-option-" + (q + 1) + "-" + this.actualQuestion);
+    radio.checked = true;
+    this.answer.value = "radio-option-" + (q + 1) + "-" + this.actualQuestion;
+  }
+  clickCheck(event, o, suveryForm) {
+
+    if (event.control.value != "") {
+      event.control.value = !event.control.value
+      this.activeCheck[o] = !this.activeCheck[o];
+    } else {
+      event.control.value = true;
+      this.activeCheck[o] = !this.activeCheck[o];
+    }
+    this.onChangeCheck(event, suveryForm);
+  }
+
 }
 

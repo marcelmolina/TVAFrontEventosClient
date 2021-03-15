@@ -20,6 +20,16 @@
         justify-content: flex-start;
         .type-question {
           flex-direction: column;
+          .activeRadio{
+            color: #ffffff;
+            background-color: #b02756;
+            border-color: #b02756;
+          }
+          .active{
+            color: #ffffff;
+            background-color: #b02756;
+            border-color: #b02756;
+          }
         }
         button {
           margin-top: 25px;
