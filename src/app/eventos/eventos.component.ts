@@ -1,8 +1,9 @@
 import { Question } from './question.model';
-import { EventoService } from './../evento.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
+
+import { AppConstants } from '../../constants';
 
 @Component({
   selector: 'app-eventos',
@@ -25,10 +26,8 @@ export class EventosComponent implements OnInit {
       question: null,
       question_pool: null,
       survey: null
-    }
-
+    };
   }
-
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -45,38 +44,35 @@ export class EventosComponent implements OnInit {
         this.validateAuth(token, id, cookieID);
 
         window.history.replaceState({}, document.title, '/');
-
-
       } else {
-        let objetoTVA = JSON.parse(localStorage.getItem("objTVA"));
+        let objetoTVA = JSON.parse(localStorage.getItem('objTVA'));
+
+        if (objetoTVA == undefined) {
+          window.location.href = AppConstants.loginURL;
+        }
 
         var token = objetoTVA.token;
         this.myToken = token;
         var id = objetoTVA.eventID;
         var cookieID = objetoTVA.cookieID;
-        console.log("Sacando data de local");
+        console.log('Sacando data de local');
 
         this.validateAuth(token, id, cookieID);
-
       }
     });
   }
   validateAuth(token, id, cookieID) {
-    fetch(
-      'https://6mx1tdn5jb.execute-api.us-east-2.amazonaws.com/dev/validate/token',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + token,
-          Accept: '*/*'
-        },
-        body: cookieID
-      }
-    )
+    fetch(AppConstants.baseURL, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: '*/*'
+      },
+      body: cookieID
+    })
       .then(response => response.json())
       .then(data => {
         if (data.isAuth) {
-
           localStorage.setItem(
             'objTVA',
             JSON.stringify({
@@ -90,61 +86,53 @@ export class EventosComponent implements OnInit {
             console.log(response);
 
             this.question.event_id = response.events_id;
-            this.blocks = response.blocks
+            this.blocks = response.blocks;
             this.totalSteps = this.blocks.length;
           });
         } else {
-          window.location.href = 'https://d3eyeduwkwyhna.cloudfront.net/';
+          window.location.href = AppConstants.loginURL;
         }
       });
   }
   actions(action) {
     switch (action.name) {
-      case "NEXT":
+      case 'NEXT':
         this.actualStep++;
         break;
-      case "SAVE_QUESTION":
+      case 'SAVE_QUESTION':
         let eventIdJson = this.question.event_id;
-        let questionJson = this.blocks[this.actualStep].questions[action.positionQuestion].question;
+        let questionJson = this.blocks[this.actualStep].questions[
+          action.positionQuestion
+        ].question;
         let question_poolJson = {
           description_qp: this.blocks[this.actualStep].config.description_qp,
           name_qp: this.blocks[this.actualStep].config.name_qp,
-          question_pools_id: this.blocks[this.actualStep].config.question_pools_id
-        }
+          question_pools_id: this.blocks[this.actualStep].config
+            .question_pools_id
+        };
 
-        questionJson['position_qp'] = this.blocks[this.actualStep].questions[action.positionQuestion].position_qp;
-        let answerJson = action.data
+        questionJson['position_qp'] = this.blocks[this.actualStep].questions[
+          action.positionQuestion
+        ].position_qp;
+        let answerJson = action.data;
 
         let jsonFinal = {
           event_id: eventIdJson,
           answer: answerJson,
           question: questionJson,
           question_pool: question_poolJson
-        }
+        };
         this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
           response => {
             console.log(response);
-
-
           },
           error => {
             console.log(error);
-
           }
-        )
-
-
-
-
-
-
-
-
+        );
         break;
-
       default:
         break;
     }
-
   }
 }
