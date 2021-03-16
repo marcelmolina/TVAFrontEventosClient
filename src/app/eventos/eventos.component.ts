@@ -504,6 +504,7 @@ export class EventosComponent implements OnInit {
         }
       });
   }
+
   actions(action) {
     switch (action.name) {
       case 'NEXT':
