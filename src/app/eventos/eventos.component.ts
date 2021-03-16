@@ -30,7 +30,7 @@ export class EventosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let response = {
+    /* let response = {
       backgrounds: {
         img_tablet: '',
         img_mobile: '',
@@ -438,7 +438,7 @@ export class EventosComponent implements OnInit {
     };
     this.question.event_id = response.events_id;
     this.blocks = response.blocks;
-    this.totalSteps = this.blocks.length;
+    this.totalSteps = this.blocks.length; */
 
     this.route.queryParams.subscribe(params => {
       if (
@@ -498,6 +498,10 @@ export class EventosComponent implements OnInit {
             this.question.event_id = response.events_id;
             this.blocks = response.blocks;
             this.totalSteps = this.blocks.length;
+            if (this.blocks[0].type == 'url-end') {
+              window.location.href = this.blocks[0].config.destination_url;
+            }
+
           });
         } else {
           window.location.href = AppConstants.loginURL;
@@ -509,6 +513,9 @@ export class EventosComponent implements OnInit {
     switch (action.name) {
       case 'NEXT':
         this.actualStep++;
+        if (this.blocks[this.actualStep].type == 'url-end') {
+          window.location.href = this.blocks[this.actualStep].config.destination_url;
+        }
         break;
       case 'SAVE_QUESTION':
         let eventIdJson = this.question.event_id;
