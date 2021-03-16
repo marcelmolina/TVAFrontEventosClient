@@ -1,5 +1,5 @@
 export class AppConstants {
-  public static env = 'mx'; // nelumbo, mx
+  public static env = 'nelumbo'; // nelumbo, mx
 
   public static get baseURL(): string {
     if (this.env == 'mx')
