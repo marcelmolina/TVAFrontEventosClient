@@ -499,10 +499,11 @@ export class EventosComponent implements OnInit {
               if (b[this.actualStep].type == 'url-end') {
                 window.location.href =
                   b[this.actualStep].config.destination_url;
+              } else {
+                this.question.event_id = response.events_id;
+                this.blocks = response.blocks;
+                this.totalSteps = this.blocks.length;
               }
-              this.question.event_id = response.events_id;
-              this.blocks = response.blocks;
-              this.totalSteps = this.blocks.length;
             });
           } else {
             window.location.href = AppConstants.loginURL;
