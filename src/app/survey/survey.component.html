@@ -17,9 +17,12 @@
         <div
           *ngFor="let option of questions[actualQuestion].values; let o = index"
           class="form-check options"
+          [ngClass]="{ activeRadio: o === activeRadio }"
+          (click)="clickRadio(o)"
         >
           <input
             type="radio"
+            [id]="'radio-option' + '-' + (o + 1) + '-' + actualQuestion"
             [value]="'radio-option' + '-' + (o + 1) + '-' + actualQuestion"
             class="form-check-input"
             [name]="questions[actualQuestion].label2"
@@ -47,13 +50,15 @@
         <div
           *ngFor="let option of questions[actualQuestion].values; let o = index"
           class="form-check options"
+          (click)="clickCheck(checkBox, o, suveryForm)"
+          [ngClass]="{ active: activeCheck[o] }"
         >
           <input
             class="form-check-input"
             type="checkbox"
             #checkBox="ngModel"
             name="{{ option.label2 }}"
-            (change)="onChangeCheck(checkBox)"
+            [checked]="activeCheck[o]"
             ngModel
           />
           <label class="form-check-label">

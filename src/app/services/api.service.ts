@@ -29,6 +29,8 @@ export class ApiService {
   }
 
   saveSurvey(json, token): Observable<any> {
+    console.log(json, token);
+
     const url = `${this._baseURL}/save/survey`;
     const body = json;
     return this.http
