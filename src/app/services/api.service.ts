@@ -27,9 +27,22 @@ export class ApiService {
       .pipe(map(data => data));
   }
   saveSurvey(json, token): Observable<any> {
-    console.log(json, token);
+    const url = `${this._baseURL}/traking`;
+    const body = json;
+    return this.http
+      .post(url, body, {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: 'Bearer ' + token,
+        }),
+      })
+      .pipe(map((data) => data));
+  }
 
-    const url = `${this._baseURL}/save/survey`;
+
+  saveTraking(json, token): Observable<any> {
+    const url = `${this._baseURL}/traking`;
     const body = json;
     return this.http
       .post(url, body, {
