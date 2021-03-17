@@ -559,6 +559,10 @@ export class EventosComponent implements OnInit {
           }
         );
         break;
+      case 'SESSION_0':
+        break;
+      case 'SESSION_0':
+        break;
       default:
         break;
     }

@@ -101,9 +101,24 @@ export class SurveyComponent implements OnInit {
         positionQuestion: positionQuestion
       }
     )
+    this.action.emit(
+      {
+        name: 'SESSION_1',
+        type: 'surveys',
+        step: this.actualQuestion
+      }
+    )
     this.answer.value = '';
     if (this.actualQuestion < this.questions.length - 1) {
       this.actualQuestion++;
+      this.action.emit(
+        {
+          name: 'SESSION_0',
+          type: 'surveys',
+          step: this.actualQuestion
+        }
+      )
+
       if (this.questions[this.actualQuestion].type == 'checkbox') {
         this.maxCheck = this.questions[this.actualQuestion].max;
         this.minCheck = this.questions[this.actualQuestion].min;
@@ -132,6 +147,13 @@ export class SurveyComponent implements OnInit {
 
   }
   loadQuestions(blocks) {
+    this.action.emit(
+      {
+        name: 'SESSION_0',
+        type: 'surveys',
+        step: this.actualQuestion
+      }
+    )
     for (let index = 0; index < blocks.length; index++) {
       this.questions.push(blocks[index].question);
     }

@@ -43,17 +43,30 @@ export class ApiService {
   }
 
 
-  saveTraking(json, token): Observable<any> {
-    const url = `${this._baseURL}/traking`;
+  // saveTraking(json, token): Observable<any> {
+  //   const url = `${this._baseURL}/traking`;
+  //   const body = json;
+  //   return this.http
+  //     .post(url, body, {
+  //       headers: new HttpHeaders({
+  //         'Content-Type': 'application/json',
+  //         Accept: 'application/json',
+  //         Authorization: 'Bearer ' + token
+  //       })
+  //     })
+  //     .pipe(map(data => data));
+  // }
+  saveSession(json, token) {
+    const url = `${this._baseURL}/session`;
     const body = json;
     return this.http
       .post(url, body, {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + token
-        })
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: 'Bearer ' + token,
+        }),
       })
-      .pipe(map(data => data));
+      .pipe(map((data) => data));
   }
 }
