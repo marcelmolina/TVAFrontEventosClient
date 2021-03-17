@@ -29,7 +29,7 @@ export class ApiService {
   }
 
   saveSurvey(json, token): Observable<any> {
-    const url = `${this._baseURL}/traking`;
+    const url = `${this._baseURL}/save/survey`;
     const body = json;
     return this.http
       .post(url, body, {
@@ -57,6 +57,8 @@ export class ApiService {
   //     .pipe(map(data => data));
   // }
   saveSession(json, token) {
+    console.log(json);
+
     const url = `${this._baseURL}/session`;
     const body = json;
     return this.http

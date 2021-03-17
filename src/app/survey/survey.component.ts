@@ -21,6 +21,7 @@ export class SurveyComponent implements OnInit {
   contCheck: number;
   activeRadio: any;
   activeCheck: any;
+
   answer: Answer;
   @Output() action = new EventEmitter<any>();
   constructor() {
@@ -147,13 +148,7 @@ export class SurveyComponent implements OnInit {
 
   }
   loadQuestions(blocks) {
-    this.action.emit(
-      {
-        name: 'SESSION_0',
-        type: 'surveys',
-        step: this.actualQuestion
-      }
-    )
+
     for (let index = 0; index < blocks.length; index++) {
       this.questions.push(blocks[index].question);
     }

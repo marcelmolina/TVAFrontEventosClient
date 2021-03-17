@@ -16,8 +16,11 @@ export class EventosComponent implements OnInit {
   totalSteps: number;
   actualStep: number;
   myToken: any;
+  myEvent: any
   question: Question;
+  session_id: any;
   constructor(private route: ActivatedRoute, private _apiService: ApiService) {
+    this.session_id = null;
     this.actualStep = 0;
     this.backgroundImage = 'assets/img/fondo1.jpg';
     this.question = {
@@ -449,6 +452,7 @@ export class EventosComponent implements OnInit {
         var token = params['token'];
         this.myToken = token;
         var id = params['id'];
+        this.myEvent = id;
         var cookieID = params['cookie-id'];
 
         this.validateAuth(token, id, cookieID);
@@ -464,6 +468,7 @@ export class EventosComponent implements OnInit {
         var token = objetoTVA.token;
         this.myToken = token;
         var id = objetoTVA.eventID;
+        this.myEvent = id;
         var cookieID = objetoTVA.cookieID;
 
         this.validateAuth(token, id, cookieID);
@@ -495,15 +500,10 @@ export class EventosComponent implements OnInit {
 
             this._apiService.getEventById(id, token).subscribe(response => {
               let b: Array<any> = response.blocks;
+              console.log(response);
 
-              if (b[this.actualStep].type == 'url-end') {
-                window.location.href =
-                  b[this.actualStep].config.destination_url;
-              } else {
-                this.question.event_id = response.events_id;
-                this.blocks = response.blocks;
-                this.totalSteps = this.blocks.length;
-              }
+              this.question.event_id = response.events_id;
+              this.firtsTime(b);
             });
           } else {
             window.location.href = AppConstants.loginURL;
@@ -516,11 +516,21 @@ export class EventosComponent implements OnInit {
   }
 
   actions(action) {
+    console.log(this.session_id);
+
     switch (action.name) {
       case 'NEXT':
         this.actualStep++;
 
         if (this.blocks[this.actualStep].type == 'url-end') {
+          let actions = {
+            name: 'SESSION_0',
+            type: this.blocks[this.actualStep].type,
+            step: 0
+          }
+          this.actions(actions);
+          actions.name = 'SESSION_1';
+          this.actions(actions);
           window.location.href = this.blocks[
             this.actualStep
           ].config.destination_url;
@@ -560,11 +570,136 @@ export class EventosComponent implements OnInit {
         );
         break;
       case 'SESSION_0':
+        if (action.type == 'surveys') {
+          let json = {
+            session_id: this.session_id,
+            step: `event/${this.myEvent}/${this.actualStep}/${action.type}/${action.step}`,
+            event_id: this.myEvent,
+            status: 0
+          }
+          this.saveSession(json, this.myToken);
+
+
+        } else {
+          let json = {
+            session_id: this.session_id,
+            step: `event/${this.myEvent}/${this.actualStep}/${action.type}`,
+            event_id: this.myEvent,
+            status: 0
+          }
+          this.saveSession(json, this.myToken);
+
+
+        }
+
         break;
-      case 'SESSION_0':
+      case 'SESSION_1':
+        if (action.type == 'surveys') {
+          let json = {
+            session_id: this.session_id,
+            step: `event/${this.myEvent}/${this.actualStep}/${action.type}/${action.step}`,
+            event_id: this.myEvent,
+            status: 1
+          }
+          this.saveSession(json, this.myToken);
+
+        } else {
+          let json = {
+            session_id: this.session_id,
+            step: `event/${this.myEvent}/${this.actualStep}/${action.type}`,
+            event_id: this.myEvent,
+            status: 1
+          }
+          this.saveSession(json, this.myToken);
+
+        }
         break;
       default:
         break;
     }
+  }
+  saveSession(json, token) {
+    this._apiService.saveSession(json, token).subscribe(
+      (response: any) => {
+        this.session_id = response.session_id;
+      },
+      error => {
+        console.log(error);
+
+      }
+    )
+  }
+
+  ifQueryString(url) {
+    if (url.indexOf('?') != -1)
+      return true;
+    return false
+  }
+  firtsTime(b) {
+    if (b[this.actualStep].type == 'surveys') {
+      let json = {
+        session_id: this.session_id,
+        step: `event/${this.myEvent}/${this.actualStep}/surveys/0`,
+        event_id: this.myEvent,
+        status: 0
+      }
+      this._apiService.saveSession(json, this.myToken).subscribe(
+        (response: any) => {
+          this.session_id = response.session_id;
+          this.blocks = b;
+          this.totalSteps = this.blocks.length;
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    } else {
+      let json = {
+        session_id: this.session_id,
+        step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type}`,
+        event_id: this.myEvent,
+        status: 0
+      }
+      this._apiService.saveSession(json, this.myToken).subscribe(
+        (response: any) => {
+          this.session_id = response.session_id;
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          if (b[this.actualStep].type == 'url-end') {
+
+            let json = {
+              session_id: this.session_id,
+              step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type}`,
+              event_id: this.myEvent,
+              status: 1
+            }
+            this._apiService.saveSession(json, this.myToken).subscribe(
+              (response: any) => {
+                this.session_id = response.session_id;
+              },
+              error => {
+                console.log(error);
+              },
+              () => {
+                if (this.ifQueryString(b[this.actualStep].config.destination_url)) {
+                  window.location.href =
+                    b[this.actualStep].config.destination_url + `&token=${this.myToken}&idEvent=${this.myEvent}&session=${this.session_id}`;
+                } else {
+                  window.location.href =
+                    b[this.actualStep].config.destination_url + `?token=${this.myToken}&idEvent=${this.myEvent}&session=${this.session_id}`;
+                }
+              }
+            )
+          } else {
+            this.blocks = b;
+            this.totalSteps = this.blocks.length;
+          }
+        }
+      )
+    }
+
   }
 }
