@@ -281,7 +281,7 @@ export class EventosComponent implements OnInit {
               () => {
                 if (this.ifQueryString(b[this.actualStep].config.destination_url)) {
 
-                  http://127.0.0.1:5501?id=1&token=2&cookie-id=3&session-id=4
+
                   window.location.href =
                     b[this.actualStep].config.destination_url + `&token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
                 } else {
