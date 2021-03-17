@@ -138,7 +138,11 @@
       *ngIf="!questions[actualQuestion].values"
       class="actualQuestion colum-question"
     >
-      <h3 for="">{{ questions[actualQuestion].label }}</h3>
+      <h3 for="">
+        {{ questions[actualQuestion].label }}
+        <span *ngIf="questions[actualQuestion].required">(*)</span>
+      </h3>
+      <p>{{ questions[actualQuestion].description }}</p>
       <!-- QUESTION TEXT -->
       <div
         *ngIf="questions[actualQuestion].type == 'text'"
@@ -163,12 +167,20 @@
           class="form-control"
           type="email"
           name="{{ questions[actualQuestion].type }}"
+          #emailInput="ngModel"
           placeholder="{{ questions[actualQuestion].placeholder }}"
           aria-label="default input example"
           [(ngModel)]="answer.value"
           required="{{ questions[actualQuestion].required }}"
           pattern="([a-z0-9._%+-]|[A-Z0-9._%+-])+@([a-z0-9._%+-]|[A-Z0-9._%+-])+\.([a-z]|[A-Z]){2,4}$"
         />
+        <span
+          class="text-danger"
+          *ngIf="emailInput.touched && suveryForm.invalid"
+          >Correo electrónico no válido</span
+        >
+
+        <span class="text-heper">Ejemplo@Ejemplo.com</span>
       </div>
       <!-- QUESTION NUMBER -->
       <div
@@ -179,6 +191,7 @@
           name="{{ questions[actualQuestion].type }}"
           class="form-control"
           type="number"
+          #numberInput="ngModel"
           aria-label="default input example"
           [(ngModel)]="answer.value"
           required="{{ questions[actualQuestion].required }}"
@@ -187,6 +200,11 @@
           onkeypress="return (event.keyCode != 32 && ( (event.keyCode >= 48) && (event.keyCode <=57) ))"
           (ngModelChange)="onChangeNumber(suveryForm)"
         />
+        <span
+          class="text-danger"
+          *ngIf="numberInput.touched && suveryForm.invalid"
+          >Ingrese un valor en el rango permitido</span
+        >
 
         <span class="text-heper"
           >Ingrese un valor entre {{ questions[actualQuestion].min }} y
@@ -203,11 +221,24 @@
           class="form-control"
           type="date"
           aria-label="default input example"
+          #dateInput="ngModel"
           [(ngModel)]="answer.value"
           (change)="onChangeDate(suveryForm)"
           min="{{ questions[actualQuestion].dateStart }}"
           max="{{ questions[actualQuestion].dateEnd }}"
         />
+
+        <span
+          class="text-danger"
+          *ngIf="dateInput.touched && suveryForm.invalid"
+          >Ingrese una fecha en el rango permitido</span
+        >
+
+        <span class="text-heper"
+          >Seleccione una fecha entre
+          {{ questions[actualQuestion].dateStart | date: "dd/MM/yyyy" }} y
+          {{ questions[actualQuestion].dateEnd | date: "dd/MM/yyyy" }}
+        </span>
       </div>
       <!-- QUESTION  TEXT AREA -->
       <div
@@ -221,6 +252,8 @@
             placeholder="{{ questions[actualQuestion].placeholder }}"
             style="height: 100px"
             [(ngModel)]="answer.value"
+            maxlength="{{ questions[actualQuestion].max }}"
+            minlength="{{ questions[actualQuestion].min }}"
           ></textarea>
         </div>
       </div>

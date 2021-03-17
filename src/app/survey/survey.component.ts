@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { Answer } from './answer.model'
 @Component({
   selector: 'app-survey',
@@ -21,7 +22,7 @@ export class SurveyComponent implements OnInit {
   contCheck: number;
   activeRadio: any;
   activeCheck: any;
-
+  rateControl: any;
   answer: Answer;
   @Output() action = new EventEmitter<any>();
   constructor() {
@@ -42,6 +43,7 @@ export class SurveyComponent implements OnInit {
     if (this.block) {
 
       this.loadQuestions(this.block.questions);
+      this.rateControl = new FormControl("", [Validators.max(this.questions[this.actualQuestion].max), Validators.min(this.questions[this.actualQuestion].min)])
     }
 
   }
@@ -181,6 +183,8 @@ export class SurveyComponent implements OnInit {
 
   }
   onChangeNumber(event) {
+    let rateControl = new FormControl("", [Validators.max(this.questions[this.actualQuestion].max), Validators.min(this.questions[this.actualQuestion].min)])
+
     if (event.form.value.number < this.minNumber || event.form.value.number > this.maxNumber && this.questions[this.actualQuestion].required) {
       event.form.status = "INVALID";
     }
