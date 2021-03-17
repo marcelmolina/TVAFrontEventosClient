@@ -8,7 +8,11 @@
       }"
     >
       <!-- QUESTION RADIO BUTTON -->
-      <h3 for="">{{ questions[actualQuestion].label }}</h3>
+      <h3 for="">
+        {{ questions[actualQuestion].label }}
+        <span *ngIf="questions[actualQuestion].required">(*)</span>
+      </h3>
+      <p>{{ questions[actualQuestion].description }}</p>
 
       <div
         *ngIf="questions[actualQuestion].type == 'radio'"
@@ -74,6 +78,11 @@
           />
           <label class="form-check-label">Otros</label>
         </div>
+
+        <span class="text-heper"
+          >Seleccione entre un mínimo de {{ questions[actualQuestion].min }} y
+          un máximo de {{ questions[actualQuestion].max }} opciones</span
+        >
       </div>
 
       <!-- QUESTION SELECT -->
@@ -178,6 +187,11 @@
           onkeypress="return (event.keyCode != 32 && ( (event.keyCode >= 48) && (event.keyCode <=57) ))"
           (ngModelChange)="onChangeNumber(suveryForm)"
         />
+
+        <span class="text-heper"
+          >Ingrese un valor entre {{ questions[actualQuestion].min }} y
+          {{ questions[actualQuestion].max }}</span
+        >
       </div>
       <!-- QUESTION DATE -->
       <div
