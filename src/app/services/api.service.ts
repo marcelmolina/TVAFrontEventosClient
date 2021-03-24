@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/internal/operators/map';
 
-import { AppConstants } from '../../constants';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ import { AppConstants } from '../../constants';
 export class ApiService {
   _baseURL: string;
   constructor(private http: HttpClient) {
-    this._baseURL = AppConstants.baseURL;
+    this._baseURL = environment.baseURL;
   }
 
   getEventById(id, token): Observable<any> {
@@ -34,28 +34,14 @@ export class ApiService {
     return this.http
       .post(url, body, {
         headers: new HttpHeaders({
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: 'Bearer ' + token,
-        }),
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token
+        })
       })
-      .pipe(map((data) => data));
+      .pipe(map(data => data));
   }
 
-
-  // saveTraking(json, token): Observable<any> {
-  //   const url = `${this._baseURL}/traking`;
-  //   const body = json;
-  //   return this.http
-  //     .post(url, body, {
-  //       headers: new HttpHeaders({
-  //         'Content-Type': 'application/json',
-  //         Accept: 'application/json',
-  //         Authorization: 'Bearer ' + token
-  //       })
-  //     })
-  //     .pipe(map(data => data));
-  // }
   saveSession(json, token) {
     console.log(json);
 
@@ -64,11 +50,11 @@ export class ApiService {
     return this.http
       .post(url, body, {
         headers: new HttpHeaders({
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: 'Bearer ' + token,
-        }),
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token
+        })
       })
-      .pipe(map((data) => data));
+      .pipe(map(data => data));
   }
 }

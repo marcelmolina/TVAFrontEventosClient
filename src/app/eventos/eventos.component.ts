@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
-import { AppConstants } from '../../constants';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-eventos',
@@ -16,7 +16,7 @@ export class EventosComponent implements OnInit {
   totalSteps: number;
   actualStep: number;
   myToken: any;
-  myEvent: any
+  myEvent: any;
   myCookieId: any;
   question: Question;
   session_id: any;
@@ -34,8 +34,6 @@ export class EventosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
     this.route.queryParams.subscribe(params => {
       if (
         params['token'] != undefined &&
@@ -56,7 +54,7 @@ export class EventosComponent implements OnInit {
         let objetoTVA = JSON.parse(localStorage.getItem('objTVA'));
 
         if (objetoTVA == undefined) {
-          // window.location.href = AppConstants.loginURL;
+          // window.location.href = environment.loginURL;
         }
 
         var token = objetoTVA.token;
@@ -72,7 +70,7 @@ export class EventosComponent implements OnInit {
   }
 
   validateAuth(token, id, cookieID) {
-    fetch(AppConstants.baseURL + '/validate/token', {
+    fetch(environment.baseURL + '/validate/token', {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
@@ -101,11 +99,11 @@ export class EventosComponent implements OnInit {
               this.firtsTime(b);
             });
           } else {
-            window.location.href = AppConstants.loginURL;
+            window.location.href = environment.loginURL;
           }
         },
         error => {
-          window.location.href = AppConstants.loginURL;
+          window.location.href = environment.loginURL;
         }
       );
   }
@@ -122,7 +120,7 @@ export class EventosComponent implements OnInit {
             name: 'SESSION_0',
             type: this.blocks[this.actualStep].type,
             step: 0
-          }
+          };
           this.actions(actions);
           actions.name = 'SESSION_1';
           this.actions(actions);
@@ -171,20 +169,16 @@ export class EventosComponent implements OnInit {
             step: `event/${this.myEvent}/${this.actualStep}/${action.type}/${action.step}`,
             event_id: this.myEvent,
             status: 0
-          }
+          };
           this.saveSession(json, this.myToken);
-
-
         } else {
           let json = {
             session_id: this.session_id,
             step: `event/${this.myEvent}/${this.actualStep}/${action.type}`,
             event_id: this.myEvent,
             status: 0
-          }
+          };
           this.saveSession(json, this.myToken);
-
-
         }
 
         break;
@@ -195,18 +189,16 @@ export class EventosComponent implements OnInit {
             step: `event/${this.myEvent}/${this.actualStep}/${action.type}/${action.step}`,
             event_id: this.myEvent,
             status: 1
-          }
+          };
           this.saveSession(json, this.myToken);
-
         } else {
           let json = {
             session_id: this.session_id,
             step: `event/${this.myEvent}/${this.actualStep}/${action.type}`,
             event_id: this.myEvent,
             status: 1
-          }
+          };
           this.saveSession(json, this.myToken);
-
         }
         break;
       default:
@@ -220,15 +212,13 @@ export class EventosComponent implements OnInit {
       },
       error => {
         console.log(error);
-
       }
-    )
+    );
   }
 
   ifQueryString(url) {
-    if (url.indexOf('?') != -1)
-      return true;
-    return false
+    if (url.indexOf('?') != -1) return true;
+    return false;
   }
   firtsTime(b) {
     if (b[this.actualStep].type == 'surveys') {
@@ -237,7 +227,7 @@ export class EventosComponent implements OnInit {
         step: `event/${this.myEvent}/${this.actualStep}/surveys/0`,
         event_id: this.myEvent,
         status: 0
-      }
+      };
       this._apiService.saveSession(json, this.myToken).subscribe(
         (response: any) => {
           this.session_id = response.session_id;
@@ -247,14 +237,16 @@ export class EventosComponent implements OnInit {
         error => {
           console.log(error);
         }
-      )
+      );
     } else {
       let json = {
         session_id: this.session_id,
-        step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type}`,
+        step: `event/${this.myEvent}/${this.actualStep}/${
+          b[this.actualStep].type
+        }`,
         event_id: this.myEvent,
         status: 0
-      }
+      };
       this._apiService.saveSession(json, this.myToken).subscribe(
         (response: any) => {
           this.session_id = response.session_id;
@@ -264,13 +256,14 @@ export class EventosComponent implements OnInit {
         },
         () => {
           if (b[this.actualStep].type == 'url-end') {
-
             let json = {
               session_id: this.session_id,
-              step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type}`,
+              step: `event/${this.myEvent}/${this.actualStep}/${
+                b[this.actualStep].type
+              }`,
               event_id: this.myEvent,
               status: 1
-            }
+            };
             this._apiService.saveSession(json, this.myToken).subscribe(
               (response: any) => {
                 this.session_id = response.session_id;
@@ -279,24 +272,25 @@ export class EventosComponent implements OnInit {
                 console.log(error);
               },
               () => {
-                if (this.ifQueryString(b[this.actualStep].config.destination_url)) {
-
-
+                if (
+                  this.ifQueryString(b[this.actualStep].config.destination_url)
+                ) {
                   window.location.href =
-                    b[this.actualStep].config.destination_url + `&token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
+                    b[this.actualStep].config.destination_url +
+                    `&token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
                 } else {
                   window.location.href =
-                    b[this.actualStep].config.destination_url + `?token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
+                    b[this.actualStep].config.destination_url +
+                    `?token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
                 }
               }
-            )
+            );
           } else {
             this.blocks = b;
             this.totalSteps = this.blocks.length;
           }
         }
-      )
+      );
     }
-
   }
 }
