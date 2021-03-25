@@ -142,6 +142,9 @@ export class EventosComponent implements OnInit {
             .question_pools_id
         };
 
+        questionJson['question_id'] = this.blocks[this.actualStep].questions[
+          action.positionQuestion
+        ].question_id;
         questionJson['position_qp'] = this.blocks[this.actualStep].questions[
           action.positionQuestion
         ].position_qp;
@@ -153,6 +156,7 @@ export class EventosComponent implements OnInit {
           question: questionJson,
           question_pool: question_poolJson
         };
+
         this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
           response => {
             console.log(response);
@@ -241,9 +245,8 @@ export class EventosComponent implements OnInit {
     } else {
       let json = {
         session_id: this.session_id,
-        step: `event/${this.myEvent}/${this.actualStep}/${
-          b[this.actualStep].type
-        }`,
+        step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
+          }`,
         event_id: this.myEvent,
         status: 0
       };
@@ -258,9 +261,8 @@ export class EventosComponent implements OnInit {
           if (b[this.actualStep].type == 'url-end') {
             let json = {
               session_id: this.session_id,
-              step: `event/${this.myEvent}/${this.actualStep}/${
-                b[this.actualStep].type
-              }`,
+              step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
+                }`,
               event_id: this.myEvent,
               status: 1
             };

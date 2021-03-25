@@ -12,3 +12,19 @@
     backdrop-filter: blur(5px);
   }
 }
+@media (max-width: 1200px) {
+  .content-app {
+    padding: 6px;
+    .content-component {
+      width: 100%;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .content-app {
+    padding: 6px;
+    .content-component {
+      width: 100%;
+    }
+  }
+}

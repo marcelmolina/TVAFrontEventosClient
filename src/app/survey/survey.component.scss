@@ -60,3 +60,31 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .survey-container {
+    padding: 30px 30px;
+    form {
+      .actualQuestion {
+        &.colum-question {
+          .type-question {
+            .activeRadio {
+            }
+            .active {
+            }
+            .text-heper {
+            }
+          }
+          button {
+          }
+        }
+        .type-question {
+          .form-select {
+          }
+          .options {
+          }
+        }
+      }
+    }
+  }
+}
