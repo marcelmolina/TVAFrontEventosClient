@@ -8,21 +8,16 @@
       </p>
     </div>
     <div class="candidates">
-      <div class="candidate">
-        <div
-          class="img"
-          style="background-image: url('/../assets/img/candidates/sabana.jpg');"
-        ></div>
-        <div class="name">
-          Aretha Franklin
-        </div>
-      </div>
-
-      <div class="candidate">
+      <div
+        class="candidate"
+        *ngFor="let candidate of arrayCandidates"
+        [style]="flexDynamic"
+      >
         <div
           class="img"
           style="background-image: url('/../assets/img/candidates/candidate.jpg');"
         ></div>
+
         <div class="name">
           Aretha Franklin
         </div>

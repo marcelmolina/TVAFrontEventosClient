@@ -7,14 +7,31 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ElectionComponent implements OnInit {
   @Input() block: any;
-  arrayCandidatos: any = [{ url: '' }];
+  arrayCandidates: any = [1, 2, 3, 4];
+
+  flexDynamic: any;
 
   constructor() {}
   @Output() action = new EventEmitter<any>();
   ngOnInit(): void {
-    console.log(this.block);
-    this.arrayCandidatos = this.block.config.candidate;
-    console.log(this.arrayCandidatos);
+    switch (this.arrayCandidates.length) {
+      case 2:
+        this.flexDynamic = 'flex:0 0 25%;';
+        break;
+      case 3:
+        this.flexDynamic = 'flex:0 0 20%;';
+        break;
+      case 4:
+        this.flexDynamic = 'flex:0 0 15%;';
+        break;
+      default:
+        this.flexDynamic = 'flex:0 0 15%;';
+        break;
+    }
+
+    // console.log(this.block);
+    // this.arrayCandidates = this.block.config.candidate;
+    // console.log(this.arrayCandidates);
   }
   next() {
     this.action.emit({
