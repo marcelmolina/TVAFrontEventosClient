@@ -1,6 +1,35 @@
-<div style="text-align: center">
-  <h2>VOTACION</h2>
-</div>
-<div style="text-align: center">
-  <button class="btn btn-primary" (click)="next()">Continuar</button>
+<div class="electionContainer">
+  <div class="glass-container">
+    <h2>Selecciona tu opción favorita y VOTA!</h2>
+    <div class="vote-info">
+      <p>Puedes votar 1 vez cada <span>HH.MM</span></p>
+      <p>
+        Votación valida desde <span>dd/mm/yy</span> hasta <span>dd/mm/yy</span>
+      </p>
+    </div>
+    <div class="candidates">
+      <div class="candidate">
+        <div
+          class="img"
+          style="background-image: url('/../assets/img/candidates/sabana.jpg');"
+        ></div>
+        <div class="name">
+          Aretha Franklin
+        </div>
+      </div>
+
+      <div class="candidate">
+        <div
+          class="img"
+          style="background-image: url('/../assets/img/candidates/candidate.jpg');"
+        ></div>
+        <div class="name">
+          Aretha Franklin
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <button class="btn btn-primary" (click)="next()">VOTAR</button>
+    </div>
+  </div>
 </div>

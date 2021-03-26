@@ -1,273 +1,292 @@
-<div class="survey-container" *ngIf="questions">
-  <form (ngSubmit)="onSubmit(suveryForm)" #suveryForm="ngForm">
-    <div
-      class="actualQuestion"
-      *ngIf="questions[actualQuestion].values"
-      [ngClass]="{
-        'colum-question': questions[actualQuestion].values.length <= 4
-      }"
-    >
-      <!-- QUESTION RADIO BUTTON -->
-      <h3 for="">
-        {{ questions[actualQuestion].label }}
-        <span *ngIf="questions[actualQuestion].required">(*)</span>
-      </h3>
-      <p>{{ questions[actualQuestion].description }}</p>
-
-      <div
-        *ngIf="questions[actualQuestion].type == 'radio'"
-        class="type-question"
-      >
+<div class="main-container">
+  <div class="content-component">
+    <div class="survey-container" *ngIf="questions">
+      <form (ngSubmit)="onSubmit(suveryForm)" #suveryForm="ngForm">
         <div
-          *ngFor="let option of questions[actualQuestion].values; let o = index"
-          class="form-check options"
-          [ngClass]="{ activeRadio: o === activeRadio }"
-          (click)="clickRadio(o)"
+          class="actualQuestion"
+          *ngIf="questions[actualQuestion].values"
+          [ngClass]="{
+            'colum-question': questions[actualQuestion].values.length <= 4
+          }"
         >
-          <input
-            type="radio"
-            [id]="'radio-option' + '-' + (o + 1) + '-' + actualQuestion"
-            [value]="'radio-option' + '-' + (o + 1) + '-' + actualQuestion"
-            class="form-check-input"
-            [name]="questions[actualQuestion].label2"
-            [(ngModel)]="answer.value"
-            required="{{ questions[actualQuestion].required }}"
-          />
-          <label class="form-check-label">{{ option.label2 }}</label>
-        </div>
-        <div class="form-check options" *ngIf="questions[actualQuestion].otro">
-          <input
-            type="radio"
-            [value]="'option-otro'"
-            [name]="'radio-' + actualQuestion"
-            class="form-check-input"
-          />
-          <label class="form-check-label">Otros</label>
-        </div>
-      </div>
+          <!-- QUESTION RADIO BUTTON -->
+          <h3 for="">
+            {{ questions[actualQuestion].label }}
+            <span *ngIf="questions[actualQuestion].required">(*)</span>
+          </h3>
+          <p>{{ questions[actualQuestion].description }}</p>
 
-      <!-- QUESTION CHECKBOX -->
-      <div
-        *ngIf="questions[actualQuestion].type == 'checkbox'"
-        class="type-question"
-      >
-        <div
-          *ngFor="let option of questions[actualQuestion].values; let o = index"
-          class="form-check options"
-          (click)="clickCheck(checkBox, o, suveryForm)"
-          [ngClass]="{ active: activeCheck[o] }"
-        >
-          <input
-            class="form-check-input"
-            type="checkbox"
-            #checkBox="ngModel"
-            name="{{ option.label2 }}"
-            [checked]="activeCheck[o]"
-            ngModel
-          />
-          <label class="form-check-label">
-            {{ option.label2 }}
-          </label>
-        </div>
-        <div class="form-check options" *ngIf="questions[actualQuestion].otro">
-          <input
-            type="radio"
-            [value]="'option-otro'"
-            [name]="'radio-' + actualQuestion"
-            class="form-check-input"
-          />
-          <label class="form-check-label">Otros</label>
-        </div>
-
-        <span class="text-heper"
-          >Seleccione entre un mínimo de {{ questions[actualQuestion].min }} y
-          un máximo de {{ questions[actualQuestion].max }} opciones</span
-        >
-      </div>
-
-      <!-- QUESTION SELECT -->
-      <div
-        *ngIf="questions[actualQuestion].type == 'autocomplete'"
-        class="type-question"
-      >
-        <br />
-        <select
-          class="form-select"
-          aria-label="Default select example"
-          name="{{ questions[actualQuestion].label2 }}"
-          [(ngModel)]="answer.value"
-          required="{{ questions[actualQuestion].required }}"
-        >
-          <option
-            *ngFor="
-              let option of questions[actualQuestion].values;
-              let o = index
-            "
-            [value]="'select-option' + '-' + (o + 1) + '-' + actualQuestion"
+          <div
+            *ngIf="questions[actualQuestion].type == 'radio'"
+            class="type-question"
           >
-            {{ option.label2 }}
-          </option>
-          <option value="" *ngIf="questions[actualQuestion].otro">Otros</option>
-        </select>
-      </div>
-      <button
-        class="btn btn-primary"
-        (click)="
-          next(suveryForm, actualQuestion, questions[actualQuestion].type)
-        "
-        [disabled]="suveryForm.invalid"
-        *ngIf="questions[actualQuestion].type != 'checkbox'"
-      >
-        Continuar
-      </button>
-      <button
-        class="btn btn-primary"
-        (click)="
-          next(suveryForm, actualQuestion, questions[actualQuestion].type)
-        "
-        [disabled]="
-          contCheck < minCheck ||
-          (contCheck > maxCheck && questions[actualQuestion].required)
-        "
-        *ngIf="questions[actualQuestion].type == 'checkbox'"
-      >
-        Continuar
-      </button>
-    </div>
-    <div
-      *ngIf="!questions[actualQuestion].values"
-      class="actualQuestion colum-question"
-    >
-      <h3 for="">
-        {{ questions[actualQuestion].label }}
-        <span *ngIf="questions[actualQuestion].required">(*)</span>
-      </h3>
-      <p>{{ questions[actualQuestion].description }}</p>
-      <!-- QUESTION TEXT -->
-      <div
-        *ngIf="questions[actualQuestion].type == 'text'"
-        class="type-question"
-      >
-        <input
-          class="form-control"
-          type="text"
-          name="{{ questions[actualQuestion].type }}"
-          placeholder="{{ questions[actualQuestion].placeholder }}"
-          aria-label="default input example"
-          [(ngModel)]="answer.value"
-          required="{{ questions[actualQuestion].required }}"
-        />
-      </div>
-      <!-- QUESTION EMAIL -->
-      <div
-        *ngIf="questions[actualQuestion].type == 'email'"
-        class="type-question"
-      >
-        <input
-          class="form-control"
-          type="email"
-          name="{{ questions[actualQuestion].type }}"
-          #emailInput="ngModel"
-          placeholder="{{ questions[actualQuestion].placeholder }}"
-          aria-label="default input example"
-          [(ngModel)]="answer.value"
-          required="{{ questions[actualQuestion].required }}"
-          pattern="([a-z0-9._%+-]|[A-Z0-9._%+-])+@([a-z0-9._%+-]|[A-Z0-9._%+-])+\.([a-z]|[A-Z]){2,4}$"
-        />
-        <span
-          class="text-danger"
-          *ngIf="emailInput.touched && suveryForm.invalid"
-          >Correo electrónico no válido</span
-        >
+            <div
+              *ngFor="
+                let option of questions[actualQuestion].values;
+                let o = index
+              "
+              class="form-check options"
+              [ngClass]="{ activeRadio: o === activeRadio }"
+              (click)="clickRadio(o)"
+            >
+              <input
+                type="radio"
+                [id]="'radio-option' + '-' + (o + 1) + '-' + actualQuestion"
+                [value]="'radio-option' + '-' + (o + 1) + '-' + actualQuestion"
+                class="form-check-input"
+                [name]="questions[actualQuestion].label2"
+                [(ngModel)]="answer.value"
+                required="{{ questions[actualQuestion].required }}"
+              />
+              <label class="form-check-label">{{ option.label2 }}</label>
+            </div>
+            <div
+              class="form-check options"
+              *ngIf="questions[actualQuestion].otro"
+            >
+              <input
+                type="radio"
+                [value]="'option-otro'"
+                [name]="'radio-' + actualQuestion"
+                class="form-check-input"
+              />
+              <label class="form-check-label">Otros</label>
+            </div>
+          </div>
 
-        <span class="text-heper">Ejemplo@Ejemplo.com</span>
-      </div>
-      <!-- QUESTION NUMBER -->
-      <div
-        *ngIf="questions[actualQuestion].type == 'number'"
-        class="type-question"
-      >
-        <input
-          name="{{ questions[actualQuestion].type }}"
-          class="form-control"
-          type="number"
-          #numberInput="ngModel"
-          aria-label="default input example"
-          [(ngModel)]="answer.value"
-          required="{{ questions[actualQuestion].required }}"
-          min="{{ questions[actualQuestion].min }}"
-          max="{{ questions[actualQuestion].max }}"
-          onkeypress="return (event.keyCode != 32 && ( (event.keyCode >= 48) && (event.keyCode <=57) ))"
-          (ngModelChange)="onChangeNumber(suveryForm)"
-        />
-        <span
-          class="text-danger"
-          *ngIf="numberInput.touched && suveryForm.invalid"
-          >Ingrese un valor en el rango permitido</span
-        >
+          <!-- QUESTION CHECKBOX -->
+          <div
+            *ngIf="questions[actualQuestion].type == 'checkbox'"
+            class="type-question"
+          >
+            <div
+              *ngFor="
+                let option of questions[actualQuestion].values;
+                let o = index
+              "
+              class="form-check options"
+              (click)="clickCheck(checkBox, o, suveryForm)"
+              [ngClass]="{ active: activeCheck[o] }"
+            >
+              <input
+                class="form-check-input"
+                type="checkbox"
+                #checkBox="ngModel"
+                name="{{ option.label2 }}"
+                [checked]="activeCheck[o]"
+                ngModel
+              />
+              <label class="form-check-label">
+                {{ option.label2 }}
+              </label>
+            </div>
+            <div
+              class="form-check options"
+              *ngIf="questions[actualQuestion].otro"
+            >
+              <input
+                type="radio"
+                [value]="'option-otro'"
+                [name]="'radio-' + actualQuestion"
+                class="form-check-input"
+              />
+              <label class="form-check-label">Otros</label>
+            </div>
 
-        <span class="text-heper"
-          >Ingrese un valor entre {{ questions[actualQuestion].min }} y
-          {{ questions[actualQuestion].max }}</span
-        >
-      </div>
-      <!-- QUESTION DATE -->
-      <div
-        *ngIf="questions[actualQuestion].type == 'date'"
-        class="type-question"
-      >
-        <input
-          name="{{ questions[actualQuestion].type }}"
-          class="form-control"
-          type="date"
-          aria-label="default input example"
-          #dateInput="ngModel"
-          [(ngModel)]="answer.value"
-          (change)="onChangeDate(suveryForm)"
-          min="{{ questions[actualQuestion].dateStart }}"
-          max="{{ questions[actualQuestion].dateEnd }}"
-          required="{{ questions[actualQuestion].required }}"
-        />
+            <span class="text-heper"
+              >Seleccione entre un mínimo de
+              {{ questions[actualQuestion].min }} y un máximo de
+              {{ questions[actualQuestion].max }} opciones</span
+            >
+          </div>
 
-        <span
-          class="text-danger"
-          *ngIf="dateInput.touched && suveryForm.invalid"
-          >Ingrese una fecha en el rango permitido</span
-        >
-
-        <span class="text-heper"
-          >Seleccione una fecha entre
-          {{ questions[actualQuestion].dateStart | date: "dd/MM/yyyy" }} y
-          {{ questions[actualQuestion].dateEnd | date: "dd/MM/yyyy" }}
-        </span>
-      </div>
-      <!-- QUESTION  TEXT AREA -->
-      <div
-        *ngIf="questions[actualQuestion].type == 'textarea'"
-        class="type-question"
-      >
-        <div class="" style="width: 100%">
-          <textarea
-            name="{{ questions[actualQuestion].type }}"
-            class="form-control"
-            placeholder="{{ questions[actualQuestion].placeholder }}"
-            style="height: 100px"
-            [(ngModel)]="answer.value"
-            maxlength="{{ questions[actualQuestion].max }}"
-            minlength="{{ questions[actualQuestion].min }}"
-          ></textarea>
+          <!-- QUESTION SELECT -->
+          <div
+            *ngIf="questions[actualQuestion].type == 'autocomplete'"
+            class="type-question"
+          >
+            <br />
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              name="{{ questions[actualQuestion].label2 }}"
+              [(ngModel)]="answer.value"
+              required="{{ questions[actualQuestion].required }}"
+            >
+              <option
+                *ngFor="
+                  let option of questions[actualQuestion].values;
+                  let o = index
+                "
+                [value]="'select-option' + '-' + (o + 1) + '-' + actualQuestion"
+              >
+                {{ option.label2 }}
+              </option>
+              <option value="" *ngIf="questions[actualQuestion].otro"
+                >Otros</option
+              >
+            </select>
+          </div>
+          <button
+            class="btn btn-primary"
+            (click)="
+              next(suveryForm, actualQuestion, questions[actualQuestion].type)
+            "
+            [disabled]="suveryForm.invalid"
+            *ngIf="questions[actualQuestion].type != 'checkbox'"
+          >
+            Continuar
+          </button>
+          <button
+            class="btn btn-primary"
+            (click)="
+              next(suveryForm, actualQuestion, questions[actualQuestion].type)
+            "
+            [disabled]="
+              contCheck < minCheck ||
+              (contCheck > maxCheck && questions[actualQuestion].required)
+            "
+            *ngIf="questions[actualQuestion].type == 'checkbox'"
+          >
+            Continuar
+          </button>
         </div>
-      </div>
+        <div
+          *ngIf="!questions[actualQuestion].values"
+          class="actualQuestion colum-question"
+        >
+          <h3 for="">
+            {{ questions[actualQuestion].label }}
+            <span *ngIf="questions[actualQuestion].required">(*)</span>
+          </h3>
+          <p>{{ questions[actualQuestion].description }}</p>
+          <!-- QUESTION TEXT -->
+          <div
+            *ngIf="questions[actualQuestion].type == 'text'"
+            class="type-question"
+          >
+            <input
+              class="form-control"
+              type="text"
+              name="{{ questions[actualQuestion].type }}"
+              placeholder="{{ questions[actualQuestion].placeholder }}"
+              aria-label="default input example"
+              [(ngModel)]="answer.value"
+              required="{{ questions[actualQuestion].required }}"
+            />
+          </div>
+          <!-- QUESTION EMAIL -->
+          <div
+            *ngIf="questions[actualQuestion].type == 'email'"
+            class="type-question"
+          >
+            <input
+              class="form-control"
+              type="email"
+              name="{{ questions[actualQuestion].type }}"
+              #emailInput="ngModel"
+              placeholder="{{ questions[actualQuestion].placeholder }}"
+              aria-label="default input example"
+              [(ngModel)]="answer.value"
+              required="{{ questions[actualQuestion].required }}"
+              pattern="([a-z0-9._%+-]|[A-Z0-9._%+-])+@([a-z0-9._%+-]|[A-Z0-9._%+-])+\.([a-z]|[A-Z]){2,4}$"
+            />
+            <span
+              class="text-danger"
+              *ngIf="emailInput.touched && suveryForm.invalid"
+              >Correo electrónico no válido</span
+            >
 
-      <button
-        class="btn btn-primary"
-        (click)="
-          next(suveryForm, actualQuestion, questions[actualQuestion].type)
-        "
-        [disabled]="suveryForm.invalid"
-      >
-        Continuar
-      </button>
+            <span class="text-heper">Ejemplo@Ejemplo.com</span>
+          </div>
+          <!-- QUESTION NUMBER -->
+          <div
+            *ngIf="questions[actualQuestion].type == 'number'"
+            class="type-question"
+          >
+            <input
+              name="{{ questions[actualQuestion].type }}"
+              class="form-control"
+              type="number"
+              #numberInput="ngModel"
+              aria-label="default input example"
+              [(ngModel)]="answer.value"
+              required="{{ questions[actualQuestion].required }}"
+              min="{{ questions[actualQuestion].min }}"
+              max="{{ questions[actualQuestion].max }}"
+              onkeypress="return (event.keyCode != 32 && ( (event.keyCode >= 48) && (event.keyCode <=57) ))"
+              (ngModelChange)="onChangeNumber(suveryForm)"
+            />
+            <span
+              class="text-danger"
+              *ngIf="numberInput.touched && suveryForm.invalid"
+              >Ingrese un valor en el rango permitido</span
+            >
+
+            <span class="text-heper"
+              >Ingrese un valor entre {{ questions[actualQuestion].min }} y
+              {{ questions[actualQuestion].max }}</span
+            >
+          </div>
+          <!-- QUESTION DATE -->
+          <div
+            *ngIf="questions[actualQuestion].type == 'date'"
+            class="type-question"
+          >
+            <input
+              name="{{ questions[actualQuestion].type }}"
+              class="form-control"
+              type="date"
+              aria-label="default input example"
+              #dateInput="ngModel"
+              [(ngModel)]="answer.value"
+              (change)="onChangeDate(suveryForm)"
+              min="{{ questions[actualQuestion].dateStart }}"
+              max="{{ questions[actualQuestion].dateEnd }}"
+              required="{{ questions[actualQuestion].required }}"
+            />
+
+            <span
+              class="text-danger"
+              *ngIf="dateInput.touched && suveryForm.invalid"
+              >Ingrese una fecha en el rango permitido</span
+            >
+
+            <span class="text-heper"
+              >Seleccione una fecha entre
+              {{ questions[actualQuestion].dateStart | date: "dd/MM/yyyy" }} y
+              {{ questions[actualQuestion].dateEnd | date: "dd/MM/yyyy" }}
+            </span>
+          </div>
+          <!-- QUESTION  TEXT AREA -->
+          <div
+            *ngIf="questions[actualQuestion].type == 'textarea'"
+            class="type-question"
+          >
+            <div class="" style="width: 100%">
+              <textarea
+                name="{{ questions[actualQuestion].type }}"
+                class="form-control"
+                placeholder="{{ questions[actualQuestion].placeholder }}"
+                style="height: 100px"
+                [(ngModel)]="answer.value"
+                maxlength="{{ questions[actualQuestion].max }}"
+                minlength="{{ questions[actualQuestion].min }}"
+              ></textarea>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            (click)="
+              next(suveryForm, actualQuestion, questions[actualQuestion].type)
+            "
+            [disabled]="suveryForm.invalid"
+          >
+            Continuar
+          </button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>

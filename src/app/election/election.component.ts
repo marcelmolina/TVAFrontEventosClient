@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-election',
@@ -6,17 +6,19 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./election.component.scss']
 })
 export class ElectionComponent implements OnInit {
+  @Input() block: any;
+  arrayCandidatos: any = [{ url: '' }];
 
-  constructor() { }
+  constructor() {}
   @Output() action = new EventEmitter<any>();
   ngOnInit(): void {
+    console.log(this.block);
+    this.arrayCandidatos = this.block.config.candidate;
+    console.log(this.arrayCandidatos);
   }
   next() {
-    this.action.emit(
-      {
-        name: 'NEXT'
-      }
-    )
+    this.action.emit({
+      name: 'NEXT'
+    });
   }
-
 }

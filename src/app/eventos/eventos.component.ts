@@ -245,8 +245,9 @@ export class EventosComponent implements OnInit {
     } else {
       let json = {
         session_id: this.session_id,
-        step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
-          }`,
+        step: `event/${this.myEvent}/${this.actualStep}/${
+          b[this.actualStep].type
+        }`,
         event_id: this.myEvent,
         status: 0
       };
@@ -261,8 +262,9 @@ export class EventosComponent implements OnInit {
           if (b[this.actualStep].type == 'url-end') {
             let json = {
               session_id: this.session_id,
-              step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
-                }`,
+              step: `event/${this.myEvent}/${this.actualStep}/${
+                b[this.actualStep].type
+              }`,
               event_id: this.myEvent,
               status: 1
             };
