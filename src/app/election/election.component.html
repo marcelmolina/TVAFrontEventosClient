@@ -7,16 +7,30 @@
         Votación valida desde <span>dd/mm/yy</span> hasta <span>dd/mm/yy</span>
       </p>
     </div>
-    <div class="candidates">
+    <div
+      class="candidates"
+      [ngClass]="{
+        'five-six': arrayCandidates.length > 4 && arrayCandidates.length < 6,
+        'more-than-six': arrayCandidates.length >= 6
+      }"
+    >
       <div
         class="candidate"
         *ngFor="let candidate of arrayCandidates"
         [style]="flexDynamic"
+        [ngClass]="{
+          'five-six': arrayCandidates.length > 4 && arrayCandidates.length < 6,
+          'more-than-six': arrayCandidates.length >= 6
+        }"
       >
         <div
-          class="img"
+          class="img img-candidate"
+          #img
           style="background-image: url('/../assets/img/candidates/candidate.jpg');"
-        ></div>
+          (click)="switchCandidate(img, candidate)"
+        >
+          <div class="layer"></div>
+        </div>
 
         <div class="name">
           Aretha Franklin

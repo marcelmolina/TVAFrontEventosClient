@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ElectionComponent implements OnInit {
   @Input() block: any;
-  arrayCandidates: any = [1, 2, 3, 4];
+  arrayCandidates: any = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   flexDynamic: any;
 
@@ -24,8 +24,14 @@ export class ElectionComponent implements OnInit {
       case 4:
         this.flexDynamic = 'flex:0 0 15%;';
         break;
+      case 5:
+        this.flexDynamic = 'flex: 0 0 25%;';
+        break;
+      case 6:
+        this.flexDynamic = 'flex: 0 0 25%;';
+        break;
       default:
-        this.flexDynamic = 'flex:0 0 15%;';
+        this.flexDynamic = 'flex: 0 0 15%;';
         break;
     }
 
@@ -37,5 +43,18 @@ export class ElectionComponent implements OnInit {
     this.action.emit({
       name: 'NEXT'
     });
+  }
+
+  switchCandidate(img: any, candidate) {
+    console.log(candidate);
+
+    let candidates = document.getElementsByClassName('img-candidate');
+
+    for (let index = 0; index < candidates.length; index++) {
+      const element = candidates[index];
+      element.classList.remove('active');
+    }
+
+    img.classList.add('active');
   }
 }
