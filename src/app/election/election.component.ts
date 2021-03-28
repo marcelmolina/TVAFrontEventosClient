@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Candidate } from './candidate.model';
 
 @Component({
   selector: 'app-election',
@@ -7,37 +8,34 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ElectionComponent implements OnInit {
   @Input() block: any;
-  arrayCandidates: any = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
+  arrayCandidates: any = [];
+  isMobile: boolean = false;
+  multiVote: boolean = true;
   flexDynamic: any;
+  candidate: Candidate;
 
-  constructor() {}
+  constructor() {
+    if (window.innerWidth < 769) {
+      this.isMobile = true;
+    }
+  }
   @Output() action = new EventEmitter<any>();
   ngOnInit(): void {
-    switch (this.arrayCandidates.length) {
-      case 2:
-        this.flexDynamic = 'flex:0 0 25%;';
-        break;
-      case 3:
-        this.flexDynamic = 'flex:0 0 20%;';
-        break;
-      case 4:
-        this.flexDynamic = 'flex:0 0 15%;';
-        break;
-      case 5:
-        this.flexDynamic = 'flex: 0 0 25%;';
-        break;
-      case 6:
-        this.flexDynamic = 'flex: 0 0 25%;';
-        break;
-      default:
-        this.flexDynamic = 'flex: 0 0 15%;';
-        break;
-    }
+    for (let index = 0; index < this.block.config.candidate.length; index++) {
+      const element = this.block.config.candidate[index];
+      this.candidate = new Candidate();
+      this.candidate.count = 0;
+      this.candidate.id = element.candidate_id;
+      this.candidate.img_desktop = element.img_desktop;
+      this.candidate.img_mobile = element.img_mobile;
+      this.candidate.img_tablet = element.img_tablet;
 
-    // console.log(this.block);
-    // this.arrayCandidates = this.block.config.candidate;
-    // console.log(this.arrayCandidates);
+      this.arrayCandidates.push(this.candidate);
+    }
+    this.refreshLayout();
+
+    console.log(this.arrayCandidates);
+    console.log(this.block);
   }
   next() {
     this.action.emit({
@@ -56,5 +54,47 @@ export class ElectionComponent implements OnInit {
     }
 
     img.classList.add('active');
+  }
+
+  refreshLayout() {
+    if (!this.isMobile) {
+      switch (this.arrayCandidates.length) {
+        case 2:
+          this.flexDynamic = 'flex:0 0 25%;';
+          break;
+        case 3:
+          this.flexDynamic = 'flex:0 0 20%;';
+          break;
+        case 4:
+          this.flexDynamic = 'flex:0 0 15%;';
+          break;
+        case 5:
+          this.flexDynamic = 'flex: 0 0 25%;';
+          break;
+        case 6:
+          this.flexDynamic = 'flex: 0 0 25%;';
+          break;
+        default:
+          this.flexDynamic = 'flex: 0 0 15%;';
+          break;
+      }
+    } else {
+      switch (this.arrayCandidates.length) {
+        case 2:
+          this.flexDynamic = 'flex:0 0 100%;';
+          break;
+        default:
+          this.flexDynamic = 'flex: 0 0 50%;';
+          break;
+      }
+    }
+  }
+
+  minus(candidate) {
+    if (candidate.count > 0) candidate.count--;
+  }
+
+  add(candidate) {
+    candidate.count++;
   }
 }
