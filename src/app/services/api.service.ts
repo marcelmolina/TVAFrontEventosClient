@@ -43,8 +43,6 @@ export class ApiService {
   }
 
   saveSession(json, token) {
-    console.log(json);
-
     const url = `${this._baseURL}/session`;
     const body = json;
     return this.http

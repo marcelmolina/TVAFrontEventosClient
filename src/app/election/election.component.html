@@ -28,7 +28,7 @@
         <div
           class="img img-candidate"
           #img
-          style="background-image: url('/../assets/img/candidates/candidate.jpg');"
+          [style]="'background-image: url(' + arrayCandidates[i]?.img + ');'"
           (click)="switchCandidate(img, candidate)"
           [ngClass]="{ 'no-selection': multiVote }"
         >
@@ -39,7 +39,7 @@
           class="name"
           *ngIf="(arrayCandidates.length <= 4 && isMobile) || !isMobile"
         >
-          Aretha Franklin
+          {{ arrayCandidates[i].name }}
         </div>
 
         <div
@@ -90,7 +90,7 @@
 
         <div *ngIf="arrayCandidates.length > 4 && isMobile" class="right">
           <div class="name">
-            Aretha Franklin
+            {{ arrayCandidates[i].count }}
           </div>
           <button *ngIf="!multiVote" class="btn btn-primary btn-votar-mobile">
             Votar

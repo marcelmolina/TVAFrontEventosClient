@@ -10,13 +10,23 @@ export class ElectionComponent implements OnInit {
   @Input() block: any;
   arrayCandidates: any = [];
   isMobile: boolean = false;
+  isTablet: boolean = false;
+  isWeb: boolean = false;
   multiVote: boolean = true;
   flexDynamic: any;
   candidate: Candidate;
 
   constructor() {
-    if (window.innerWidth < 769) {
+    if (window.innerWidth <= 768) {
       this.isMobile = true;
+    }
+
+    if (window.innerWidth > 768 && window.innerWidth <= 1024) {
+      this.isTablet = true;
+    }
+
+    if (window.innerWidth > 1024) {
+      this.isWeb = true;
     }
   }
   @Output() action = new EventEmitter<any>();
@@ -26,9 +36,19 @@ export class ElectionComponent implements OnInit {
       this.candidate = new Candidate();
       this.candidate.count = 0;
       this.candidate.id = element.candidate_id;
-      this.candidate.img_desktop = element.img_desktop;
-      this.candidate.img_mobile = element.img_mobile;
-      this.candidate.img_tablet = element.img_tablet;
+      this.candidate.name = element.name;
+
+      if (this.isMobile) {
+        this.candidate.img = element.img_mobile;
+      }
+
+      if (this.isTablet) {
+        this.candidate.img = element.img_tablet;
+      }
+
+      if (this.isWeb) {
+        this.candidate.img = element.img_desktop;
+      }
 
       this.arrayCandidates.push(this.candidate);
     }
