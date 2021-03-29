@@ -52,6 +52,16 @@ export class ElectionComponent implements OnInit {
 
       this.arrayCandidates.push(this.candidate);
     }
+
+    this.arrayCandidates.push(this.arrayCandidates[0]);
+    this.arrayCandidates.push(this.arrayCandidates[1]);
+    this.arrayCandidates.push(this.arrayCandidates[0]);
+    this.arrayCandidates.push(this.arrayCandidates[1]);
+    this.arrayCandidates.push(this.arrayCandidates[0]);
+    this.arrayCandidates.push(this.arrayCandidates[1]);
+    this.arrayCandidates.push(this.arrayCandidates[0]);
+    this.arrayCandidates.push(this.arrayCandidates[1]);
+
     this.refreshLayout();
 
     console.log(this.arrayCandidates);
@@ -80,10 +90,10 @@ export class ElectionComponent implements OnInit {
     if (!this.isMobile) {
       switch (this.arrayCandidates.length) {
         case 2:
-          this.flexDynamic = 'flex:0 0 25%;';
+          this.flexDynamic = 'flex:0 0 20%;';
           break;
         case 3:
-          this.flexDynamic = 'flex:0 0 20%;';
+          this.flexDynamic = 'flex:0 0 18%;';
           break;
         case 4:
           this.flexDynamic = 'flex:0 0 15%;';
@@ -95,7 +105,7 @@ export class ElectionComponent implements OnInit {
           this.flexDynamic = 'flex: 0 0 25%;';
           break;
         default:
-          this.flexDynamic = 'flex: 0 0 15%;';
+          this.flexDynamic = 'flex: 0 0 20%;';
           break;
       }
     } else {

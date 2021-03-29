@@ -1,19 +1,19 @@
 .electionContainer {
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-image: url("/../assets/img/bg-elections.png");
   background-size: cover;
   background-position: center;
+  flex-grow: 1;
   .glass-container {
     background-color: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);
     margin: 30px;
-    flex: 1;
+    position: relative;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    position: relative;
 
     .remainingVotes {
       background-color: #b3fd05;
@@ -56,11 +56,11 @@
       flex-wrap: wrap;
 
       &.five-six {
-        padding: 0 10%;
+        padding: 0 20%;
       }
 
       &.more-than-six {
-        padding: 0 10px;
+        padding: 0 10%;
       }
 
       .candidate {
@@ -68,7 +68,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 20px;
+        margin: 8px;
 
         &.more-than-six {
           margin: 45px;
@@ -162,7 +162,7 @@
 
     .bottom {
       text-align: center;
-      padding: 40px 0px 12px 0px;
+      padding: 15px 0px;
 
       button {
         width: 275px;
@@ -225,6 +225,7 @@
         &.mobile-three-four {
           .candidate {
             margin: 0px;
+            padding: 10px;
 
             .img {
               width: 30%;
@@ -239,6 +240,8 @@
         }
 
         &.mobile-more-than-four {
+          padding: 0 5%;
+
           .candidate {
             margin: 20px 0 0 0;
             flex-direction: row;
@@ -250,8 +253,8 @@
             }
 
             .img {
-              width: 30%;
-              padding-bottom: 28%;
+              width: 34%;
+              padding-bottom: 30%;
               box-shadow: 3px 3px 0px 0px #732370;
             }
 

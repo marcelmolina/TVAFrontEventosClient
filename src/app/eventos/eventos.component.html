@@ -15,6 +15,9 @@
     [block]="blocks[actualStep]"
     *ngIf="blocks[actualStep].type == 'elections'"
     (action)="actions($event)"
+    style="display: flex;
+    flex-direction: column;
+    height: 100%;"
   ></app-election>
   <app-message
     *ngIf="blocks[actualStep].type == 'message'"

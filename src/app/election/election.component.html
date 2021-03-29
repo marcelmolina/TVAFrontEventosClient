@@ -15,8 +15,8 @@
     <div
       class="candidates"
       [ngClass]="{
-        'five-six': arrayCandidates.length > 4 && arrayCandidates.length < 6,
-        'more-than-six': arrayCandidates.length >= 6,
+        'five-six': arrayCandidates.length > 4 && arrayCandidates.length <= 6,
+        'more-than-six': arrayCandidates.length > 6,
         'mobile-three-four':
           arrayCandidates.length > 2 && arrayCandidates.length <= 4 && isMobile,
         'mobile-more-than-four': arrayCandidates.length > 4 && isMobile
@@ -92,7 +92,7 @@
 
         <div *ngIf="arrayCandidates.length > 4 && isMobile" class="right">
           <div class="name">
-            {{ arrayCandidates[i].count }}
+            {{ arrayCandidates[i].name }}
           </div>
           <button *ngIf="!multiVote" class="btn btn-primary btn-votar-mobile">
             Votar
