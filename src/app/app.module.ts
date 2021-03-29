@@ -11,6 +11,7 @@ import { ResultComponent } from './result/result.component';
 import { FormsModule } from '@angular/forms';
 import { EventosComponent } from './eventos/eventos.component';
 import { HttpClientModule } from '@angular/common/http';
+import { TopBarComponent } from './shared/top-bar/top-bar.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
     VideoComponent,
     MessageComponent,
     ResultComponent,
-    EventosComponent
+    EventosComponent,
+    TopBarComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
