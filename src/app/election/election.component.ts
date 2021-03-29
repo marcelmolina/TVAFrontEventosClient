@@ -55,12 +55,12 @@ export class ElectionComponent implements OnInit {
 
     this.arrayCandidates.push(this.arrayCandidates[0]);
     this.arrayCandidates.push(this.arrayCandidates[1]);
-    this.arrayCandidates.push(this.arrayCandidates[0]);
-    this.arrayCandidates.push(this.arrayCandidates[1]);
-    this.arrayCandidates.push(this.arrayCandidates[0]);
-    this.arrayCandidates.push(this.arrayCandidates[1]);
-    this.arrayCandidates.push(this.arrayCandidates[0]);
-    this.arrayCandidates.push(this.arrayCandidates[1]);
+    // this.arrayCandidates.push(this.arrayCandidates[0]);
+    // this.arrayCandidates.push(this.arrayCandidates[1]);
+    // this.arrayCandidates.push(this.arrayCandidates[0]);
+    // this.arrayCandidates.push(this.arrayCandidates[1]);
+    // this.arrayCandidates.push(this.arrayCandidates[0]);
+    // this.arrayCandidates.push(this.arrayCandidates[1]);
 
     this.refreshLayout();
 
