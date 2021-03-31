@@ -134,6 +134,7 @@
           color: #be3f6c;
           font-weight: bold;
           font-size: 18px;
+          margin-top: 18px;
 
           .control {
             display: flex;
@@ -167,14 +168,21 @@
       button {
         width: 275px;
         border-radius: 24px;
+        padding: 3px;
+        font-weight: bold;
       }
     }
+  }
+  .bottom-mobile {
+    display: none;
   }
 }
 
 @media (max-width: 768px) {
   .electionContainer {
     .glass-container {
+      padding-bottom: 20px;
+      margin-bottom: 106px;
       h2 {
       }
 
@@ -219,6 +227,10 @@
             padding: 0px;
             width: 165px;
             border-radius: 24px;
+          }
+
+          .multiVoteControls {
+            margin-top: 10px;
           }
         }
 
@@ -271,7 +283,28 @@
           border-radius: 24px;
           padding: 6px 38px;
           background-color: #332255;
+          border-color: #332255;
         }
+      }
+    }
+
+    .bottom-mobile {
+      display: block;
+      position: fixed;
+      bottom: 0px;
+      width: 100%;
+      display: flex;
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+      padding: 20px;
+
+      button {
+        margin: 0 auto;
+        width: auto;
+        border-radius: 24px;
+        padding: 6px 38px;
+        background-color: #332255;
+        border-color: #332255;
       }
     }
   }

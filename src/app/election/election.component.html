@@ -44,11 +44,7 @@
           {{ arrayCandidates[i].name }}
         </div>
 
-        <div
-          class="multiVoteControls"
-          *ngIf="!isMobile && multiVote"
-          style="margin-top: 10px;"
-        >
+        <div class="multiVoteControls" *ngIf="!isMobile && multiVote">
           <button
             class="btn btn-primary minus control"
             (click)="minus(arrayCandidates[i])"
@@ -64,12 +60,12 @@
           </button>
         </div>
 
-        <button
+        <!-- <button
           *ngIf="arrayCandidates.length <= 4 && isMobile && !multiVote"
           class="btn btn-primary btn-votar-mobile"
         >
           Votar
-        </button>
+        </button> -->
 
         <div
           class="multiVoteControls"
@@ -94,9 +90,9 @@
           <div class="name">
             {{ arrayCandidates[i].name }}
           </div>
-          <button *ngIf="!multiVote" class="btn btn-primary btn-votar-mobile">
+          <!-- <button *ngIf="!multiVote" class="btn btn-primary btn-votar-mobile">
             Votar
-          </button>
+          </button> -->
 
           <div class="multiVoteControls" *ngIf="multiVote">
             <button
@@ -116,14 +112,19 @@
         </div>
       </div>
     </div>
-    <div class="bottom">
-      <button *ngIf="!multiVote" class="btn btn-primary">
+    <div class="bottom" *ngIf="!isMobile">
+      <button class="btn btn-primary">
         VOTAR
       </button>
 
-      <button *ngIf="multiVote" class="btn btn-primary">
+      <!-- <button *ngIf="multiVote" class="btn btn-primary">
         Siguiente
-      </button>
+      </button> -->
     </div>
+  </div>
+  <div class="bottom-mobile" *ngIf="isMobile">
+    <button class="btn btn-primary">
+      VOTAR
+    </button>
   </div>
 </div>
