@@ -12,7 +12,7 @@ export class ElectionComponent implements OnInit {
   isMobile: boolean = false;
   isTablet: boolean = false;
   isWeb: boolean = false;
-  multiVote: boolean = true;
+  multiVote: boolean = false;
   flexDynamic: any;
   candidate: Candidate;
 
