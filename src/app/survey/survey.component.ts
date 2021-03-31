@@ -84,11 +84,21 @@ export class SurveyComponent implements OnInit {
       }
     }
 
+
     if (this.questions[positionQuestion].type != 'checkbox' && this.questions[positionQuestion].type != 'autocomplete' && this.questions[positionQuestion].type != 'radio') {
       let valueNormal = this.answer.value;
       answer = {
         type: type,
         values: valueNormal
+      }
+      if (this.questions[positionQuestion].type == 'date') {
+
+
+        valueNormal = new Date(this.answer.value);
+        answer = {
+          type: type,
+          values: valueNormal
+        }
       }
     } else {
       answer = {
@@ -96,6 +106,7 @@ export class SurveyComponent implements OnInit {
         values: values
       }
     }
+
 
     this.action.emit(
       {

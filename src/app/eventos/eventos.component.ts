@@ -23,8 +23,11 @@ export class EventosComponent implements OnInit {
   question: Question;
   session_id: any;
   eventHasEnded: boolean = false;
+  waitingForApi: boolean;
+
   constructor(private route: ActivatedRoute, private _apiService: ApiService) {
     this.session_id = null;
+    this.waitingForApi = false;
     this.actualStep = 0;
     this.backgroundImage = 'assets/img/fondo1.jpg';
     this.question = {
@@ -136,7 +139,7 @@ export class EventosComponent implements OnInit {
       case 'NEXT':
         this.actualStep++;
 
-        if (this.blocks[this.actualStep].type == 'url-end') {
+        if (this.blocks[this.actualStep].type == 'url-end' && this.waitingForApi == false) {
           let actions = {
             name: 'SESSION_0',
             type: this.blocks[this.actualStep].type,
@@ -177,6 +180,7 @@ export class EventosComponent implements OnInit {
           question: questionJson,
           question_pool: question_poolJson
         };
+        this.waitingForApi = true;
 
         this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
           response => {
@@ -184,6 +188,22 @@ export class EventosComponent implements OnInit {
           },
           error => {
             console.log(error);
+          },
+          () => {
+            this.waitingForApi = false;
+            if (this.blocks[this.actualStep].type == 'url-end' && this.waitingForApi == false) {
+              let actions = {
+                name: 'SESSION_0',
+                type: this.blocks[this.actualStep].type,
+                step: 0
+              };
+              this.actions(actions);
+              actions.name = 'SESSION_1';
+              this.actions(actions);
+              window.location.href = this.blocks[
+                this.actualStep
+              ].config.destination_url;
+            }
           }
         );
         break;
@@ -266,9 +286,8 @@ export class EventosComponent implements OnInit {
     } else {
       let json = {
         session_id: this.session_id,
-        step: `event/${this.myEvent}/${this.actualStep}/${
-          b[this.actualStep].type
-        }`,
+        step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
+          }`,
         event_id: this.myEvent,
         status: 0
       };
@@ -283,9 +302,8 @@ export class EventosComponent implements OnInit {
           if (b[this.actualStep].type == 'url-end') {
             let json = {
               session_id: this.session_id,
-              step: `event/${this.myEvent}/${this.actualStep}/${
-                b[this.actualStep].type
-              }`,
+              step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
+                }`,
               event_id: this.myEvent,
               status: 1
             };
