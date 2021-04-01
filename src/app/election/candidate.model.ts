@@ -1,6 +1,9 @@
 export class Candidate {
-  id: any;
+  candidate_id: any;
   name: string;
-  count: number;
+  amount_assign: number;
   img?: any;
+  img_desktop?: any;
+  img_mobile?: any;
+  img_tablet?: any;
 }

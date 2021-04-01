@@ -1,6 +1,6 @@
 import { Question } from './question.model';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
 import { environment } from '../../environments/environment';
@@ -23,7 +23,11 @@ export class EventosComponent implements OnInit {
   question: Question;
   session_id: any;
   eventHasEnded: boolean = false;
-  constructor(private route: ActivatedRoute, private _apiService: ApiService) {
+  constructor(
+    private route: ActivatedRoute,
+    private _apiService: ApiService,
+    private router: Router
+  ) {
     this.session_id = null;
     this.actualStep = 0;
     this.backgroundImage = 'assets/img/fondo1.jpg';
@@ -96,8 +100,9 @@ export class EventosComponent implements OnInit {
 
             this._apiService.getEventById(id, token).subscribe(
               response => {
-                let b: Array<any> = response.blocks;
                 console.log(response);
+
+                let b: Array<any> = response.blocks;
 
                 this.question.event_id = response.events_id;
                 this.firtsTime(b);
@@ -187,6 +192,39 @@ export class EventosComponent implements OnInit {
           }
         );
         break;
+
+      case 'SAVE_ELECTION':
+        let json = {
+          event_id: this.myEvent,
+          candidates: action.data
+        };
+
+        this._apiService.saveElection(json, this.myToken).subscribe(
+          response => {
+            console.log(response);
+
+            swal
+              .fire({
+                title: 'Genial!',
+                text: 'Votación enviada',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#332255',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok',
+                cancelButtonText: 'Cancelar'
+              })
+              .then(result => {
+                this.router.navigate(['/']);
+              });
+          },
+          error => {
+            console.log(error);
+          }
+        );
+
+        break;
+
       case 'SESSION_0':
         if (action.type == 'surveys') {
           let json = {

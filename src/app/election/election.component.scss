@@ -43,10 +43,6 @@
       p {
         margin: 0px;
       }
-
-      span {
-        font-weight: bold;
-      }
     }
 
     .candidates {
@@ -164,6 +160,17 @@
     .bottom {
       text-align: center;
       padding: 15px 0px;
+      position: relative;
+
+      .cleanVotes {
+        position: absolute;
+        padding: 15px 25px;
+        cursor: pointer;
+        bottom: 0;
+        left: 0;
+        text-decoration: underline;
+        padding: 18px 25px;
+      }
 
       button {
         width: 275px;
@@ -175,6 +182,21 @@
   }
   .bottom-mobile {
     display: none;
+
+    position: relative;
+    .cleanVotes {
+      position: absolute;
+      padding: 15px 25px;
+      cursor: pointer;
+      bottom: 0;
+      left: 0;
+      text-decoration: underline;
+      padding: 18px 25px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
 
@@ -183,16 +205,6 @@
     .glass-container {
       padding-bottom: 20px;
       margin-bottom: 106px;
-      h2 {
-      }
-
-      .vote-info {
-        p {
-        }
-
-        span {
-        }
-      }
 
       .candidates {
         .candidate {
