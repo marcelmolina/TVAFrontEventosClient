@@ -181,26 +181,32 @@ export class ElectionComponent implements OnInit {
     }
 
     if (this.multiVote) {
-      swal
-        .fire({
-          title: 'Estas seguro?',
-          text: 'Te quedan votos disponibles',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#332255',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Si, votar',
-          cancelButtonText: 'Cancelar'
-        })
-        .then(result => {
-          if (result.isConfirmed) {
-            this.action.emit({
-              name: 'SAVE_ELECTION',
-              data: this.arrayCandidates
-            });
-          } else {
-          }
-        });
+      if (this.votesTotal > 0) {
+        swal
+          .fire({
+            title: '¿Estas seguro?',
+            text: 'Te quedan votos disponibles',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#332255',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, votar',
+            cancelButtonText: 'Cancelar'
+          })
+          .then(result => {
+            if (result.isConfirmed) {
+              this.action.emit({
+                name: 'SAVE_ELECTION',
+                data: this.arrayCandidates
+              });
+            }
+          });
+      }
+
+      this.action.emit({
+        name: 'SAVE_ELECTION',
+        data: this.arrayCandidates
+      });
     }
   }
 
