@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { EventosComponent } from './eventos/eventos.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TopBarComponent } from './shared/top-bar/top-bar.component';
+import { ErrorComponent } from './shared/error/error.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { TopBarComponent } from './shared/top-bar/top-bar.component';
     MessageComponent,
     ResultComponent,
     EventosComponent,
-    TopBarComponent
+    TopBarComponent,
+    ErrorComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

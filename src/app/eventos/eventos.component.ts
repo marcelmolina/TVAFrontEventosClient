@@ -6,6 +6,7 @@ import { ApiService } from '../services/api.service';
 import { environment } from '../../environments/environment';
 
 import swal from 'sweetalert2';
+import { ErrorService } from '../shared/error/error.service';
 
 @Component({
   selector: 'app-eventos',
@@ -26,7 +27,8 @@ export class EventosComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private _apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private errorService: ErrorService
   ) {
     this.session_id = null;
     this.actualStep = 0;
@@ -113,14 +115,13 @@ export class EventosComponent implements OnInit {
                   'The current date is not in the date range of the event.'
                 ) {
                   this.eventHasEnded = true;
+                  this.errorService.errorText = 'Página no encontrada';
+                  this.router.navigate(['error']);
+                }
 
-                  swal
-                    .fire('Error', 'El evento ha finalizado.', 'error')
-                    .then(result => {
-                      if (result.value) {
-                        window.location.href = environment.loginURL;
-                      }
-                    });
+                if (err.error.error == 'Event invalid.') {
+                  this.errorService.errorText = 'Página no encontrada';
+                  this.router.navigate(['error']);
                 }
               }
             );
