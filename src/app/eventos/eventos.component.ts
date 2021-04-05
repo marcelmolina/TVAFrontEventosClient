@@ -142,6 +142,10 @@ export class EventosComponent implements OnInit {
       case 'NEXT':
         this.actualStep++;
 
+        if (this.actualStep > this.blocks.length) {
+          this.router.navigate(['/']);
+        }
+
         if (this.blocks[this.actualStep].type == 'url-end') {
           let actions = {
             name: 'SESSION_0',
@@ -216,7 +220,7 @@ export class EventosComponent implements OnInit {
                 cancelButtonText: 'Cancelar'
               })
               .then(result => {
-                this.router.navigate(['/']);
+                this.actions({ name: 'NEXT' });
               });
           },
           error => {
