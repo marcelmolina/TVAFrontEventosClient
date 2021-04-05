@@ -19,7 +19,7 @@
     (action)="actions($event)"
     style="display: flex;
     flex-direction: column;
-    height: 100%;"
+    min-height: 100%;"
   ></app-election>
   <app-message
     *ngIf="blocks[actualStep].type == 'message'"
@@ -30,7 +30,7 @@
 <div
   class="loading"
   *ngIf="!blocks && !eventHasEnded"
-  style="height: 100%;
+  style="min-height: 100%;
 display: flex;
 justify-content: center;
 align-items: center;"
