@@ -140,10 +140,11 @@ export class EventosComponent implements OnInit {
 
     switch (action.name) {
       case 'NEXT':
-        this.actualStep++;
-
-        if (this.actualStep > this.blocks.length) {
-          this.router.navigate(['/']);
+        if (this.actualStep < this.blocks.length - 1) {
+          this.actualStep++;
+        } else {
+          this.errorService.errorText = 'Página no encontrada';
+          this.router.navigate(['error']);
         }
 
         if (this.blocks[this.actualStep].type == 'url-end') {

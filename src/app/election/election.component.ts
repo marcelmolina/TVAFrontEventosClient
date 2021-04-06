@@ -186,6 +186,9 @@ export class ElectionComponent implements OnInit {
               name: 'SAVE_ELECTION',
               data: this.candidatesSelected
             });
+          } else {
+            this.isSending = false;
+            this.candidatesSelected[0].amount_assign = 0;
           }
         });
     }
@@ -209,7 +212,7 @@ export class ElectionComponent implements OnInit {
                 name: 'SAVE_ELECTION',
                 data: this.arrayCandidates
               });
-            }
+            } else this.isSending = false;
           });
       } else {
         swal
@@ -229,7 +232,7 @@ export class ElectionComponent implements OnInit {
                 name: 'SAVE_ELECTION',
                 data: this.arrayCandidates
               });
-            }
+            } else this.isSending = false;
           });
       }
     }
