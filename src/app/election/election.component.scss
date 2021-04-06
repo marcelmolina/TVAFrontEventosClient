@@ -265,12 +265,14 @@
         }
 
         &.mobile-more-than-four {
-          padding: 0 5%;
+          padding: 0;
+          padding-left: 15%;
 
           .candidate {
             margin: 20px 0 0 0;
             flex-direction: row;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
 
             .right {
               margin-left: 10px;
@@ -281,6 +283,8 @@
               width: 34%;
               padding-bottom: 30%;
               box-shadow: 3px 3px 0px 0px #732370;
+              min-width: 64px;
+              min-height: 64px;
             }
 
             .btn-votar-mobile {
