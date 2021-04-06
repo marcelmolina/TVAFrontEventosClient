@@ -1,4 +1,4 @@
-<app-top-bar></app-top-bar>
+<!-- <app-top-bar></app-top-bar> -->
 
 <div class="electionContainer">
   <div class="glass-container">
@@ -121,7 +121,11 @@
       <div class="cleanVotes" (click)="cleanVotes()" *ngIf="multiVote">
         Borrar todo
       </div>
-      <button [disabled]="!canVote" class="btn btn-primary" (click)="votar()">
+      <button
+        [disabled]="!canVote || isSending"
+        class="btn btn-primary"
+        (click)="votar()"
+      >
         VOTAR
       </button>
     </div>
@@ -130,7 +134,11 @@
     <div class="cleanVotes" (click)="cleanVotes()" *ngIf="multiVote">
       Borrar todo
     </div>
-    <button [disabled]="!canVote" class="btn btn-primary" (click)="votar()">
+    <button
+      [disabled]="!canVote || isSending"
+      class="btn btn-primary"
+      (click)="votar()"
+    >
       VOTAR
     </button>
   </div>

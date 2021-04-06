@@ -26,6 +26,7 @@ export class ElectionComponent implements OnInit {
 
   candidatesSelected: any = [];
   canVote: boolean = false;
+  isSending: boolean = false;
 
   constructor() {
     if (window.innerWidth <= 768) {
@@ -171,13 +172,29 @@ export class ElectionComponent implements OnInit {
   }
 
   votar() {
+    this.isSending = true;
     if (!this.multiVote) {
       this.candidatesSelected[0].amount_assign++;
 
-      this.action.emit({
-        name: 'SAVE_ELECTION',
-        data: this.candidatesSelected
-      });
+      swal
+        .fire({
+          title: '¿Estas seguro?',
+          text: 'Se va a realizar la votación',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#332255',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, votar',
+          cancelButtonText: 'Cancelar'
+        })
+        .then(result => {
+          if (result.isConfirmed) {
+            this.action.emit({
+              name: 'SAVE_ELECTION',
+              data: this.candidatesSelected
+            });
+          }
+        });
     }
 
     if (this.multiVote) {
@@ -201,12 +218,27 @@ export class ElectionComponent implements OnInit {
               });
             }
           });
+      } else {
+        swal
+          .fire({
+            title: '¿Estas seguro?',
+            text: 'Se va a realizar la votación',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#332255',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, votar',
+            cancelButtonText: 'Cancelar'
+          })
+          .then(result => {
+            if (result.isConfirmed) {
+              this.action.emit({
+                name: 'SAVE_ELECTION',
+                data: this.arrayCandidates
+              });
+            }
+          });
       }
-
-      this.action.emit({
-        name: 'SAVE_ELECTION',
-        data: this.arrayCandidates
-      });
     }
   }
 

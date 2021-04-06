@@ -5,6 +5,8 @@
   }"
   *ngIf="blocks"
 >
+  <app-top-bar></app-top-bar>
+
   <app-survey
     [block]="blocks[actualStep]"
     *ngIf="blocks[actualStep].type == 'surveys'"
