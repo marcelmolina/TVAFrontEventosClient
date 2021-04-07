@@ -265,8 +265,7 @@
         }
 
         &.mobile-more-than-four {
-          padding: 0;
-          padding-left: 15%;
+          padding: 0 20px;
 
           .candidate {
             margin: 20px 0 0 0;
@@ -322,6 +321,40 @@
         padding: 6px 38px;
         background-color: #332255;
         border-color: #332255;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .electionContainer {
+    .glass-container {
+      .candidates {
+        display: block;
+        .candidate {
+          margin: 30px 0 0 0;
+          justify-content: center;
+        }
+
+        &.mobile-three-four {
+          .candidate {
+            margin: 0px;
+            padding: 10px;
+            justify-content: center;
+          }
+        }
+
+        &.mobile-more-than-four {
+          padding: 0 20px;
+          justify-content: center;
+
+          .candidate {
+            margin: 20px 0 0 0;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+          }
+        }
       }
     }
   }
