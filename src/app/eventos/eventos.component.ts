@@ -107,6 +107,7 @@ export class EventosComponent implements OnInit {
                 let b: Array<any> = response.blocks;
 
                 this.question.event_id = response.events_id;
+
                 this.firtsTime(b);
               },
               err => {
@@ -306,6 +307,7 @@ export class EventosComponent implements OnInit {
         (response: any) => {
           this.session_id = response.session_id;
           this.blocks = b;
+
           this.totalSteps = this.blocks.length;
         },
         error => {
@@ -362,9 +364,25 @@ export class EventosComponent implements OnInit {
           } else {
             this.blocks = b;
             this.totalSteps = this.blocks.length;
+
+            console.log(b[this.actualStep].config);
+            let size = this.getSize(b[this.actualStep].config);
+
+            if (size < 1) {
+              this.actions({ name: 'NEXT' });
+            }
           }
         }
       );
     }
+  }
+
+  getSize(obj) {
+    var size = 0,
+      key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
   }
 }
