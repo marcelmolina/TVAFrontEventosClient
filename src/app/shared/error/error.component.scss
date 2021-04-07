@@ -24,12 +24,7 @@
 }
 
 @media (max-width: 850px) {
-  .login-container {
-    .left {
-      display: none;
-    }
-    .right {
-      flex: 0 0 100%;
-    }
+  .error-container {
+    flex-direction: column;
   }
 }
