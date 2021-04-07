@@ -125,7 +125,7 @@ export class EventosComponent implements OnInit {
                 }
 
                 if (err.error.error == 'Event stoped.') {
-                  this.errorService.errorText = 'El evento ha sido detenido';
+                  this.errorService.errorText = 'Página no encontrada';
                   this.router.navigate(['error']);
                 }
               }
