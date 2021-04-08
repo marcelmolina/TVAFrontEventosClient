@@ -6,6 +6,7 @@
     *ngIf="blocks[actualStep]?.type == 'surveys'"
     (action)="actions($event)"
     [backgroundProperty]="backgroundProperty"
+    style="display: flex; flex-direction: column; min-height: 100%"
   ></app-survey>
 
   <app-election
@@ -15,31 +16,31 @@
       blocks[actualStep]?.type == 'elections' && blocks[actualStep]?.config.name
     "
     (action)="actions($event)"
-    style="display: flex;
-    flex-direction: column;
-    min-height: 100%;"
+    style="display: flex; flex-direction: column; min-height: 100%"
   ></app-election>
   <app-message
     *ngIf="blocks[actualStep]?.type == 'message-text'"
     (action)="actions($event)"
     [block]="blocks[actualStep]"
     [backgroundProperty]="backgroundProperty"
+    style="display: flex; flex-direction: column; min-height: 100%"
   ></app-message>
 </div>
 
 <div
   class="loading"
   *ngIf="!blocks && !eventHasEnded"
-  style="min-height: 100%;
-display: flex;
-justify-content: center;
-align-items: center;"
+  style="
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  "
 >
   <div
     class="spinner-border text-primary"
     role="status"
-    style="    width: 3rem;
-    height: 3rem;"
+    style="width: 3rem; height: 3rem"
   >
     <span class="sr-only"></span>
   </div>

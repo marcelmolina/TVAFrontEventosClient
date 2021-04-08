@@ -83,10 +83,64 @@
 
 @media (max-width: 768px) {
   .main-container {
-    padding: 20px;
+    padding: 0px;
 
     .content-component .survey-container {
       padding: 30px 10px;
+      form {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        .actualQuestion {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          &.colum-question {
+            justify-content: flex-start;
+            .type-question {
+              flex-direction: column;
+              .activeRadio {
+                color: #ffffff;
+                background-color: #b02756;
+                border-color: #b02756;
+              }
+              .active {
+                border: 1px solid;
+                border-color: #b02756;
+              }
+              .text-heper {
+                margin: 10px;
+              }
+            }
+            button {
+              margin-top: 25px;
+            }
+          }
+          .type-question {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 16px;
+            justify-content: space-between;
+
+            .form-select {
+              font-size: 16px;
+            }
+            .options {
+              background-color: #ffffff;
+              margin: 10px;
+              padding: 10px 40px;
+              flex: 1 0 46%;
+              border-radius: 10px;
+              padding: 20px 45px;
+              font-size: 16px;
+            }
+          }
+        }
+      }
     }
   }
 }
