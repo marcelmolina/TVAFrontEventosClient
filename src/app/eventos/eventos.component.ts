@@ -175,7 +175,6 @@ export class EventosComponent implements OnInit {
 
   actions(action) {
     console.log(this.session_id);
-    debugger;
 
     switch (action.name) {
       case 'NEXT':
