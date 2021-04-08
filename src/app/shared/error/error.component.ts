@@ -13,7 +13,7 @@ import { ErrorService } from './error.service';
 export class ErrorComponent implements OnInit {
   errorText: any;
   constructor(public errorService: ErrorService) {
-    this.errorText = this.errorService.errorText;
+    this.errorText = 'Página no encontrada';
   }
 
   ngOnInit(): void {}
