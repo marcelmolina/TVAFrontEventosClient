@@ -277,6 +277,7 @@ export class EventosComponent implements OnInit {
         (response: any) => {
           this.session_id = response.session_id;
           this.blocks = b;
+
           this.totalSteps = this.blocks.length;
         },
         error => {
