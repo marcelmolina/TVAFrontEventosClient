@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-message',
@@ -6,17 +6,17 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./message.component.scss']
 })
 export class MessageComponent implements OnInit {
-
-  constructor() { }
+  constructor() {}
   @Output() action = new EventEmitter<any>();
+
+  @Input() block: any;
+
   ngOnInit(): void {
+    console.log(this.block);
   }
   next() {
-    this.action.emit(
-      {
-        name: 'NEXT'
-      }
-    )
+    this.action.emit({
+      name: 'NEXT'
+    });
   }
-
 }

@@ -24,8 +24,9 @@
     min-height: 100%;"
   ></app-election>
   <app-message
-    *ngIf="blocks[actualStep]?.type == 'message'"
+    *ngIf="blocks[actualStep]?.type == 'message-text'"
     (action)="actions($event)"
+    [block]="blocks[actualStep]"
   ></app-message>
 </div>
 

@@ -104,6 +104,26 @@ export class EventosComponent implements OnInit {
               response => {
                 console.log(response);
 
+                // let w = window.innerWidth;
+
+                // if (w <= 768) {
+                //   this.backgroundImage = response.backgrounds.img_mobile.split(
+                //     '?'
+                //   )[0];
+                // }
+
+                // if (w > 768 && w <= 1024) {
+                //   this.backgroundImage = response.backgrounds.img_tablet.split(
+                //     '?'
+                //   )[0];
+                // }
+
+                // if (w > 1024) {
+                //   this.backgroundImage = response.backgrounds.img_desktop.split(
+                //     '?'
+                //   )[0];
+                // }
+
                 let b: Array<any> = response.blocks;
 
                 this.question.event_id = response.events_id;
@@ -165,6 +185,11 @@ export class EventosComponent implements OnInit {
           window.location.href = this.blocks[
             this.actualStep
           ].config.destination_url;
+        }
+
+        let size = this.getSize(this.blocks[this.actualStep].config);
+        if (size < 1) {
+          this.actions({ name: 'NEXT' });
         }
 
         break;
@@ -308,6 +333,11 @@ export class EventosComponent implements OnInit {
           this.session_id = response.session_id;
           this.blocks = b;
 
+          let size = this.getSize(b[this.actualStep].config);
+          if (size < 1) {
+            this.actions({ name: 'NEXT' });
+          }
+
           this.totalSteps = this.blocks.length;
         },
         error => {
@@ -365,7 +395,6 @@ export class EventosComponent implements OnInit {
             this.blocks = b;
             this.totalSteps = this.blocks.length;
 
-            console.log(b[this.actualStep].config);
             let size = this.getSize(b[this.actualStep].config);
 
             if (size < 1) {
