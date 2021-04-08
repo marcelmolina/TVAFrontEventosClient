@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-
+  flex: 1;
   .content-component {
     flex: 0 0 auto;
     background-color: rgba(255, 255, 255, 0.5);
@@ -32,6 +32,9 @@
             justify-content: flex-start;
             .type-question {
               flex-direction: column;
+
+              margin-bottom: 16px;
+
               .activeRadio {
                 color: #ffffff;
                 background-color: #b02756;
@@ -56,6 +59,8 @@
             font-size: 16px;
             justify-content: space-between;
 
+            margin-bottom: 16px;
+
             .form-select {
               font-size: 16px;
             }
@@ -63,7 +68,7 @@
               background-color: #ffffff;
               margin: 10px;
               padding: 10px 40px;
-              flex: 0 0 46%;
+              flex: 1 0 46%;
               border-radius: 10px;
               padding: 20px 45px;
               font-size: 16px;

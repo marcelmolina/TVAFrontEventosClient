@@ -1,5 +1,5 @@
 <div class="main-container" [style]="backgroundProperty">
-  <div class="content-component">
+  <div class="content-component" [style]="marginCristal">
     <div class="survey-container" *ngIf="questions">
       <form (ngSubmit)="onSubmit(suveryForm)" #suveryForm="ngForm">
         <div

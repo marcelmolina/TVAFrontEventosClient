@@ -29,6 +29,7 @@ export class SurveyComponent implements OnInit {
   activeCheck: any;
   rateControl: any;
   answer: Answer;
+  marginCristal: any;
   @Output() action = new EventEmitter<any>();
   constructor() {
     this.activeCheck = [];
@@ -39,11 +40,27 @@ export class SurveyComponent implements OnInit {
       value: ''
     };
     this.contCheck = 0;
+    this.marginCristal = 'margin: 0 25%'
   }
 
   ngOnInit(): void {
     if (this.block) {
       this.loadQuestions(this.block.questions);
+
+      if (this.questions[this.actualQuestion].type == 'checkbox' || this.questions[this.actualQuestion].type == 'radio') {
+        console.log("opciones");
+        let opciones = this.questions[this.actualQuestion].values.length;
+        if (this.questions[this.actualQuestion].otro) {
+          opciones++;
+        }
+        if (opciones > 5) {
+          console.log("opciones");
+          this.marginCristal = 'margin: 0'
+        } else {
+          this.marginCristal = 'margin: 0 25%'
+        }
+      }
+
       this.rateControl = new FormControl('', [
         Validators.max(this.questions[this.actualQuestion].max),
         Validators.min(this.questions[this.actualQuestion].min)
@@ -51,7 +68,7 @@ export class SurveyComponent implements OnInit {
     }
   }
 
-  onSubmit(form) {}
+  onSubmit(form) { }
 
   next(suveryForm, positionQuestion, type) {
     this.activeRadio = null;
@@ -113,6 +130,19 @@ export class SurveyComponent implements OnInit {
       this.actualQuestion++;
       console.log(suveryForm);
       suveryForm.resetForm();
+      if (this.questions[this.actualQuestion].type == 'checkbox' || this.questions[this.actualQuestion].type == 'radio') {
+        console.log("opciones");
+        let opciones = this.questions[this.actualQuestion].values.length;
+        if (this.questions[this.actualQuestion].otro) {
+          opciones++;
+        }
+        if (opciones > 5) {
+          console.log("opciones");
+          this.marginCristal = 'margin: 0'
+        } else {
+          this.marginCristal = 'margin: 0 25%'
+        }
+      }
 
       this.action.emit({
         name: 'SESSION_0',
