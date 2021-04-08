@@ -1,5 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { Answer } from './answer.model';
 @Component({
   selector: 'app-survey',
@@ -104,6 +111,9 @@ export class SurveyComponent implements OnInit {
     this.answer.value = '';
     if (this.actualQuestion < this.questions.length - 1) {
       this.actualQuestion++;
+      console.log(suveryForm);
+      suveryForm.resetForm();
+
       this.action.emit({
         name: 'SESSION_0',
         type: 'surveys',
