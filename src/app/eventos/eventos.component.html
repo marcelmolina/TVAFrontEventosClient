@@ -3,7 +3,9 @@
 
   <app-survey
     [block]="blocks[actualStep]"
-    *ngIf="blocks[actualStep]?.type == 'surveys'"
+    *ngIf="
+      blocks[actualStep]?.type == 'surveys' && blocks[actualStep]?.config.name
+    "
     (action)="actions($event)"
     [backgroundProperty]="backgroundProperty"
   ></app-survey>
@@ -20,7 +22,10 @@
     min-height: 100%;"
   ></app-election>
   <app-message
-    *ngIf="blocks[actualStep]?.type == 'message-text'"
+    *ngIf="
+      blocks[actualStep]?.type == 'message-text' &&
+      blocks[actualStep]?.config.name
+    "
     (action)="actions($event)"
     [block]="blocks[actualStep]"
     [backgroundProperty]="backgroundProperty"

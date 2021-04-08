@@ -205,6 +205,9 @@ export class EventosComponent implements OnInit {
         let size = this.getSize(this.blocks[this.actualStep].config);
         if (size < 1 && this.actualStep < this.blocks.length - 1) {
           this.actions({ name: 'NEXT' });
+        } else {
+          this.errorService.errorText = 'Página no encontrada';
+          this.router.navigate(['error']);
         }
 
         break;
