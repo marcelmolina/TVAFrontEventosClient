@@ -122,9 +122,9 @@
               >
                 {{ option.label2 }}
               </option>
-              <option value="" *ngIf="questions[actualQuestion].otro"
-                >Otros</option
-              >
+              <option value="" *ngIf="questions[actualQuestion].otro">
+                Otros
+              </option>
             </select>
           </div>
           <button
@@ -237,6 +237,7 @@
               name="{{ questions[actualQuestion].type }}"
               class="form-control"
               type="date"
+              placeholder="yyyy-mm-dd"
               aria-label="default input example"
               #dateInput="ngModel"
               [(ngModel)]="answer.value"

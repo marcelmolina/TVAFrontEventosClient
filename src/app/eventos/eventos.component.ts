@@ -25,6 +25,8 @@ export class EventosComponent implements OnInit {
   question: Question;
   session_id: any;
   eventHasEnded: boolean = false;
+  waitingForApi: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private _apiService: ApiService,
@@ -32,6 +34,7 @@ export class EventosComponent implements OnInit {
     private errorService: ErrorService
   ) {
     this.session_id = null;
+    this.waitingForApi = false;
     this.actualStep = 0;
     this.question = {
       event_id: '',
@@ -182,7 +185,10 @@ export class EventosComponent implements OnInit {
           this.router.navigate(['error']);
         }
 
-        if (this.blocks[this.actualStep].type == 'url-end') {
+        if (
+          this.blocks[this.actualStep].type == 'url-end' &&
+          this.waitingForApi == false
+        ) {
           let actions = {
             name: 'SESSION_0',
             type: this.blocks[this.actualStep].type,
@@ -228,6 +234,7 @@ export class EventosComponent implements OnInit {
           question: questionJson,
           question_pool: question_poolJson
         };
+        this.waitingForApi = true;
 
         this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
           response => {
@@ -235,6 +242,25 @@ export class EventosComponent implements OnInit {
           },
           error => {
             console.log(error);
+          },
+          () => {
+            this.waitingForApi = false;
+            if (
+              this.blocks[this.actualStep].type == 'url-end' &&
+              this.waitingForApi == false
+            ) {
+              let actions = {
+                name: 'SESSION_0',
+                type: this.blocks[this.actualStep].type,
+                step: 0
+              };
+              this.actions(actions);
+              actions.name = 'SESSION_1';
+              this.actions(actions);
+              window.location.href = this.blocks[
+                this.actualStep
+              ].config.destination_url;
+            }
           }
         );
         break;
