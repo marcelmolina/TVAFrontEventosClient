@@ -10,6 +10,7 @@ export class MessageComponent implements OnInit {
   @Output() action = new EventEmitter<any>();
 
   @Input() block: any;
+  @Input() backgroundProperty: any;
 
   ngOnInit(): void {
     console.log(this.block);

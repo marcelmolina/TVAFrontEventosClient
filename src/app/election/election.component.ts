@@ -9,6 +9,7 @@ import swal from 'sweetalert2';
 })
 export class ElectionComponent implements OnInit {
   @Input() block: any;
+  @Input() backgroundProperty: any;
   @Output() action = new EventEmitter<any>();
 
   arrayCandidates: any = [];

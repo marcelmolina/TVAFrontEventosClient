@@ -1,6 +1,6 @@
 <!-- <app-top-bar></app-top-bar> -->
 
-<div class="electionContainer">
+<div class="electionContainer" [style]="backgroundProperty">
   <div class="glass-container">
     <div class="remainingVotes" *ngIf="multiVote">
       <p>{{ votesTotal }} VOTOS DISPONIBLES</p>

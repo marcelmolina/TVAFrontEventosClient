@@ -1,20 +1,16 @@
-<div
-  class="content-app"
-  [ngStyle]="{
-    background: 'url(' + backgroundImage + ') no-repeat center center / cover'
-  }"
-  *ngIf="blocks"
->
+<div class="content-app" *ngIf="blocks">
   <app-top-bar></app-top-bar>
 
   <app-survey
     [block]="blocks[actualStep]"
     *ngIf="blocks[actualStep]?.type == 'surveys'"
     (action)="actions($event)"
+    [backgroundProperty]="backgroundProperty"
   ></app-survey>
 
   <app-election
     [block]="blocks[actualStep]"
+    [backgroundProperty]="backgroundProperty"
     *ngIf="
       blocks[actualStep]?.type == 'elections' && blocks[actualStep]?.config.name
     "
@@ -27,6 +23,7 @@
     *ngIf="blocks[actualStep]?.type == 'message-text'"
     (action)="actions($event)"
     [block]="blocks[actualStep]"
+    [backgroundProperty]="backgroundProperty"
   ></app-message>
 </div>
 

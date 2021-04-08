@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 })
 export class ApiService {
   _baseURL: string;
+
   constructor(private http: HttpClient) {
     this._baseURL = environment.baseURL;
   }

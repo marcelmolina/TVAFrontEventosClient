@@ -15,6 +15,7 @@ import { ErrorService } from '../shared/error/error.service';
 })
 export class EventosComponent implements OnInit {
   backgroundImage: string;
+  backgroundProperty: string;
   blocks: Array<any>;
   totalSteps: number;
   actualStep: number;
@@ -32,7 +33,6 @@ export class EventosComponent implements OnInit {
   ) {
     this.session_id = null;
     this.actualStep = 0;
-    this.backgroundImage = 'assets/img/fondo1.jpg';
     this.question = {
       event_id: '',
       answer: null,
@@ -104,25 +104,34 @@ export class EventosComponent implements OnInit {
               response => {
                 console.log(response);
 
-                // let w = window.innerWidth;
+                let w = window.innerWidth;
 
-                // if (w <= 768) {
-                //   this.backgroundImage = response.backgrounds.img_mobile.split(
-                //     '?'
-                //   )[0];
-                // }
+                if (w <= 768) {
+                  this.backgroundImage = response.backgrounds.img_mobile.split(
+                    '?'
+                  )[0];
+                }
 
-                // if (w > 768 && w <= 1024) {
-                //   this.backgroundImage = response.backgrounds.img_tablet.split(
-                //     '?'
-                //   )[0];
-                // }
+                if (w > 768 && w <= 1024) {
+                  this.backgroundImage = response.backgrounds.img_tablet.split(
+                    '?'
+                  )[0];
+                }
 
-                // if (w > 1024) {
-                //   this.backgroundImage = response.backgrounds.img_desktop.split(
-                //     '?'
-                //   )[0];
-                // }
+                if (w > 1024) {
+                  this.backgroundImage = response.backgrounds.img_desktop.split(
+                    '?'
+                  )[0];
+                }
+
+                if (this.backgroundImage == '') {
+                  this.backgroundProperty = 'background-color: #732370;';
+                } else {
+                  this.backgroundProperty =
+                    'background: url(' +
+                    this.backgroundImage +
+                    ') no-repeat center center / cover';
+                }
 
                 let b: Array<any> = response.blocks;
 
@@ -188,7 +197,7 @@ export class EventosComponent implements OnInit {
         }
 
         let size = this.getSize(this.blocks[this.actualStep].config);
-        if (size < 1) {
+        if (size < 1 && this.actualStep < this.blocks.length - 1) {
           this.actions({ name: 'NEXT' });
         }
 

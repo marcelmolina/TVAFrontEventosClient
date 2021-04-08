@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container" [style]="backgroundProperty">
   <div class="content-component">
     <div class="survey-container" *ngIf="questions">
       <form (ngSubmit)="onSubmit(suveryForm)" #suveryForm="ngForm">
