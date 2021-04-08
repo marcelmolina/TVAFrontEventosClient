@@ -38,7 +38,7 @@
                 [(ngModel)]="answer.value"
                 required="{{ questions[actualQuestion].required }}"
               />
-              <label class="form-check-label">{{ option.label2 }}</label>
+              <label class="form-check-label">{{ option.label }}</label>
             </div>
             <div
               class="form-check options"
@@ -77,7 +77,7 @@
                 ngModel
               />
               <label class="form-check-label">
-                {{ option.label2 }}
+                {{ option.label }}
               </label>
             </div>
             <div
@@ -120,7 +120,7 @@
                 "
                 [value]="'select-option' + '-' + (o + 1) + '-' + actualQuestion"
               >
-                {{ option.label2 }}
+                {{ option.label }}
               </option>
               <option value="" *ngIf="questions[actualQuestion].otro">
                 Otros
