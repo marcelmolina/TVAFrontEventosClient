@@ -1,16 +1,26 @@
-<app-top-bar></app-top-bar>
+<!-- <app-top-bar></app-top-bar> -->
 
 <div class="electionContainer">
   <div class="glass-container">
     <div class="remainingVotes" *ngIf="multiVote">
-      <p>2 VOTOS DISPONIBLES</p>
+      <p>{{ votesTotal }} VOTOS DISPONIBLES</p>
     </div>
     <h2>Selecciona tu opción favorita y VOTA!</h2>
-    <div class="vote-info">
-      <p>Puedes votar 1 vez cada <span>HH.MM</span></p>
-      <!-- <p>
-        Votación valida desde <span>dd/mm/yy</span> hasta <span>dd/mm/yy</span>
-      </p> -->
+    <div class="vote-info" *ngIf="frecuencyHours > 0">
+      <p>
+        Puedes votar <span>{{ votesAllowed }} </span>
+        <span *ngIf="votesAllowed == 1">vez</span>
+        <span *ngIf="votesAllowed > 1">veces</span>
+        cada
+        <span *ngIf="frecuencyHours > 1">{{ frecuencyHours }}</span
+        ><span style="margin: 0 3px;" *ngIf="frecuencyHours == 1">hora</span>
+        <span style="margin: 0 3px;" *ngIf="frecuencyHours > 1">horas</span>
+        <span *ngIf="frecuencyMinutes > 0">{{ frecuencyMinutes }}</span
+        ><span style="margin: 0 3px;" *ngIf="frecuencyMinutes == 1"
+          >minuto</span
+        >
+        <span style="margin: 0 3px;" *ngIf="frecuencyMinutes > 1">minutos</span>
+      </p>
     </div>
     <div
       class="candidates"
@@ -19,7 +29,9 @@
         'more-than-six': arrayCandidates.length > 6,
         'mobile-three-four':
           arrayCandidates.length > 2 && arrayCandidates.length <= 4 && isMobile,
-        'mobile-more-than-four': arrayCandidates.length > 4 && isMobile
+        'mobile-more-than-four': arrayCandidates.length > 4 && isMobile,
+        'mobile-two-simple': arrayCandidates.length > 1 && !multiVote,
+        'mobile-more-than-two-simple': arrayCandidates.length > 2 && !multiVote
       }"
     >
       <div
@@ -44,18 +56,14 @@
           {{ arrayCandidates[i].name }}
         </div>
 
-        <div
-          class="multiVoteControls"
-          *ngIf="!isMobile && multiVote"
-          style="margin-top: 10px;"
-        >
+        <div class="multiVoteControls" *ngIf="!isMobile && multiVote">
           <button
             class="btn btn-primary minus control"
             (click)="minus(arrayCandidates[i])"
           >
             <i class="fas fa-minus"></i>
           </button>
-          <div class="count">{{ arrayCandidates[i].count }}</div>
+          <div class="count">{{ arrayCandidates[i].amount_assign }}</div>
           <button
             class="btn btn-primary add control"
             (click)="add(arrayCandidates[i])"
@@ -63,13 +71,6 @@
             <i class="fas fa-plus"></i>
           </button>
         </div>
-
-        <button
-          *ngIf="arrayCandidates.length <= 4 && isMobile && !multiVote"
-          class="btn btn-primary btn-votar-mobile"
-        >
-          Votar
-        </button>
 
         <div
           class="multiVoteControls"
@@ -81,7 +82,7 @@
           >
             <i class="fas fa-minus"></i>
           </button>
-          <div class="count">{{ arrayCandidates[i].count }}</div>
+          <div class="count">{{ arrayCandidates[i].amount_assign }}</div>
           <button
             class="btn btn-primary add control"
             (click)="add(arrayCandidates[i])"
@@ -94,9 +95,6 @@
           <div class="name">
             {{ arrayCandidates[i].name }}
           </div>
-          <button *ngIf="!multiVote" class="btn btn-primary btn-votar-mobile">
-            Votar
-          </button>
 
           <div class="multiVoteControls" *ngIf="multiVote">
             <button
@@ -105,7 +103,7 @@
             >
               <i class="fas fa-minus"></i>
             </button>
-            <div class="count">{{ arrayCandidates[i].count }}</div>
+            <div class="count">{{ arrayCandidates[i].amount_assign }}</div>
             <button
               class="btn btn-primary add control"
               (click)="add(arrayCandidates[i])"
@@ -116,14 +114,29 @@
         </div>
       </div>
     </div>
-    <div class="bottom">
-      <button *ngIf="!multiVote" class="btn btn-primary">
+    <div class="bottom" *ngIf="!isMobile">
+      <div class="cleanVotes" (click)="cleanVotes()" *ngIf="multiVote">
+        Borrar todo
+      </div>
+      <button
+        [disabled]="!canVote || isSending"
+        class="btn btn-primary"
+        (click)="votar()"
+      >
         VOTAR
       </button>
-
-      <button *ngIf="multiVote" class="btn btn-primary">
-        Siguiente
-      </button>
     </div>
+  </div>
+  <div class="bottom-mobile" *ngIf="isMobile">
+    <div class="cleanVotes" (click)="cleanVotes()" *ngIf="multiVote">
+      Borrar todo
+    </div>
+    <button
+      [disabled]="!canVote || isSending"
+      class="btn btn-primary"
+      (click)="votar()"
+    >
+      VOTAR
+    </button>
   </div>
 </div>

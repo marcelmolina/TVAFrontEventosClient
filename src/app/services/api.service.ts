@@ -55,4 +55,18 @@ export class ApiService {
       })
       .pipe(map(data => data));
   }
+
+  saveElection(json, token): Observable<any> {
+    const url = `${this._baseURL}/save/election`;
+    const body = json;
+    return this.http
+      .post(url, body, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token
+        })
+      })
+      .pipe(map(data => data));
+  }
 }

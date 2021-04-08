@@ -1,0 +1,30 @@
+.error-container {
+  min-height: 100%;
+  display: flex;
+
+  .left {
+    flex: 0 0 60%;
+    background: #732370;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .right {
+    flex: 0 0 40%;
+    text-align: center;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .errorCode {
+      font-size: 5em;
+    }
+  }
+}
+
+@media (max-width: 850px) {
+  .error-container {
+    flex-direction: column;
+  }
+}

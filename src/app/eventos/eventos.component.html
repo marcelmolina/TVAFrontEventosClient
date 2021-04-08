@@ -5,22 +5,26 @@
   }"
   *ngIf="blocks"
 >
+  <app-top-bar></app-top-bar>
+
   <app-survey
     [block]="blocks[actualStep]"
-    *ngIf="blocks[actualStep].type == 'surveys'"
+    *ngIf="blocks[actualStep]?.type == 'surveys'"
     (action)="actions($event)"
   ></app-survey>
 
   <app-election
     [block]="blocks[actualStep]"
-    *ngIf="blocks[actualStep].type == 'elections'"
+    *ngIf="
+      blocks[actualStep]?.type == 'elections' && blocks[actualStep]?.config.name
+    "
     (action)="actions($event)"
     style="display: flex;
     flex-direction: column;
-    height: 100%;"
+    min-height: 100%;"
   ></app-election>
   <app-message
-    *ngIf="blocks[actualStep].type == 'message'"
+    *ngIf="blocks[actualStep]?.type == 'message'"
     (action)="actions($event)"
   ></app-message>
 </div>
@@ -28,7 +32,7 @@
 <div
   class="loading"
   *ngIf="!blocks && !eventHasEnded"
-  style="height: 100%;
+  style="min-height: 100%;
 display: flex;
 justify-content: center;
 align-items: center;"

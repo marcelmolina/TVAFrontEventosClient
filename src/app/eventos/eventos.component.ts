@@ -1,11 +1,12 @@
 import { Question } from './question.model';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
 import { environment } from '../../environments/environment';
 
 import swal from 'sweetalert2';
+import { ErrorService } from '../shared/error/error.service';
 
 @Component({
   selector: 'app-eventos',
@@ -25,7 +26,13 @@ export class EventosComponent implements OnInit {
   eventHasEnded: boolean = false;
   waitingForApi: boolean;
 
-  constructor(private route: ActivatedRoute, private _apiService: ApiService) {
+
+  constructor(
+    private route: ActivatedRoute,
+    private _apiService: ApiService,
+    private router: Router,
+    private errorService: ErrorService
+  ) {
     this.session_id = null;
     this.waitingForApi = false;
     this.actualStep = 0;
@@ -99,8 +106,9 @@ export class EventosComponent implements OnInit {
 
             this._apiService.getEventById(id, token).subscribe(
               response => {
-                let b: Array<any> = response.blocks;
                 console.log(response);
+
+                let b: Array<any> = response.blocks;
 
                 this.question.event_id = response.events_id;
                 this.firtsTime(b);
@@ -111,14 +119,18 @@ export class EventosComponent implements OnInit {
                   'The current date is not in the date range of the event.'
                 ) {
                   this.eventHasEnded = true;
+                  this.errorService.errorText = 'Página no encontrada';
+                  this.router.navigate(['error']);
+                }
 
-                  swal
-                    .fire('Error', 'El evento ha finalizado.', 'error')
-                    .then(result => {
-                      if (result.value) {
-                        window.location.href = environment.loginURL;
-                      }
-                    });
+                if (err.error.error == 'Event invalid.') {
+                  this.errorService.errorText = 'Página no encontrada';
+                  this.router.navigate(['error']);
+                }
+
+                if (err.error.error == 'Event stoped.') {
+                  this.errorService.errorText = 'Página no encontrada';
+                  this.router.navigate(['error']);
                 }
               }
             );
@@ -137,7 +149,12 @@ export class EventosComponent implements OnInit {
 
     switch (action.name) {
       case 'NEXT':
-        this.actualStep++;
+        if (this.actualStep < this.blocks.length - 1) {
+          this.actualStep++;
+        } else {
+          this.errorService.errorText = 'Página no encontrada';
+          this.router.navigate(['error']);
+        }
 
         if (this.blocks[this.actualStep].type == 'url-end' && this.waitingForApi == false) {
           let actions = {
@@ -207,6 +224,39 @@ export class EventosComponent implements OnInit {
           }
         );
         break;
+
+      case 'SAVE_ELECTION':
+        let json = {
+          event_id: this.myEvent,
+          candidates: action.data
+        };
+
+        this._apiService.saveElection(json, this.myToken).subscribe(
+          response => {
+            console.log(response);
+
+            swal
+              .fire({
+                title: 'Genial!',
+                text: 'Votación enviada',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#332255',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok',
+                cancelButtonText: 'Cancelar'
+              })
+              .then(result => {
+                this.actions({ name: 'NEXT' });
+              });
+          },
+          error => {
+            console.log(error);
+          }
+        );
+
+        break;
+
       case 'SESSION_0':
         if (action.type == 'surveys') {
           let json = {
