@@ -36,22 +36,47 @@
                 class="form-check-input"
                 [name]="questions[actualQuestion].label2"
                 [(ngModel)]="answer.value"
+                #radio
                 required="{{ questions[actualQuestion].required }}"
               />
               <label class="form-check-label">{{ option.label }}</label>
             </div>
             <div
-              class="form-check options"
               *ngIf="questions[actualQuestion].otro"
+              class="form-check options"
+              [ngClass]="{ activeRadio: 9999 === activeRadio }"
+              (click)="clickRadio(9999)"
             >
               <input
                 type="radio"
-                [value]="'option-otro'"
-                [name]="'radio-' + actualQuestion"
+                [id]="'radio-option-otro' + actualQuestion"
+                [value]="'radio-option' + '-' + '-' + actualQuestion"
                 class="form-check-input"
+                [name]="questions[actualQuestion].label2"
+                [(ngModel)]="answer.value"
+                #radio
+                required="{{ questions[actualQuestion].required }}"
               />
-              <label class="form-check-label">Otros</label>
+              <label class="form-check-label">Otro</label>
+              <div *ngIf="otroActive">
+                <input
+                  type="text"
+                  required
+                  name="otro"
+                  [(ngModel)]="answer.value"
+                  class="form-control"
+                />
+              </div>
             </div>
+            <!--       <div
+              class="form-check options otro"
+              *ngIf="questions[actualQuestion].otro"
+              (click)="activeOtro(radio)"
+              [ngClass]="{ active: otroActive }"
+            >
+              <div class="circulo" [ngClass]="{ active: otroActive }"></div>
+              <label class="form-check-label">Otros</label>
+            </div> -->
           </div>
 
           <!-- QUESTION CHECKBOX -->
@@ -83,14 +108,30 @@
             <div
               class="form-check options"
               *ngIf="questions[actualQuestion].otro"
+              (click)="clickCheck(checkBox, activeCheck.length - 1, suveryForm)"
             >
               <input
-                type="radio"
-                [value]="'option-otro'"
-                [name]="'radio-' + actualQuestion"
                 class="form-check-input"
+                type="checkbox"
+                #checkBox="ngModel"
+                name="otro"
+                [checked]="activeCheck[activeCheck.length - 1]"
+                ngModel
               />
               <label class="form-check-label">Otros</label>
+            </div>
+            <div
+              *ngIf="activeCheck[activeCheck.length - 1]"
+              class="form-check options"
+            >
+              <input
+                class="form-control"
+                type="text"
+                #otro="ngModel"
+                name="OpcionOtro"
+                ngModel
+                required
+              />
             </div>
 
             <span class="text-heper"
@@ -112,6 +153,7 @@
               name="{{ questions[actualQuestion].label2 }}"
               [(ngModel)]="answer.value"
               required="{{ questions[actualQuestion].required }}"
+              (ngModelChange)="checkOtro(answer.value)"
             >
               <option
                 *ngFor="
@@ -122,10 +164,20 @@
               >
                 {{ option.label }}
               </option>
-              <option value="" *ngIf="questions[actualQuestion].otro">
+              <option value="otro" *ngIf="questions[actualQuestion].otro">
                 Otros
               </option>
             </select>
+
+            <div *ngIf="otroActive">
+              <input
+                class="form-control"
+                type="text"
+                name="otro"
+                [(ngModel)]="otroAutoValue"
+                required
+              />
+            </div>
           </div>
           <button
             class="btn btn-primary"
@@ -240,24 +292,11 @@
               aria-label="default input example"
               #dateInput="ngModel"
               [(ngModel)]="answer.value"
+              (change)="onChangeDate(suveryForm)"
+              min="{{ questions[actualQuestion].dateStart }}"
+              max="{{ questions[actualQuestion].dateEnd }}"
               required="{{ questions[actualQuestion].required }}"
-              style="display: none;"
             />
-
-            <nz-date-picker
-              #nz
-              [(ngModel)]="date"
-              (ngModelChange)="onChange(nz.picker.inputValue)"
-              (focusout)="onChange(nz.picker.inputValue)"
-              name="x"
-            ></nz-date-picker>
-
-            <small
-              *ngIf="fechaTouched && !fechaValida"
-              class="invalid-feedback d-block"
-            >
-              {{ msgErrorFechas }}
-            </small>
 
             <span
               class="text-danger"
