@@ -30,6 +30,9 @@ export class SurveyComponent implements OnInit {
   rateControl: any;
   answer: Answer;
   marginCristal: any;
+  otroActive = false;
+  otroSelect: string;
+  otroAutoValue: string;
   @Output() action = new EventEmitter<any>();
   constructor() {
     this.activeCheck = [];
@@ -69,33 +72,58 @@ export class SurveyComponent implements OnInit {
   }
 
   onSubmit(form) { }
+  activeOtro(suveryForm) {
+    this.otroActive = true;
 
+    console.log(suveryForm);
+
+  }
+  cambioRadio() {
+    console.log("asdasd");
+
+  }
   next(suveryForm, positionQuestion, type) {
+
     this.activeRadio = null;
     let answer;
     let values = [];
 
     for (const property in suveryForm.value) {
+
+
+
       if (this.questions[positionQuestion].type == 'checkbox') {
         let check = suveryForm.form.controls[property].value;
 
-        if (check) {
-          values.push({
-            label: property,
-            value: check
-          });
+
+        if (property != 'otro') {
+
+          if (check) {
+            values.push({
+              label: property,
+              value: check
+            });
+          }
         }
       } else {
+
         if (
           this.questions[positionQuestion].type == 'radio' ||
           this.questions[positionQuestion].type == 'autocomplete'
         ) {
-          values.push({
-            label: property,
-            value: suveryForm.value[property]
-          });
+
+          if (property != 'otro') {
+            values.push({
+              label: property,
+              value: suveryForm.value[property]
+            });
+          }
+          if (this.questions[positionQuestion].type == 'autocomplete') {
+            values[0].value = this.otroAutoValue;
+          }
         }
       }
+
     }
 
     if (
@@ -190,6 +218,11 @@ export class SurveyComponent implements OnInit {
       ) {
         this.activeCheck.push(false);
       }
+
+      if (this.questions[this.actualQuestion].otro) {
+
+        this.activeCheck.push(false);
+      }
     }
 
     if (this.questions[this.actualQuestion].type == 'number') {
@@ -232,25 +265,55 @@ export class SurveyComponent implements OnInit {
     }
   }
   clickRadio(q) {
+    if (q == 9999) {
+      this.otroActive = true;
+    } else {
+      this.otroActive = false;
+    }
+
     this.activeRadio = q;
     let radio: any;
-    for (
-      let index = 0;
-      index < this.questions[this.actualQuestion].values.length;
-      index++
-    ) {
+    if (q != 9999) {
+      for (
+        let index = 0;
+        index < this.questions[this.actualQuestion].values.length;
+        index++
+      ) {
+        radio = document.getElementById(
+          'radio-option-' + (index + 1) + '-' + this.actualQuestion
+        );
+        radio.checked = false;
+      }
       radio = document.getElementById(
-        'radio-option-' + (index + 1) + '-' + this.actualQuestion
+        'radio-option-' + (q + 1) + '-' + this.actualQuestion
       );
-      radio.checked = false;
+      radio.checked = true;
+      this.answer.value = 'radio-option-' + (q + 1) + '-' + this.actualQuestion;
+    } else {
+      for (
+        let index = 0;
+        index < this.questions[this.actualQuestion].values.length;
+        index++
+      ) {
+        radio = document.getElementById(
+          'radio-option-' + (index + 1) + '-' + this.actualQuestion
+        );
+        radio.checked = false;
+      }
+
+      radio = document.getElementById(
+        'radio-option-otro' + this.actualQuestion
+      );
+      radio.checked = true;
+      this.answer.value = '';
+      console.log(this.answer);
+
     }
-    radio = document.getElementById(
-      'radio-option-' + (q + 1) + '-' + this.actualQuestion
-    );
-    radio.checked = true;
-    this.answer.value = 'radio-option-' + (q + 1) + '-' + this.actualQuestion;
+
   }
   clickCheck(event, o, suveryForm) {
+
+
     if (event.control.value != '') {
       event.control.value = !event.control.value;
       this.activeCheck[o] = !this.activeCheck[o];
@@ -259,5 +322,15 @@ export class SurveyComponent implements OnInit {
       this.activeCheck[o] = !this.activeCheck[o];
     }
     this.onChangeCheck(event, suveryForm);
+  }
+  checkOtro(valor) {
+    console.log(valor);
+
+    if (valor == 'otro') {
+
+
+      this.otroActive = !this.otroActive
+    }
+
   }
 }
