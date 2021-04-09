@@ -13,6 +13,14 @@ import { EventosComponent } from './eventos/eventos.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TopBarComponent } from './shared/top-bar/top-bar.component';
 import { ErrorComponent } from './shared/error/error.component';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { es_ES } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import es from '@angular/common/locales/es';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+
+registerLocaleData(es);
 
 @NgModule({
   declarations: [
@@ -26,8 +34,15 @@ import { ErrorComponent } from './shared/error/error.component';
     TopBarComponent,
     ErrorComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    NzDatePickerModule
+  ],
+  providers: [{ provide: NZ_I18N, useValue: es_ES }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
