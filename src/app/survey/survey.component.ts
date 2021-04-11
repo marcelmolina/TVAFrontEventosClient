@@ -158,8 +158,13 @@ export class SurveyComponent implements OnInit {
       this.actualQuestion++;
       console.log(suveryForm);
       suveryForm.resetForm();
+      if (this.questions[this.actualQuestion].otro && this.questions[this.actualQuestion].type == 'checkbox') {
+        this.activeCheck.push(false);
+      }
       if (this.questions[this.actualQuestion].type == 'checkbox' || this.questions[this.actualQuestion].type == 'radio') {
         console.log("opciones");
+
+
         let opciones = this.questions[this.actualQuestion].values.length;
         if (this.questions[this.actualQuestion].otro) {
           opciones++;
@@ -221,6 +226,8 @@ export class SurveyComponent implements OnInit {
 
       if (this.questions[this.actualQuestion].otro) {
 
+
+
         this.activeCheck.push(false);
       }
     }
@@ -235,6 +242,9 @@ export class SurveyComponent implements OnInit {
     }
   }
   onChangeCheck(event, suveryForm) {
+
+    console.log(event);
+
     if (event.control.value == true) {
       this.contCheck++;
     } else {
@@ -265,6 +275,8 @@ export class SurveyComponent implements OnInit {
     }
   }
   clickRadio(q) {
+
+
     if (q == 9999) {
       this.otroActive = true;
     } else {
@@ -273,6 +285,7 @@ export class SurveyComponent implements OnInit {
 
     this.activeRadio = q;
     let radio: any;
+
     if (q != 9999) {
       for (
         let index = 0;
@@ -284,6 +297,11 @@ export class SurveyComponent implements OnInit {
         );
         radio.checked = false;
       }
+      radio = document.getElementById(
+        'radio-option-otro'
+      );
+      radio.checked = false;
+
       radio = document.getElementById(
         'radio-option-' + (q + 1) + '-' + this.actualQuestion
       );
@@ -301,8 +319,9 @@ export class SurveyComponent implements OnInit {
         radio.checked = false;
       }
 
+
       radio = document.getElementById(
-        'radio-option-otro' + this.actualQuestion
+        'radio-option-otro'
       );
       radio.checked = true;
       this.answer.value = '';
@@ -312,6 +331,7 @@ export class SurveyComponent implements OnInit {
 
   }
   clickCheck(event, o, suveryForm) {
+
 
 
     if (event.control.value != '') {

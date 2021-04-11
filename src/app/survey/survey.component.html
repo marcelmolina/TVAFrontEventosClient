@@ -36,6 +36,7 @@
                 class="form-check-input"
                 [name]="questions[actualQuestion].label2"
                 [(ngModel)]="answer.value"
+                (click)="clickRadio(o)"
                 #radio
                 required="{{ questions[actualQuestion].required }}"
               />
@@ -49,11 +50,11 @@
             >
               <input
                 type="radio"
-                [id]="'radio-option-otro' + actualQuestion"
-                [value]="'radio-option' + '-' + '-' + actualQuestion"
+                [id]="'radio-option-otro'"
                 class="form-check-input"
                 [name]="questions[actualQuestion].label2"
                 [(ngModel)]="answer.value"
+                (click)="clickRadio(9999)"
                 #radio
                 required="{{ questions[actualQuestion].required }}"
               />
@@ -105,6 +106,7 @@
                 {{ option.label }}
               </label>
             </div>
+
             <div
               class="form-check options"
               *ngIf="questions[actualQuestion].otro"
@@ -189,6 +191,7 @@
           >
             Continuar
           </button>
+
           <button
             class="btn btn-primary"
             (click)="

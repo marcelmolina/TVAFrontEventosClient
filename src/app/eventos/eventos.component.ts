@@ -46,6 +46,9 @@ export class EventosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+
+
     this.route.queryParams.subscribe(params => {
       if (
         params['token'] != undefined &&
@@ -242,35 +245,35 @@ export class EventosComponent implements OnInit {
         };
         console.log(jsonFinal);
 
-        this.waitingForApi = true;
-
-        this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
-          response => {
-            console.log(response);
-          },
-          error => {
-            console.log(error);
-          },
-          () => {
-            this.waitingForApi = false;
-            if (
-              this.blocks[this.actualStep].type == 'url-end' &&
-              this.waitingForApi == false
-            ) {
-              let actions = {
-                name: 'SESSION_0',
-                type: this.blocks[this.actualStep].type,
-                step: 0
-              };
-              this.actions(actions);
-              actions.name = 'SESSION_1';
-              this.actions(actions);
-              window.location.href = this.blocks[
-                this.actualStep
-              ].config.destination_url;
-            }
-          }
-        );
+        /*    this.waitingForApi = true;
+   
+           this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
+             response => {
+               console.log(response);
+             },
+             error => {
+               console.log(error);
+             },
+             () => {
+               this.waitingForApi = false;
+               if (
+                 this.blocks[this.actualStep].type == 'url-end' &&
+                 this.waitingForApi == false
+               ) {
+                 let actions = {
+                   name: 'SESSION_0',
+                   type: this.blocks[this.actualStep].type,
+                   step: 0
+                 };
+                 this.actions(actions);
+                 actions.name = 'SESSION_1';
+                 this.actions(actions);
+                 window.location.href = this.blocks[
+                   this.actualStep
+                 ].config.destination_url;
+               }
+             }
+           ); */
         break;
 
       case 'SAVE_ELECTION':
@@ -397,6 +400,7 @@ export class EventosComponent implements OnInit {
       };
       this._apiService.saveSession(json, this.myToken).subscribe(
         (response: any) => {
+
           this.session_id = response.session_id;
         },
         error => {
