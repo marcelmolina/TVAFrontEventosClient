@@ -80,7 +80,7 @@ export class ElectionComponent implements OnInit {
     this.frecuencyHours = this.block.config.frequency_hours;
     this.frecuencyMinutes = this.block.config.frequency_minutes;
 
-    if (this.block.config.number_votes_allowed > 1) this.multiVote = true;
+    if (this.block.config.number_votes > 1) this.multiVote = true;
     else this.multiVote = false;
   }
 
