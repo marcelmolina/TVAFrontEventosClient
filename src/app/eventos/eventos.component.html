@@ -9,7 +9,7 @@
     "
     (action)="actions($event)"
     [backgroundProperty]="backgroundProperty"
-    style="display: flex; flex-direction: column; min-height: 100%"
+    style="display: flex; flex-direction: column; min-height: calc(100% - 50px)"
   ></app-survey>
 
   <app-election
@@ -19,7 +19,7 @@
       blocks[actualStep]?.type == 'elections' && blocks[actualStep]?.config.name
     "
     (action)="actions($event)"
-    style="display: flex; flex-direction: column; min-height: 100%"
+    style="display: flex; flex-direction: column; min-height: calc(100% - 50px)"
   ></app-election>
   <app-message
     *ngIf="
@@ -29,7 +29,7 @@
     (action)="actions($event)"
     [block]="blocks[actualStep]"
     [backgroundProperty]="backgroundProperty"
-    style="display: flex; flex-direction: column; min-height: 100%"
+    style="display: flex; flex-direction: column; min-height: calc(100% - 50px)"
   ></app-message>
 </div>
 
