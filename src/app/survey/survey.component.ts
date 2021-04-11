@@ -33,6 +33,10 @@ export class SurveyComponent implements OnInit {
   otroActive = false;
   otroSelect: string;
   otroAutoValue: string;
+  date: any;
+  fechaValida = false;
+  fechaTouched = false;
+  msgErrorFechas: any;
   @Output() action = new EventEmitter<any>();
   constructor() {
     this.activeCheck = [];
@@ -43,24 +47,27 @@ export class SurveyComponent implements OnInit {
       value: ''
     };
     this.contCheck = 0;
-    this.marginCristal = 'margin: 0 25%'
+    this.marginCristal = 'margin: 0 25%';
   }
 
   ngOnInit(): void {
     if (this.block) {
       this.loadQuestions(this.block.questions);
 
-      if (this.questions[this.actualQuestion].type == 'checkbox' || this.questions[this.actualQuestion].type == 'radio') {
-        console.log("opciones");
+      if (
+        this.questions[this.actualQuestion].type == 'checkbox' ||
+        this.questions[this.actualQuestion].type == 'radio'
+      ) {
+        console.log('opciones');
         let opciones = this.questions[this.actualQuestion].values.length;
         if (this.questions[this.actualQuestion].otro) {
           opciones++;
         }
         if (opciones > 5) {
-          console.log("opciones");
-          this.marginCristal = 'margin: 0'
+          console.log('opciones');
+          this.marginCristal = 'margin: 0';
         } else {
-          this.marginCristal = 'margin: 0 25%'
+          this.marginCristal = 'margin: 0 25%';
         }
       }
 
@@ -71,33 +78,25 @@ export class SurveyComponent implements OnInit {
     }
   }
 
-  onSubmit(form) { }
+  onSubmit(form) {}
   activeOtro(suveryForm) {
     this.otroActive = true;
 
     console.log(suveryForm);
-
   }
   cambioRadio() {
-    console.log("asdasd");
-
+    console.log('asdasd');
   }
   next(suveryForm, positionQuestion, type) {
-
     this.activeRadio = null;
     let answer;
     let values = [];
 
     for (const property in suveryForm.value) {
-
-
-
       if (this.questions[positionQuestion].type == 'checkbox') {
         let check = suveryForm.form.controls[property].value;
 
-
         if (property != 'otro') {
-
           if (check) {
             values.push({
               label: property,
@@ -106,12 +105,10 @@ export class SurveyComponent implements OnInit {
           }
         }
       } else {
-
         if (
           this.questions[positionQuestion].type == 'radio' ||
           this.questions[positionQuestion].type == 'autocomplete'
         ) {
-
           if (property != 'otro') {
             values.push({
               label: property,
@@ -123,7 +120,6 @@ export class SurveyComponent implements OnInit {
           }
         }
       }
-
     }
 
     if (
@@ -158,22 +154,27 @@ export class SurveyComponent implements OnInit {
       this.actualQuestion++;
       console.log(suveryForm);
       suveryForm.resetForm();
-      if (this.questions[this.actualQuestion].otro && this.questions[this.actualQuestion].type == 'checkbox') {
+      if (
+        this.questions[this.actualQuestion].otro &&
+        this.questions[this.actualQuestion].type == 'checkbox'
+      ) {
         this.activeCheck.push(false);
       }
-      if (this.questions[this.actualQuestion].type == 'checkbox' || this.questions[this.actualQuestion].type == 'radio') {
-        console.log("opciones");
-
+      if (
+        this.questions[this.actualQuestion].type == 'checkbox' ||
+        this.questions[this.actualQuestion].type == 'radio'
+      ) {
+        console.log('opciones');
 
         let opciones = this.questions[this.actualQuestion].values.length;
         if (this.questions[this.actualQuestion].otro) {
           opciones++;
         }
         if (opciones > 5) {
-          console.log("opciones");
-          this.marginCristal = 'margin: 0'
+          console.log('opciones');
+          this.marginCristal = 'margin: 0';
         } else {
-          this.marginCristal = 'margin: 0 25%'
+          this.marginCristal = 'margin: 0 25%';
         }
       }
 
@@ -225,9 +226,6 @@ export class SurveyComponent implements OnInit {
       }
 
       if (this.questions[this.actualQuestion].otro) {
-
-
-
         this.activeCheck.push(false);
       }
     }
@@ -242,7 +240,6 @@ export class SurveyComponent implements OnInit {
     }
   }
   onChangeCheck(event, suveryForm) {
-
     console.log(event);
 
     if (event.control.value == true) {
@@ -275,8 +272,6 @@ export class SurveyComponent implements OnInit {
     }
   }
   clickRadio(q) {
-
-
     if (q == 9999) {
       this.otroActive = true;
     } else {
@@ -297,9 +292,7 @@ export class SurveyComponent implements OnInit {
         );
         radio.checked = false;
       }
-      radio = document.getElementById(
-        'radio-option-otro'
-      );
+      radio = document.getElementById('radio-option-otro');
       radio.checked = false;
 
       radio = document.getElementById(
@@ -319,21 +312,13 @@ export class SurveyComponent implements OnInit {
         radio.checked = false;
       }
 
-
-      radio = document.getElementById(
-        'radio-option-otro'
-      );
+      radio = document.getElementById('radio-option-otro');
       radio.checked = true;
       this.answer.value = '';
       console.log(this.answer);
-
     }
-
   }
   clickCheck(event, o, suveryForm) {
-
-
-
     if (event.control.value != '') {
       event.control.value = !event.control.value;
       this.activeCheck[o] = !this.activeCheck[o];
@@ -347,10 +332,29 @@ export class SurveyComponent implements OnInit {
     console.log(valor);
 
     if (valor == 'otro') {
-
-
-      this.otroActive = !this.otroActive
+      this.otroActive = !this.otroActive;
     }
+  }
 
+  onChange(result: any): void {
+    console.log(result);
+    this.fechaTouched = true;
+
+    console.log(this.questions[this.actualQuestion].dateStart);
+    console.log(this.questions[this.actualQuestion].dateEnd);
+
+    let dateSelected = new Date(result + 'T00:00:00');
+
+    let ini = new Date(this.questions[this.actualQuestion].dateStart);
+    let end = new Date(this.questions[this.actualQuestion].dateEnd);
+
+    if (dateSelected <= end && dateSelected >= ini) {
+      this.fechaValida = true;
+      this.answer.value = dateSelected;
+    } else {
+      this.fechaValida = false;
+      this.answer.value = '';
+      this.msgErrorFechas = 'Fecha inválida';
+    }
   }
 }
