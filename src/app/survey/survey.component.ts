@@ -337,16 +337,16 @@ export class SurveyComponent implements OnInit {
   }
 
   onChange(result: any): void {
-    console.log(result);
     this.fechaTouched = true;
-
-    console.log(this.questions[this.actualQuestion].dateStart);
-    console.log(this.questions[this.actualQuestion].dateEnd);
 
     let dateSelected = new Date(result + 'T00:00:00');
 
-    let ini = new Date(this.questions[this.actualQuestion].dateStart);
-    let end = new Date(this.questions[this.actualQuestion].dateEnd);
+    let ini = new Date(
+      this.questions[this.actualQuestion].dateStart.split('T')[0] + 'T00:00:00'
+    );
+    let end = new Date(
+      this.questions[this.actualQuestion].dateEnd.split('T')[0] + 'T00:00:00'
+    );
 
     if (dateSelected <= end && dateSelected >= ini) {
       this.fechaValida = true;
