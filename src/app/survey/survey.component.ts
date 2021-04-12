@@ -78,7 +78,7 @@ export class SurveyComponent implements OnInit {
     }
   }
 
-  onSubmit(form) {}
+  onSubmit(form) { }
   activeOtro(suveryForm) {
     this.otroActive = true;
 
@@ -293,7 +293,11 @@ export class SurveyComponent implements OnInit {
         radio.checked = false;
       }
       radio = document.getElementById('radio-option-otro');
-      radio.checked = false;
+      if (radio) {
+
+        radio.checked = false;
+      }
+
 
       radio = document.getElementById(
         'radio-option-' + (q + 1) + '-' + this.actualQuestion
