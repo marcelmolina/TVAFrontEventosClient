@@ -1,6 +1,8 @@
-<!-- <app-top-bar></app-top-bar> -->
-
-<div class="electionContainer" [style]="backgroundProperty">
+<div
+  class="electionContainer"
+  [style]="backgroundProperty"
+  *ngIf="!resultsInfo"
+>
   <div class="glass-container">
     <div class="remainingVotes" *ngIf="multiVote">
       <p>{{ votesTotal }} VOTOS DISPONIBLES</p>
@@ -140,3 +142,9 @@
     </button>
   </div>
 </div>
+
+<app-result
+  *ngIf="resultsInfo"
+  [resultsInfo]="resultsInfo"
+  style="flex: 1; display: flex;"
+></app-result>

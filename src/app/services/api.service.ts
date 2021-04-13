@@ -70,4 +70,22 @@ export class ApiService {
       })
       .pipe(map(data => data));
   }
+
+  results(event_id, session_id, token): Observable<any> {
+    const url = `${this._baseURL}/results`;
+
+    return this.http
+      .post(
+        url,
+        { event_id, session_id },
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + token
+          })
+        }
+      )
+      .pipe(map(data => data));
+  }
 }

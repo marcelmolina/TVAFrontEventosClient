@@ -26,6 +26,7 @@ export class EventosComponent implements OnInit {
   session_id: any;
   eventHasEnded: boolean = false;
   waitingForApi: boolean;
+  resultsInfo: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,9 +47,6 @@ export class EventosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
-
     this.route.queryParams.subscribe(params => {
       if (
         params['token'] != undefined &&
@@ -243,37 +241,39 @@ export class EventosComponent implements OnInit {
           question: questionJson,
           question_pool: question_poolJson
         };
+
         console.log(jsonFinal);
 
-        /*    this.waitingForApi = true;
-   
-           this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
-             response => {
-               console.log(response);
-             },
-             error => {
-               console.log(error);
-             },
-             () => {
-               this.waitingForApi = false;
-               if (
-                 this.blocks[this.actualStep].type == 'url-end' &&
-                 this.waitingForApi == false
-               ) {
-                 let actions = {
-                   name: 'SESSION_0',
-                   type: this.blocks[this.actualStep].type,
-                   step: 0
-                 };
-                 this.actions(actions);
-                 actions.name = 'SESSION_1';
-                 this.actions(actions);
-                 window.location.href = this.blocks[
-                   this.actualStep
-                 ].config.destination_url;
-               }
-             }
-           ); */
+        this.waitingForApi = true;
+
+        this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
+          response => {
+            console.log(response);
+          },
+          error => {
+            console.log(error);
+          },
+          () => {
+            this.waitingForApi = false;
+            if (
+              this.blocks[this.actualStep].type == 'url-end' &&
+              this.waitingForApi == false
+            ) {
+              let actions = {
+                name: 'SESSION_0',
+                type: this.blocks[this.actualStep].type,
+                step: 0
+              };
+              this.actions(actions);
+              actions.name = 'SESSION_1';
+              this.actions(actions);
+              window.location.href = this.blocks[
+                this.actualStep
+              ].config.destination_url;
+            }
+          }
+        );
+
         break;
 
       case 'SAVE_ELECTION':
@@ -298,7 +298,9 @@ export class EventosComponent implements OnInit {
                 cancelButtonText: 'Cancelar'
               })
               .then(result => {
-                this.actions({ name: 'NEXT' });
+                if (result.isConfirmed) {
+                  this.actions({ name: 'NEXT' });
+                }
               });
           },
           error => {
@@ -393,14 +395,14 @@ export class EventosComponent implements OnInit {
     } else {
       let json = {
         session_id: this.session_id,
-        step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
-          }`,
+        step: `event/${this.myEvent}/${this.actualStep}/${
+          b[this.actualStep].type
+        }`,
         event_id: this.myEvent,
         status: 0
       };
       this._apiService.saveSession(json, this.myToken).subscribe(
         (response: any) => {
-
           this.session_id = response.session_id;
         },
         error => {
@@ -410,8 +412,9 @@ export class EventosComponent implements OnInit {
           if (b[this.actualStep].type == 'url-end') {
             let json = {
               session_id: this.session_id,
-              step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
-                }`,
+              step: `event/${this.myEvent}/${this.actualStep}/${
+                b[this.actualStep].type
+              }`,
               event_id: this.myEvent,
               status: 1
             };
