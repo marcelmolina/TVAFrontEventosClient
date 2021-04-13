@@ -27,4 +27,18 @@
   .error-container {
     flex-direction: column;
   }
+
+  .error-container {
+    .left img {
+      width: 350px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .error-container {
+    .left img {
+      width: 250px;
+    }
+  }
 }

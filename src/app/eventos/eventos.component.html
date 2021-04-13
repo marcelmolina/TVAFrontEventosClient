@@ -14,6 +14,7 @@
 
   <app-election
     [block]="blocks[actualStep]"
+    [resultsInfo]="resultsInfo"
     [backgroundProperty]="backgroundProperty"
     *ngIf="
       blocks[actualStep]?.type == 'elections' && blocks[actualStep]?.config.name
@@ -21,6 +22,7 @@
     (action)="actions($event)"
     style="display: flex; flex-direction: column; min-height: calc(100% - 50px)"
   ></app-election>
+
   <app-message
     *ngIf="
       blocks[actualStep]?.type == 'message-text' &&

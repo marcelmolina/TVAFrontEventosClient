@@ -110,6 +110,8 @@
 @media (max-width: 768px) {
   .main-container {
     padding: 0px;
+    flex-direction: row;
+
     .content-component {
       margin: 0px !important;
     }

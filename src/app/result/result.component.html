@@ -1,3 +1,40 @@
-<div style="text-align: center">
-  <h2>RESULTADOS</h2>
+<div class="resultContainer" [style]="backgroundProperty">
+  <div class="glass-container">
+    <div class="header">
+      <h2>Conoce los resultados en este momento!</h2>
+      <p *ngIf="lastUpdated != null">
+        Los resultados que ves a continuación fueron calculados por última vez:
+        {{ lastUpdated | date: "d/M/yy, h:mm a" }}
+      </p>
+      <p *ngIf="lastUpdated == null">
+        Estamos contando los votos, los primeros resultados serán revelados
+        pronto
+      </p>
+    </div>
+
+    <div class="candidates">
+      <div
+        class="candidate"
+        *ngFor="let candidate of arrayCandidates; let i = index"
+      >
+        <div
+          class="img"
+          [style]="'background-image: url(' + arrayCandidates[i]?.img + ');'"
+        ></div>
+        <div class="bar">
+          <div class="name">{{ arrayCandidates[i]?.name }}</div>
+          <div class="fill"></div>
+        </div>
+        <div class="pct">
+          {{ arrayCandidates[i]?.votes | number: "1.2-2" }}%
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <button class="btn btn-primary" (click)="next()">
+        Siguiente
+      </button>
+    </div>
+  </div>
 </div>
