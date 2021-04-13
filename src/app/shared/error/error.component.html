@@ -1,7 +1,9 @@
 <div class="error-container">
   <div class="left"><img src="assets/img/logo.svg" alt="" width="500" /></div>
   <div class="right">
-    <div class="errorCode">404</div>
+    <div *ngIf="errorText != 'Gracias por visitarnos'" class="errorCode">
+      404
+    </div>
     <div class="errorText">{{ errorText }}</div>
   </div>
 </div>
