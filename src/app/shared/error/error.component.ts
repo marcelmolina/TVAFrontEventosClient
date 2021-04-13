@@ -16,5 +16,7 @@ export class ErrorComponent implements OnInit {
     this.errorText = 'Página no encontrada';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.errorText = this.errorService.errorText;
+  }
 }

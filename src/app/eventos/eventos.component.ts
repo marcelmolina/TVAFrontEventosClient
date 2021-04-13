@@ -391,63 +391,99 @@ export class EventosComponent implements OnInit {
         }
       );
     } else {
-      let json = {
-        session_id: this.session_id,
-        step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
-          }`,
-        event_id: this.myEvent,
-        status: 0
-      };
-      this._apiService.saveSession(json, this.myToken).subscribe(
-        (response: any) => {
 
-          this.session_id = response.session_id;
-        },
-        error => {
-          console.log(error);
-        },
-        () => {
-          if (b[this.actualStep].type == 'url-end') {
-            let json = {
-              session_id: this.session_id,
-              step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
-                }`,
-              event_id: this.myEvent,
-              status: 1
-            };
-            this._apiService.saveSession(json, this.myToken).subscribe(
-              (response: any) => {
-                this.session_id = response.session_id;
-              },
-              error => {
-                console.log(error);
-              },
-              () => {
-                if (
-                  this.ifQueryString(b[this.actualStep].config.destination_url)
-                ) {
-                  window.location.href =
-                    b[this.actualStep].config.destination_url +
-                    `&token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
-                } else {
-                  window.location.href =
-                    b[this.actualStep].config.destination_url +
-                    `?token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
+      if (b[this.actualStep].type == 'url-end') {
+        let goToUrl;
+        this._apiService.UrlEndByEventUser(this.myEvent, this.myToken).subscribe(
+          response => {
+            goToUrl = response.redirect;
+
+          },
+          error => {
+            console.log(error);
+
+          },
+          () => {
+
+            if (goToUrl) {
+
+
+
+              let json = {
+                session_id: this.session_id,
+                step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
+                  }`,
+                event_id: this.myEvent,
+                status: 0
+              };
+              this._apiService.saveSession(json, this.myToken).subscribe(
+                (response: any) => {
+
+                  this.session_id = response.session_id;
+                },
+                error => {
+                  console.log(error);
+                },
+                () => {
+                  if (b[this.actualStep].type == 'url-end') {
+                    let json = {
+                      session_id: this.session_id,
+                      step: `event/${this.myEvent}/${this.actualStep}/${b[this.actualStep].type
+                        }`,
+                      event_id: this.myEvent,
+                      status: 1
+                    };
+                    this._apiService.saveSession(json, this.myToken).subscribe(
+                      (response: any) => {
+                        this.session_id = response.session_id;
+                      },
+                      error => {
+                        console.log(error);
+                      },
+                      () => {
+                        if (
+                          this.ifQueryString(b[this.actualStep].config.destination_url)
+                        ) {
+                          window.location.href =
+                            b[this.actualStep].config.destination_url +
+                            `&token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
+                        } else {
+                          window.location.href =
+                            b[this.actualStep].config.destination_url +
+                            `?token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
+                        }
+                      }
+                    );
+                  } else {
+                    this.blocks = b;
+                    this.totalSteps = this.blocks.length;
+
+                    let size = this.getSize(b[this.actualStep].config);
+
+                    if (size < 1) {
+                      this.actions({ name: 'NEXT' });
+                    }
+                  }
                 }
-              }
-            );
-          } else {
-            this.blocks = b;
-            this.totalSteps = this.blocks.length;
+              );
 
-            let size = this.getSize(b[this.actualStep].config);
+            } else {
 
-            if (size < 1) {
-              this.actions({ name: 'NEXT' });
+              this.errorService.errorText = 'Gracias por visitarnos';
+              this.router.navigate(['error']);
             }
+
           }
-        }
-      );
+
+        )
+      }
+
+
+
+
+
+
+
     }
   }
 

@@ -70,4 +70,20 @@ export class ApiService {
       })
       .pipe(map(data => data));
   }
+
+  UrlEndByEventUser(id, token): Observable<any> {
+    const url = `${this._baseURL}/events/urlend/${id}`;
+
+    return this.http
+      .get(url, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token
+        })
+      })
+      .pipe(map(data => data));
+  }
+
+
 }
