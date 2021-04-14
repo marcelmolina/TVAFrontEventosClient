@@ -137,10 +137,21 @@ export class EventosComponent implements OnInit {
                 }
 
                 let b: Array<any> = response.blocks;
+                let baux = [];
 
                 this.question.event_id = response.events_id;
 
-                this.firtsTime(b);
+                for (let index = 0; index < b.length; index++) {
+                  const element = b[index];
+
+                  let size = this.getSize(element.config);
+                  if (size > 0 && element.type != 'results') {
+                    baux.push(element);
+                  }
+                }
+                console.log(baux);
+
+                this.firtsTime(baux);
               },
               (err) => {
                 if (
@@ -189,7 +200,7 @@ export class EventosComponent implements OnInit {
           this.blocks[this.actualStep].type == 'url-end' &&
           this.waitingForApi == false
         ) {
-          let actions = {
+          /*           let actions = {
             name: 'SESSION_0',
             type: this.blocks[this.actualStep].type,
             step: 0,
@@ -199,7 +210,28 @@ export class EventosComponent implements OnInit {
           this.actions(actions);
           window.location.href = this.blocks[
             this.actualStep
-          ].config.destination_url;
+          ].config.destination_url; */
+
+          let goToUrl;
+          this._apiService
+            .UrlEndByEventUser(this.myEvent, this.myToken)
+            .subscribe(
+              response => {
+                debugger;
+                goToUrl = response.redirect;
+              },
+              error => {
+                console.log(error);
+              },
+              () => {
+                if (goToUrl) {
+                  this.processBlocks(this.blocks);
+                } else {
+                  this.errorService.errorText = 'Gracias por visitarnos';
+                  this.router.navigate(['error']);
+                }
+              }
+            );
         }
 
         let size = this.getSize(this.blocks[this.actualStep].config);
@@ -245,10 +277,17 @@ export class EventosComponent implements OnInit {
         this.waitingForApi = true;
 
         this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
+<<<<<<< HEAD
           (response) => {
             console.log(response);
           },
           (error) => {
+=======
+          response => {
+            console.log(response);
+          },
+          error => {
+>>>>>>> 50e82ddf0361aeab26dd82c092cbc044a9c027cc
             console.log(error);
           },
           () => {
@@ -260,7 +299,11 @@ export class EventosComponent implements OnInit {
               let actions = {
                 name: 'SESSION_0',
                 type: this.blocks[this.actualStep].type,
+<<<<<<< HEAD
                 step: 0,
+=======
+                step: 0
+>>>>>>> 50e82ddf0361aeab26dd82c092cbc044a9c027cc
               };
               this.actions(actions);
               actions.name = 'SESSION_1';
@@ -393,7 +436,12 @@ export class EventosComponent implements OnInit {
         this._apiService
           .UrlEndByEventUser(this.myEvent, this.myToken)
           .subscribe(
+<<<<<<< HEAD
             (response) => {
+=======
+            response => {
+              debugger;
+>>>>>>> 50e82ddf0361aeab26dd82c092cbc044a9c027cc
               goToUrl = response.redirect;
             },
             (error) => {
