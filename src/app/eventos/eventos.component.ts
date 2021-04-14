@@ -216,11 +216,11 @@ export class EventosComponent implements OnInit {
           this._apiService
             .UrlEndByEventUser(this.myEvent, this.myToken)
             .subscribe(
-              response => {
+              (response) => {
                 debugger;
                 goToUrl = response.redirect;
               },
-              error => {
+              (error) => {
                 console.log(error);
               },
               () => {
@@ -277,17 +277,10 @@ export class EventosComponent implements OnInit {
         this.waitingForApi = true;
 
         this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
-<<<<<<< HEAD
           (response) => {
             console.log(response);
           },
           (error) => {
-=======
-          response => {
-            console.log(response);
-          },
-          error => {
->>>>>>> 50e82ddf0361aeab26dd82c092cbc044a9c027cc
             console.log(error);
           },
           () => {
@@ -299,11 +292,7 @@ export class EventosComponent implements OnInit {
               let actions = {
                 name: 'SESSION_0',
                 type: this.blocks[this.actualStep].type,
-<<<<<<< HEAD
                 step: 0,
-=======
-                step: 0
->>>>>>> 50e82ddf0361aeab26dd82c092cbc044a9c027cc
               };
               this.actions(actions);
               actions.name = 'SESSION_1';
@@ -436,12 +425,7 @@ export class EventosComponent implements OnInit {
         this._apiService
           .UrlEndByEventUser(this.myEvent, this.myToken)
           .subscribe(
-<<<<<<< HEAD
             (response) => {
-=======
-            response => {
-              debugger;
->>>>>>> 50e82ddf0361aeab26dd82c092cbc044a9c027cc
               goToUrl = response.redirect;
             },
             (error) => {
