@@ -4,14 +4,14 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { Answer } from './answer.model';
 @Component({
   selector: 'app-survey',
   templateUrl: './survey.component.html',
-  styleUrls: ['./survey.component.scss'],
+  styleUrls: ['./survey.component.scss']
 })
 export class SurveyComponent implements OnInit {
   @Input() block: any;
@@ -44,7 +44,7 @@ export class SurveyComponent implements OnInit {
     this.questions = [];
     this.answer = {
       label: '',
-      value: '',
+      value: ''
     };
     this.contCheck = 0;
     this.marginCristal = 'margin: 0 25%';
@@ -73,7 +73,7 @@ export class SurveyComponent implements OnInit {
 
       this.rateControl = new FormControl('', [
         Validators.max(this.questions[this.actualQuestion].max),
-        Validators.min(this.questions[this.actualQuestion].min),
+        Validators.min(this.questions[this.actualQuestion].min)
       ]);
     }
   }
@@ -100,7 +100,7 @@ export class SurveyComponent implements OnInit {
           if (check) {
             values.push({
               label: property,
-              value: check,
+              value: check
             });
           }
         }
@@ -112,7 +112,7 @@ export class SurveyComponent implements OnInit {
           if (property != 'otro') {
             values.push({
               label: property,
-              value: suveryForm.value[property],
+              value: suveryForm.value[property]
             });
           }
           if (this.questions[positionQuestion].type == 'autocomplete') {
@@ -130,24 +130,24 @@ export class SurveyComponent implements OnInit {
       let valueNormal = this.answer.value;
       answer = {
         type: type,
-        values: valueNormal,
+        values: valueNormal
       };
     } else {
       answer = {
         type: type,
-        values: values,
+        values: values
       };
     }
 
     this.action.emit({
       name: 'SAVE_QUESTION',
       data: answer,
-      positionQuestion: positionQuestion,
+      positionQuestion: positionQuestion
     });
     this.action.emit({
       name: 'SESSION_1',
       type: 'surveys',
-      step: this.actualQuestion,
+      step: this.actualQuestion
     });
     this.answer.value = '';
     if (this.actualQuestion < this.questions.length - 1) {
@@ -192,7 +192,7 @@ export class SurveyComponent implements OnInit {
       this.action.emit({
         name: 'SESSION_0',
         type: 'surveys',
-        step: this.actualQuestion,
+        step: this.actualQuestion
       });
 
       if (this.questions[this.actualQuestion].type == 'checkbox') {
@@ -217,7 +217,7 @@ export class SurveyComponent implements OnInit {
       }
     } else {
       this.action.emit({
-        name: 'NEXT',
+        name: 'NEXT'
       });
     }
   }
@@ -263,7 +263,7 @@ export class SurveyComponent implements OnInit {
   onChangeNumber(event) {
     let rateControl = new FormControl('', [
       Validators.max(this.questions[this.actualQuestion].max),
-      Validators.min(this.questions[this.actualQuestion].min),
+      Validators.min(this.questions[this.actualQuestion].min)
     ]);
 
     if (
@@ -365,6 +365,7 @@ export class SurveyComponent implements OnInit {
     let end = new Date(
       this.questions[this.actualQuestion].dateEnd.split('T')[0] + 'T00:00:00'
     );
+    debugger;
 
     if (dateSelected <= end && dateSelected >= ini) {
       this.fechaValida = true;
