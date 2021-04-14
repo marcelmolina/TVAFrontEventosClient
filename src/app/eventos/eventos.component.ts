@@ -26,6 +26,8 @@ export class EventosComponent implements OnInit {
   session_id: any;
   eventHasEnded: boolean = false;
   waitingForApi: boolean;
+  goToUrl: boolean;
+
   resultsInfo: any = null;
 
   constructor(
@@ -36,6 +38,7 @@ export class EventosComponent implements OnInit {
   ) {
     this.session_id = null;
     this.waitingForApi = false;
+    this.goToUrl = true;
     this.actualStep = 0;
     this.question = {
       event_id: '',
@@ -298,9 +301,42 @@ export class EventosComponent implements OnInit {
                 cancelButtonText: 'Cancelar',
               })
               .then((result) => {
-                if (result.isConfirmed) {
-                  this.actions({ name: 'NEXT' });
-                }
+                let json = {
+                  session_id: this.session_id,
+                  step: `event/${this.myEvent}/${this.actualStep}/elections`,
+                  event_id: this.myEvent,
+                  status: 1,
+                };
+                this.saveSession(json, this.myToken);
+
+                if (this.blocks[this.actualStep].showResult) {
+                  let json = {
+                    session_id: this.session_id,
+                    step: `event/${this.myEvent}/${this.actualStep}/results`,
+                    event_id: this.myEvent,
+                    status: 0,
+                  };
+                  this.saveSession(json, this.myToken);
+
+                  console.log(this.myEvent);
+                  console.log(this.session_id);
+
+                  console.log(this.myToken);
+
+                  this._apiService
+                    .results(this.myEvent, this.session_id, this.myToken)
+                    .subscribe((response) => {
+                      this.resultsInfo = response;
+                    });
+
+                  let json2 = {
+                    session_id: this.session_id,
+                    step: `event/${this.myEvent}/${this.actualStep}/results`,
+                    event_id: this.myEvent,
+                    status: 1,
+                  };
+                  this.saveSession(json2, this.myToken);
+                } else this.actions({ name: 'NEXT' });
               });
           },
           (error) => {
@@ -376,6 +412,7 @@ export class EventosComponent implements OnInit {
         event_id: this.myEvent,
         status: 0,
       };
+
       this._apiService.saveSession(json, this.myToken).subscribe(
         (response: any) => {
           this.session_id = response.session_id;
@@ -394,86 +431,26 @@ export class EventosComponent implements OnInit {
       );
     } else {
       if (b[this.actualStep].type == 'url-end') {
-        let goToUrl;
         this._apiService
           .UrlEndByEventUser(this.myEvent, this.myToken)
           .subscribe(
             (response) => {
-              goToUrl = response.redirect;
+              this.goToUrl = response.redirect;
             },
             (error) => {
               console.log(error);
             },
             () => {
-              if (goToUrl) {
-                let json = {
-                  session_id: this.session_id,
-                  step: `event/${this.myEvent}/${this.actualStep}/${
-                    b[this.actualStep].type
-                  }`,
-                  event_id: this.myEvent,
-                  status: 0,
-                };
-                this._apiService.saveSession(json, this.myToken).subscribe(
-                  (response: any) => {
-                    this.session_id = response.session_id;
-                  },
-                  (error) => {
-                    console.log(error);
-                  },
-                  () => {
-                    if (b[this.actualStep].type == 'url-end') {
-                      let json = {
-                        session_id: this.session_id,
-                        step: `event/${this.myEvent}/${this.actualStep}/${
-                          b[this.actualStep].type
-                        }`,
-                        event_id: this.myEvent,
-                        status: 1,
-                      };
-                      this._apiService
-                        .saveSession(json, this.myToken)
-                        .subscribe(
-                          (response: any) => {
-                            this.session_id = response.session_id;
-                          },
-                          (error) => {
-                            console.log(error);
-                          },
-                          () => {
-                            if (
-                              this.ifQueryString(
-                                b[this.actualStep].config.destination_url
-                              )
-                            ) {
-                              window.location.href =
-                                b[this.actualStep].config.destination_url +
-                                `&token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
-                            } else {
-                              window.location.href =
-                                b[this.actualStep].config.destination_url +
-                                `?token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
-                            }
-                          }
-                        );
-                    } else {
-                      this.blocks = b;
-                      this.totalSteps = this.blocks.length;
-
-                      let size = this.getSize(b[this.actualStep].config);
-
-                      if (size < 1) {
-                        this.actions({ name: 'NEXT' });
-                      }
-                    }
-                  }
-                );
+              if (this.goToUrl) {
+                this.processBlocks(b);
               } else {
                 this.errorService.errorText = 'Gracias por visitarnos';
                 this.router.navigate(['error']);
               }
             }
           );
+      } else {
+        this.processBlocks(b);
       }
     }
   }
@@ -485,5 +462,65 @@ export class EventosComponent implements OnInit {
       if (obj.hasOwnProperty(key)) size++;
     }
     return size;
+  }
+  processBlocks(b) {
+    let json = {
+      session_id: this.session_id,
+      step: `event/${this.myEvent}/${this.actualStep}/${
+        b[this.actualStep].type
+      }`,
+      event_id: this.myEvent,
+      status: 0,
+    };
+    this._apiService.saveSession(json, this.myToken).subscribe(
+      (response: any) => {
+        this.session_id = response.session_id;
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        if (b[this.actualStep].type == 'url-end') {
+          let json = {
+            session_id: this.session_id,
+            step: `event/${this.myEvent}/${this.actualStep}/${
+              b[this.actualStep].type
+            }`,
+            event_id: this.myEvent,
+            status: 1,
+          };
+          this._apiService.saveSession(json, this.myToken).subscribe(
+            (response: any) => {
+              this.session_id = response.session_id;
+            },
+            (error) => {
+              console.log(error);
+            },
+            () => {
+              if (
+                this.ifQueryString(b[this.actualStep].config.destination_url)
+              ) {
+                window.location.href =
+                  b[this.actualStep].config.destination_url +
+                  `&token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
+              } else {
+                window.location.href =
+                  b[this.actualStep].config.destination_url +
+                  `?token=${this.myToken}&id=${this.myEvent}&session-id=${this.session_id}&cookie-id=${this.myCookieId}`;
+              }
+            }
+          );
+        } else {
+          this.blocks = b;
+          this.totalSteps = this.blocks.length;
+
+          let size = this.getSize(b[this.actualStep].config);
+
+          if (size < 1) {
+            this.actions({ name: 'NEXT' });
+          }
+        }
+      }
+    );
   }
 }
