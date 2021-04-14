@@ -138,7 +138,11 @@
                 required
               />
             </div>
-
+          </div>
+          <div
+            *ngIf="questions[actualQuestion].type == 'checkbox'"
+            class="mb-3"
+          >
             <span class="text-heper"
               >Seleccione entre un mínimo de
               {{ questions[actualQuestion].min }} y un máximo de
@@ -174,7 +178,10 @@
               </option>
             </select>
 
-            <div *ngIf="otroActive && questions[actualQuestion].otro">
+            <div
+              *ngIf="otroActive && questions[actualQuestion].otro"
+              class="mt-3 mb-3"
+            >
               <input
                 class="form-control"
                 type="text"

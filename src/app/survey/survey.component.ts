@@ -4,14 +4,14 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { Answer } from './answer.model';
 @Component({
   selector: 'app-survey',
   templateUrl: './survey.component.html',
-  styleUrls: ['./survey.component.scss']
+  styleUrls: ['./survey.component.scss'],
 })
 export class SurveyComponent implements OnInit {
   @Input() block: any;
@@ -44,7 +44,7 @@ export class SurveyComponent implements OnInit {
     this.questions = [];
     this.answer = {
       label: '',
-      value: ''
+      value: '',
     };
     this.contCheck = 0;
     this.marginCristal = 'margin: 0 25%';
@@ -73,12 +73,12 @@ export class SurveyComponent implements OnInit {
 
       this.rateControl = new FormControl('', [
         Validators.max(this.questions[this.actualQuestion].max),
-        Validators.min(this.questions[this.actualQuestion].min)
+        Validators.min(this.questions[this.actualQuestion].min),
       ]);
     }
   }
 
-  onSubmit(form) { }
+  onSubmit(form) {}
   activeOtro(suveryForm) {
     this.otroActive = true;
 
@@ -100,7 +100,7 @@ export class SurveyComponent implements OnInit {
           if (check) {
             values.push({
               label: property,
-              value: check
+              value: check,
             });
           }
         }
@@ -112,7 +112,7 @@ export class SurveyComponent implements OnInit {
           if (property != 'otro') {
             values.push({
               label: property,
-              value: suveryForm.value[property]
+              value: suveryForm.value[property],
             });
           }
           if (this.questions[positionQuestion].type == 'autocomplete') {
@@ -130,35 +130,46 @@ export class SurveyComponent implements OnInit {
       let valueNormal = this.answer.value;
       answer = {
         type: type,
-        values: valueNormal
+        values: valueNormal,
       };
     } else {
       answer = {
         type: type,
-        values: values
+        values: values,
       };
     }
 
     this.action.emit({
       name: 'SAVE_QUESTION',
       data: answer,
-      positionQuestion: positionQuestion
+      positionQuestion: positionQuestion,
     });
     this.action.emit({
       name: 'SESSION_1',
       type: 'surveys',
-      step: this.actualQuestion
+      step: this.actualQuestion,
     });
     this.answer.value = '';
     if (this.actualQuestion < this.questions.length - 1) {
       this.actualQuestion++;
       console.log(suveryForm);
       suveryForm.resetForm();
-      if (
-        this.questions[this.actualQuestion].otro &&
-        this.questions[this.actualQuestion].type == 'checkbox'
-      ) {
-        this.activeCheck.push(false);
+
+      if (this.questions[this.actualQuestion].type == 'checkbox') {
+        this.activeCheck = [];
+        this.maxCheck = this.questions[this.actualQuestion].max;
+        this.minCheck = this.questions[this.actualQuestion].min;
+        for (
+          let index = 0;
+          index < this.questions[this.actualQuestion].values.length;
+          index++
+        ) {
+          this.activeCheck.push(false);
+        }
+
+        if (this.questions[this.actualQuestion].otro) {
+          this.activeCheck.push(false);
+        }
       }
       if (
         this.questions[this.actualQuestion].type == 'checkbox' ||
@@ -181,7 +192,7 @@ export class SurveyComponent implements OnInit {
       this.action.emit({
         name: 'SESSION_0',
         type: 'surveys',
-        step: this.actualQuestion
+        step: this.actualQuestion,
       });
 
       if (this.questions[this.actualQuestion].type == 'checkbox') {
@@ -206,7 +217,7 @@ export class SurveyComponent implements OnInit {
       }
     } else {
       this.action.emit({
-        name: 'NEXT'
+        name: 'NEXT',
       });
     }
   }
@@ -242,16 +253,17 @@ export class SurveyComponent implements OnInit {
   onChangeCheck(event, suveryForm) {
     console.log(event);
 
-    if (event.control.value == true) {
+    if (event == true) {
       this.contCheck++;
     } else {
       this.contCheck--;
     }
+    console.log(this.contCheck);
   }
   onChangeNumber(event) {
     let rateControl = new FormControl('', [
       Validators.max(this.questions[this.actualQuestion].max),
-      Validators.min(this.questions[this.actualQuestion].min)
+      Validators.min(this.questions[this.actualQuestion].min),
     ]);
 
     if (
@@ -294,10 +306,8 @@ export class SurveyComponent implements OnInit {
       }
       radio = document.getElementById('radio-option-otro');
       if (radio) {
-
         radio.checked = false;
       }
-
 
       radio = document.getElementById(
         'radio-option-' + (q + 1) + '-' + this.actualQuestion
@@ -323,20 +333,24 @@ export class SurveyComponent implements OnInit {
     }
   }
   clickCheck(event, o, suveryForm) {
-    if (event.control.value != '') {
+    this.activeCheck[o] = !this.activeCheck[o];
+
+    /*    if (event.control.value != '') {
       event.control.value = !event.control.value;
       this.activeCheck[o] = !this.activeCheck[o];
     } else {
       event.control.value = true;
       this.activeCheck[o] = !this.activeCheck[o];
-    }
-    this.onChangeCheck(event, suveryForm);
+    } */
+    this.onChangeCheck(this.activeCheck[o], suveryForm);
   }
   checkOtro(valor) {
     console.log(valor);
 
     if (valor == 'otro') {
       this.otroActive = !this.otroActive;
+    } else {
+      this.otroActive = false;
     }
   }
 
