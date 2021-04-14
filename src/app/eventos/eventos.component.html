@@ -31,6 +31,14 @@
     [backgroundProperty]="backgroundProperty"
     style="display: flex; flex-direction: column; min-height: calc(100% - 50px)"
   ></app-message>
+  <app-result
+    [block]="blocks[actualStep]"
+    *ngIf="blocks[actualStep]?.type == 'results'"
+    [session_id]="session_id"
+    [event_id]="myEvent"
+    [token]="myToken"
+    (action)="actions($event)"
+  ></app-result>
 </div>
 
 <div
