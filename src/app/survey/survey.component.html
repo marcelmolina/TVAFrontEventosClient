@@ -312,6 +312,7 @@
             <nz-date-picker
               #nz
               [(ngModel)]="date"
+              [nzInputReadOnly]="true"
               (ngModelChange)="onChange(nz.picker.inputValue)"
               (focusout)="onChange(nz.picker.inputValue)"
               name="x"
