@@ -157,8 +157,12 @@ export class EventosComponent implements OnInit {
                   }
                 }
                 console.log(baux);
-
-                this.firtsTime(baux);
+                if (baux.length > 0) {
+                  this.firtsTime(baux);
+                } else {
+                  this.errorService.errorText = 'Página no encontrada';
+                  this.router.navigate(['error']);
+                }
               },
               (err) => {
                 if (

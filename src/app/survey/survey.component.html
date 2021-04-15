@@ -208,7 +208,9 @@
               next(suveryForm, actualQuestion, questions[actualQuestion].type)
             "
             [disabled]="
-              contCheck < minCheck || contCheck > maxCheck || suveryForm.invalid
+              (questions[actualQuestion].required &&
+                (contCheck < minCheck || contCheck > maxCheck)) ||
+              suveryForm.invalid
             "
             *ngIf="questions[actualQuestion].type == 'checkbox'"
           >
@@ -370,7 +372,10 @@
             (click)="
               next(suveryForm, actualQuestion, questions[actualQuestion].type)
             "
-            [disabled]="suveryForm.invalid || !fechaValida"
+            [disabled]="
+              suveryForm.invalid ||
+              (!fechaValida && questions[actualQuestion].required)
+            "
             *ngIf="questions[actualQuestion].type == 'date'"
           >
             Continuar
