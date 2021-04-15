@@ -4,7 +4,7 @@ import { ApiService } from '../services/api.service';
 @Component({
   selector: 'app-result',
   templateUrl: './result.component.html',
-  styleUrls: ['./result.component.scss'],
+  styleUrls: ['./result.component.scss']
 })
 export class ResultComponent implements OnInit {
   @Input() block: any;
@@ -45,11 +45,11 @@ export class ResultComponent implements OnInit {
     this._apiService
       .results(this.event_id, this.session_id, this.token)
       .subscribe(
-        (response) => {
+        response => {
           this.resultsInfo = response;
           console.log(response);
         },
-        (error) => {
+        error => {
           console.log(error);
         },
         () => {
@@ -58,6 +58,9 @@ export class ResultComponent implements OnInit {
           else this.lastUpdated = null;
 
           this.arrayCandidates = this.resultsInfo.candidates;
+
+          this.arrayCandidates.sort((a, b) => b.votes - a.votes);
+
           for (let index = 0; index < this.arrayCandidates.length; index++) {
             const element = this.arrayCandidates[index];
             if (this.isMobile) {
@@ -69,6 +72,8 @@ export class ResultComponent implements OnInit {
             if (this.isWeb) {
               element.img = element.img_desktop.split('?')[0];
             }
+
+            element.fill = 'width: ' + element.votes + '%';
           }
         }
       );
@@ -76,7 +81,7 @@ export class ResultComponent implements OnInit {
 
   next() {
     this.action.emit({
-      name: 'NEXT',
+      name: 'NEXT'
     });
   }
 }

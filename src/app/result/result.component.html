@@ -23,7 +23,7 @@
         ></div>
         <div class="bar">
           <div class="name">{{ arrayCandidates[i]?.name }}</div>
-          <div class="fill"></div>
+          <div class="fill" [style]="candidate.fill"></div>
         </div>
         <div class="pct">
           {{ arrayCandidates[i]?.votes | number: "1.2-2" }}%
