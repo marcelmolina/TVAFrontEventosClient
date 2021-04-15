@@ -57,23 +57,7 @@ export class SurveyComponent implements OnInit {
   ngOnInit(): void {
     if (this.block) {
       this.loadQuestions(this.block.questions);
-
-      if (
-        this.questions[this.actualQuestion].type == 'checkbox' ||
-        this.questions[this.actualQuestion].type == 'radio'
-      ) {
-        console.log('opciones');
-        let opciones = this.questions[this.actualQuestion].values.length;
-        if (this.questions[this.actualQuestion].otro) {
-          opciones++;
-        }
-        if (opciones > 5) {
-          console.log('opciones');
-          this.marginCristal = 'margin: 0';
-        } else {
-          this.marginCristal = 'margin: 0 25%';
-        }
-      }
+      this.sizeCristal();
 
       this.rateControl = new FormControl('', [
         Validators.max(this.questions[this.actualQuestion].max),
@@ -209,6 +193,7 @@ export class SurveyComponent implements OnInit {
         this.actualQuestion++;
         console.log(suveryForm);
         suveryForm.resetForm();
+        this.sizeCristal();
 
         if (this.questions[this.actualQuestion].type == 'checkbox') {
           this.activeCheck = [];
@@ -496,6 +481,27 @@ export class SurveyComponent implements OnInit {
     } else {
       this.mensajeError = false;
       return true;
+    }
+  }
+
+  sizeCristal() {
+    if (
+      this.questions[this.actualQuestion].type == 'checkbox' ||
+      this.questions[this.actualQuestion].type == 'radio'
+    ) {
+      console.log('opciones');
+      let opciones = this.questions[this.actualQuestion].values.length;
+      if (this.questions[this.actualQuestion].otro) {
+        opciones++;
+      }
+      if (opciones > 5) {
+        console.log('opciones');
+        this.marginCristal = 'margin: 0';
+      } else {
+        this.marginCristal = 'margin: 0 25%';
+      }
+    } else {
+      this.marginCristal = 'margin: 0';
     }
   }
 }
