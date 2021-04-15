@@ -150,6 +150,7 @@ export class EventosComponent implements OnInit {
                   }
                 }
                 console.log(baux);
+                debugger;
                 if (baux.length > 0) {
                   this.firtsTime(baux);
                 } else {
