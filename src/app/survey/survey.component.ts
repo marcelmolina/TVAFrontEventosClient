@@ -37,8 +37,11 @@ export class SurveyComponent implements OnInit {
   fechaValida = false;
   fechaTouched = false;
   msgErrorFechas: any;
+  validateAnswer: boolean;
+  mensajeError: boolean;
   @Output() action = new EventEmitter<any>();
   constructor() {
+    this.validateAnswer = false;
     this.activeCheck = [];
     this.actualQuestion = 0;
     this.questions = [];
@@ -48,6 +51,7 @@ export class SurveyComponent implements OnInit {
     };
     this.contCheck = 0;
     this.marginCristal = 'margin: 0 25%';
+    this.mensajeError = false;
   }
 
   ngOnInit(): void {
@@ -91,16 +95,25 @@ export class SurveyComponent implements OnInit {
     this.activeRadio = null;
     let answer;
     let values = [];
+    this.mensajeError = false;
 
     for (const property in suveryForm.value) {
       if (this.questions[positionQuestion].type == 'checkbox') {
         let check = suveryForm.form.controls[property].value;
 
-        if (property != 'otro') {
+        if (property != 'otro' && property != 'OpcionOtro') {
           if (check) {
             values.push({
               label: property,
-              value: check,
+              value: property,
+            });
+          }
+        }
+        if (property == 'OpcionOtro') {
+          if (check) {
+            values.push({
+              label: 'Otro',
+              value: suveryForm.form.controls[property].value,
             });
           }
         }
@@ -138,87 +151,130 @@ export class SurveyComponent implements OnInit {
         values: values,
       };
     }
+    if (this.questions[positionQuestion].required) {
+      this.validateAnswer = true;
+    } else {
+      switch (this.questions[positionQuestion].type) {
+        case 'checkbox':
+          this.validateAnswer = this.validateCheck(
+            this.questions[positionQuestion],
+            answer
+          );
 
-    this.action.emit({
-      name: 'SAVE_QUESTION',
-      data: answer,
-      positionQuestion: positionQuestion,
-    });
-    this.action.emit({
-      name: 'SESSION_1',
-      type: 'surveys',
-      step: this.actualQuestion,
-    });
-    this.answer.value = '';
-    if (this.actualQuestion < this.questions.length - 1) {
-      this.actualQuestion++;
-      console.log(suveryForm);
-      suveryForm.resetForm();
+          break;
 
-      if (this.questions[this.actualQuestion].type == 'checkbox') {
-        this.activeCheck = [];
-        this.maxCheck = this.questions[this.actualQuestion].max;
-        this.minCheck = this.questions[this.actualQuestion].min;
-        for (
-          let index = 0;
-          index < this.questions[this.actualQuestion].values.length;
-          index++
-        ) {
-          this.activeCheck.push(false);
-        }
+        case 'date':
+          this.validateAnswer = this.validateDate(
+            this.questions[positionQuestion],
+            answer
+          );
+          console.log(this.validateAnswer);
 
-        if (this.questions[this.actualQuestion].otro) {
-          this.activeCheck.push(false);
-        }
+          break;
+        case 'number':
+          this.validateAnswer = this.validateNumber(
+            this.questions[positionQuestion],
+            answer
+          );
+
+          break;
+        case 'textarea':
+          this.validateAnswer = this.validateTextArea(
+            this.questions[positionQuestion],
+            answer
+          );
+
+          break;
+
+        default:
+          this.validateAnswer = true;
+          break;
       }
-      if (
-        this.questions[this.actualQuestion].type == 'checkbox' ||
-        this.questions[this.actualQuestion].type == 'radio'
-      ) {
-        console.log('opciones');
+    }
 
-        let opciones = this.questions[this.actualQuestion].values.length;
-        if (this.questions[this.actualQuestion].otro) {
-          opciones++;
-        }
-        if (opciones > 5) {
-          console.log('opciones');
-          this.marginCristal = 'margin: 0';
-        } else {
-          this.marginCristal = 'margin: 0 25%';
-        }
-      }
-
+    if (this.validateAnswer) {
       this.action.emit({
-        name: 'SESSION_0',
+        name: 'SAVE_QUESTION',
+        data: answer,
+        positionQuestion: positionQuestion,
+      });
+      this.action.emit({
+        name: 'SESSION_1',
         type: 'surveys',
         step: this.actualQuestion,
       });
 
-      if (this.questions[this.actualQuestion].type == 'checkbox') {
-        this.maxCheck = this.questions[this.actualQuestion].max;
-        this.minCheck = this.questions[this.actualQuestion].min;
+      this.answer.value = '';
+      if (this.actualQuestion < this.questions.length - 1) {
+        this.actualQuestion++;
+        console.log(suveryForm);
+        suveryForm.resetForm();
 
-        for (
-          let index = 0;
-          index < this.questions[this.actualQuestion].values.length;
-          index++
-        ) {
-          this.activeCheck.push(false);
+        if (this.questions[this.actualQuestion].type == 'checkbox') {
+          this.activeCheck = [];
+          this.maxCheck = this.questions[this.actualQuestion].max;
+          this.minCheck = this.questions[this.actualQuestion].min;
+          for (
+            let index = 0;
+            index < this.questions[this.actualQuestion].values.length;
+            index++
+          ) {
+            this.activeCheck.push(false);
+          }
+
+          if (this.questions[this.actualQuestion].otro) {
+            this.activeCheck.push(false);
+          }
         }
+        if (
+          this.questions[this.actualQuestion].type == 'checkbox' ||
+          this.questions[this.actualQuestion].type == 'radio'
+        ) {
+          console.log('opciones');
+
+          let opciones = this.questions[this.actualQuestion].values.length;
+          if (this.questions[this.actualQuestion].otro) {
+            opciones++;
+          }
+          if (opciones > 5) {
+            console.log('opciones');
+            this.marginCristal = 'margin: 0';
+          } else {
+            this.marginCristal = 'margin: 0 25%';
+          }
+        }
+
+        this.action.emit({
+          name: 'SESSION_0',
+          type: 'surveys',
+          step: this.actualQuestion,
+        });
+
+        if (this.questions[this.actualQuestion].type == 'checkbox') {
+          this.maxCheck = this.questions[this.actualQuestion].max;
+          this.minCheck = this.questions[this.actualQuestion].min;
+
+          for (
+            let index = 0;
+            index < this.questions[this.actualQuestion].values.length;
+            index++
+          ) {
+            this.activeCheck.push(false);
+          }
+        }
+        if (this.questions[this.actualQuestion].type == 'number') {
+          this.maxNumber = this.questions[this.actualQuestion].max;
+          this.minNumber = this.questions[this.actualQuestion].min;
+        }
+        if (this.questions[this.actualQuestion].type == 'date') {
+          this.maxDate = this.questions[this.actualQuestion].dateEnd;
+          this.minDate = this.questions[this.actualQuestion].dateStart;
+        }
+      } else {
+        this.action.emit({
+          name: 'NEXT',
+        });
       }
-      if (this.questions[this.actualQuestion].type == 'number') {
-        this.maxNumber = this.questions[this.actualQuestion].max;
-        this.minNumber = this.questions[this.actualQuestion].min;
-      }
-      if (this.questions[this.actualQuestion].type == 'date') {
-        this.maxDate = this.questions[this.actualQuestion].dateEnd;
-        this.minDate = this.questions[this.actualQuestion].dateStart;
-      }
-    } else {
-      this.action.emit({
-        name: 'NEXT',
-      });
     }
   }
   loadQuestions(blocks) {
@@ -267,7 +323,8 @@ export class SurveyComponent implements OnInit {
     ]);
 
     if (
-      event.form.value.number < this.minNumber ||
+      (event.form.value.number < this.minNumber &&
+        this.questions[this.actualQuestion].required) ||
       (event.form.value.number > this.maxNumber &&
         this.questions[this.actualQuestion].required)
     ) {
@@ -276,7 +333,8 @@ export class SurveyComponent implements OnInit {
   }
   onChangeDate(event) {
     if (
-      event.form.value.date < this.minDate ||
+      (event.form.value.date < this.minDate &&
+        this.questions[this.actualQuestion].required) ||
       (event.form.value.date > this.maxDate &&
         this.questions[this.actualQuestion].required)
     ) {
@@ -335,13 +393,11 @@ export class SurveyComponent implements OnInit {
   clickCheck(event, o, suveryForm) {
     this.activeCheck[o] = !this.activeCheck[o];
 
-    /*    if (event.control.value != '') {
+    if (event.control.value != '') {
       event.control.value = !event.control.value;
-      this.activeCheck[o] = !this.activeCheck[o];
     } else {
       event.control.value = true;
-      this.activeCheck[o] = !this.activeCheck[o];
-    } */
+    }
     this.onChangeCheck(this.activeCheck[o], suveryForm);
   }
   checkOtro(valor) {
@@ -376,6 +432,70 @@ export class SurveyComponent implements OnInit {
         this.answer.value = '';
         this.msgErrorFechas = 'Fecha inválida';
       }
+    }
+  }
+
+  validateCheck(question, Answer) {
+    if (Answer.values.length > 0) {
+      if (
+        Answer.values.length < question.min ||
+        Answer.values.length > question.max
+      ) {
+        this.mensajeError = true;
+        return false;
+      } else {
+        this.mensajeError = false;
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  validateNumber(question, Answer) {
+    if (Answer.values != null) {
+      if (Answer.values < question.min || Answer.values > question.max) {
+        this.mensajeError = true;
+        return false;
+      } else {
+        this.mensajeError = false;
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+  validateDate(question, Answer) {
+    if (this.date != undefined && this.date != null) {
+      if (
+        this.date < new Date(question.dateStart) ||
+        this.date > new Date(question.dateEnd)
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+  validateTextArea(question, Answer) {
+    if (Answer.values.length > 0) {
+      if (
+        Answer.values.length < question.min ||
+        Answer.values.length > question.max
+      ) {
+        this.mensajeError = true;
+
+        return false;
+      } else {
+        this.mensajeError = false;
+
+        return true;
+      }
+    } else {
+      this.mensajeError = false;
+      return true;
     }
   }
 }

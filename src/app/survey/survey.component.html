@@ -98,7 +98,7 @@
                 class="form-check-input"
                 type="checkbox"
                 #checkBox="ngModel"
-                name="{{ option.label2 }}"
+                name="{{ option.label }}"
                 [checked]="activeCheck[o]"
                 ngModel
               />
@@ -143,6 +143,12 @@
             *ngIf="questions[actualQuestion].type == 'checkbox'"
             class="mb-3"
           >
+            <div
+              style="text-align: center"
+              *ngIf="mensajeError && !questions[actualQuestion].required"
+            >
+              <span class="text-danger">Cantidad de opciones invalida</span>
+            </div>
             <span class="text-heper"
               >Seleccione entre un mínimo de
               {{ questions[actualQuestion].min }} y un máximo de
@@ -289,6 +295,12 @@
               >Ingrese un valor en el rango permitido</span
             >
 
+            <span
+              class="text-danger"
+              *ngIf="mensajeError && !questions[actualQuestion].required"
+              >Ingrese un valor en el rango permitido</span
+            >
+
             <span class="text-heper"
               >Ingrese un valor entre {{ questions[actualQuestion].min }} y
               {{ questions[actualQuestion].max }}</span
@@ -313,6 +325,7 @@
 
             <nz-date-picker
               #nz
+              [nzInputReadOnly]="true"
               [(ngModel)]="date"
               (ngModelChange)="onChange(nz.picker.inputValue)"
               (focusout)="onChange(nz.picker.inputValue)"
@@ -354,6 +367,16 @@
                 minlength="{{ questions[actualQuestion].min }}"
               ></textarea>
             </div>
+            <span class="text-heper"
+              >Caracteres permitidos mínimo de
+              {{ questions[actualQuestion].min }} y máximo de
+              {{ questions[actualQuestion].max }}</span
+            >
+
+            <span class="text-danger" *ngIf="mensajeError"
+              >Cantidad de caracteres no permitidos</span
+            >
+            <div></div>
           </div>
 
           <button
