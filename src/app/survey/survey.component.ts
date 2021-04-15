@@ -501,7 +501,7 @@ export class SurveyComponent implements OnInit {
         this.marginCristal = 'margin: 0 25%';
       }
     } else {
-      this.marginCristal = 'margin: 0';
+      this.marginCristal = 'margin: 0 25%';
     }
   }
 }
