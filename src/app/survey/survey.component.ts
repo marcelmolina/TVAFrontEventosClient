@@ -39,6 +39,7 @@ export class SurveyComponent implements OnInit {
   msgErrorFechas: any;
   validateAnswer: boolean;
   mensajeError: boolean;
+  number_caracter: number;
   @Output() action = new EventEmitter<any>();
   constructor() {
     this.validateAnswer = false;
@@ -52,6 +53,7 @@ export class SurveyComponent implements OnInit {
     this.contCheck = 0;
     this.marginCristal = 'margin: 0 25%';
     this.mensajeError = false;
+    this.number_caracter = 0;
   }
 
   ngOnInit(): void {
@@ -454,10 +456,11 @@ export class SurveyComponent implements OnInit {
     if (this.date != undefined && this.date != null) {
       console.log(new Date(question.dateStart));
       console.log(new Date(question.dateEnd));
+      console.log(this.date);
 
-      let fecha = this.date.split(' ');
-      let end = question.dateStart.split(' ');
-      let start = question.dateStart.split(' ');
+      let fecha = this.date.toString().split(' ');
+      let end = question.dateStart.toString().split(' ');
+      let start = question.dateStart.toString().split(' ');
 
       console.log(this.date);
       if (
@@ -477,6 +480,8 @@ export class SurveyComponent implements OnInit {
     }
   }
   validateTextArea(question, Answer) {
+    console.log(Answer);
+
     if (Answer.values == '') {
       return true;
     }
@@ -518,5 +523,10 @@ export class SurveyComponent implements OnInit {
     } else {
       this.marginCristal = 'margin: 0 25%';
     }
+  }
+  changueCaractes(cadena) {
+    this.number_caracter = cadena.length;
+
+    console.log(cadena.length);
   }
 }

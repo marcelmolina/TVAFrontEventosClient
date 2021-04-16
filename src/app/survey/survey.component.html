@@ -365,13 +365,17 @@
                 [(ngModel)]="answer.value"
                 maxlength="{{ questions[actualQuestion].max }}"
                 minlength="{{ questions[actualQuestion].min }}"
+                required="{{ questions[actualQuestion].required }}"
+                (ngModelChange)="changueCaractes(answer.value)"
               ></textarea>
             </div>
-            <span class="text-heper"
-              >Caracteres permitidos mínimo de
-              {{ questions[actualQuestion].min }} y máximo de
-              {{ questions[actualQuestion].max }}</span
-            >
+            <div style="display: flex; justify-content: space-between">
+              <span class="text-heper"
+                >Caracteres mínimo {{ questions[actualQuestion].min }} y máximo
+                {{ questions[actualQuestion].max }}</span
+              >
+              <span class="text-heper">Caracteres {{ number_caracter }}</span>
+            </div>
 
             <span class="text-danger" *ngIf="mensajeError"
               >Cantidad de caracteres no permitidos</span
