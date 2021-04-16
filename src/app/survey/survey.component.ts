@@ -477,6 +477,9 @@ export class SurveyComponent implements OnInit {
     }
   }
   validateTextArea(question, Answer) {
+    if (Answer.values == '') {
+      return true;
+    }
     if (Answer.values.length > 0) {
       if (
         Answer.values.length < question.min ||
