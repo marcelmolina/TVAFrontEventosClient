@@ -452,9 +452,21 @@ export class SurveyComponent implements OnInit {
   }
   validateDate(question, Answer) {
     if (this.date != undefined && this.date != null) {
+      console.log(new Date(question.dateStart));
+      console.log(new Date(question.dateEnd));
+
+      let fecha = this.date.split(' ');
+      let end = question.dateStart.split(' ');
+      let start = question.dateStart.split(' ');
+
+      console.log(this.date);
       if (
-        this.date < new Date(question.dateStart) ||
-        this.date > new Date(question.dateEnd)
+        new Date(fecha[0] + ' ' + fecha[1] + ' ' + fecha[2] + ' ' + fecha[3]) <
+          new Date(
+            start[0] + ' ' + start[1] + ' ' + start[2] + ' ' + start[3]
+          ) ||
+        new Date(fecha[0] + ' ' + fecha[1] + ' ' + fecha[2] + ' ' + fecha[3]) >
+          new Date(end[0] + ' ' + end[1] + ' ' + end[2] + ' ' + end[3])
       ) {
         return false;
       } else {
