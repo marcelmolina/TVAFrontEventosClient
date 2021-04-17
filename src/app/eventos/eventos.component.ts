@@ -26,7 +26,7 @@ export class EventosComponent implements OnInit {
   session_id: any;
   eventHasEnded: boolean = false;
   waitingForApi: boolean;
-
+  showResults: boolean;
   sessionState: number;
 
   constructor(
@@ -148,10 +148,21 @@ export class EventosComponent implements OnInit {
                   const element = b[index];
 
                   let size = this.getSize(element.config);
+
                   if (size > 0) {
+                    if (element.type == 'elections') {
+                      if (element.showResult == true) {
+                        this.showResults = true;
+                      }
+                    }
                     baux.push(element);
                   } else {
-                    if (element.type == 'results') {
+                    if (element.type == 'elections') {
+                      if (element.showResult == true) {
+                        this.showResults = false;
+                      }
+                    }
+                    if (element.type == 'results' && this.showResults == true) {
                       baux.push(element);
                     }
                   }
