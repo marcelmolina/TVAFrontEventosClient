@@ -482,7 +482,7 @@ export class SurveyComponent implements OnInit {
   validateTextArea(question, Answer) {
     console.log(Answer);
 
-    if (Answer.values == '') {
+    if (Answer.values == '' || Answer.values == null) {
       return true;
     }
     if (Answer.values.length > 0) {
