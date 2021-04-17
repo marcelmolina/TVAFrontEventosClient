@@ -33,3 +33,13 @@
     }
   }
 }
+
+@media (max-width: 767px) {
+  .error-container {
+    flex-direction: column;
+
+    .left {
+      display: none;
+    }
+  }
+}
