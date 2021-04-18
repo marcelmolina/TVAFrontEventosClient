@@ -4,14 +4,14 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { Answer } from './answer.model';
 @Component({
   selector: 'app-survey',
   templateUrl: './survey.component.html',
-  styleUrls: ['./survey.component.scss'],
+  styleUrls: ['./survey.component.scss']
 })
 export class SurveyComponent implements OnInit {
   @Input() block: any;
@@ -48,7 +48,7 @@ export class SurveyComponent implements OnInit {
     this.questions = [];
     this.answer = {
       label: '',
-      value: '',
+      value: ''
     };
     this.contCheck = 0;
     this.marginCristal = 'margin: 0 25%';
@@ -63,7 +63,7 @@ export class SurveyComponent implements OnInit {
 
       this.rateControl = new FormControl('', [
         Validators.max(this.questions[this.actualQuestion].max),
-        Validators.min(this.questions[this.actualQuestion].min),
+        Validators.min(this.questions[this.actualQuestion].min)
       ]);
     }
   }
@@ -91,7 +91,7 @@ export class SurveyComponent implements OnInit {
           if (check) {
             values.push({
               label: property,
-              value: property,
+              value: property
             });
           }
         }
@@ -99,7 +99,7 @@ export class SurveyComponent implements OnInit {
           if (check) {
             values.push({
               label: 'Otro',
-              value: suveryForm.form.controls[property].value,
+              value: suveryForm.form.controls[property].value
             });
           }
         }
@@ -111,7 +111,7 @@ export class SurveyComponent implements OnInit {
           if (property != 'otro') {
             values.push({
               label: property,
-              value: suveryForm.value[property],
+              value: suveryForm.value[property]
             });
           }
           if (this.questions[positionQuestion].type == 'autocomplete') {
@@ -129,12 +129,12 @@ export class SurveyComponent implements OnInit {
       let valueNormal = this.answer.value;
       answer = {
         type: type,
-        values: valueNormal,
+        values: valueNormal
       };
     } else {
       answer = {
         type: type,
-        values: values,
+        values: values
       };
     }
     if (this.questions[positionQuestion].required) {
@@ -182,12 +182,12 @@ export class SurveyComponent implements OnInit {
       this.action.emit({
         name: 'SAVE_QUESTION',
         data: answer,
-        positionQuestion: positionQuestion,
+        positionQuestion: positionQuestion
       });
       this.action.emit({
         name: 'SESSION_1',
         type: 'surveys',
-        step: this.actualQuestion,
+        step: this.actualQuestion
       });
 
       this.answer.value = '';
@@ -234,7 +234,7 @@ export class SurveyComponent implements OnInit {
         this.action.emit({
           name: 'SESSION_0',
           type: 'surveys',
-          step: this.actualQuestion,
+          step: this.actualQuestion
         });
 
         if (this.questions[this.actualQuestion].type == 'checkbox') {
@@ -259,7 +259,7 @@ export class SurveyComponent implements OnInit {
         }
       } else {
         this.action.emit({
-          name: 'NEXT',
+          name: 'NEXT'
         });
       }
     }
@@ -306,7 +306,7 @@ export class SurveyComponent implements OnInit {
   onChangeNumber(event) {
     let rateControl = new FormControl('', [
       Validators.max(this.questions[this.actualQuestion].max),
-      Validators.min(this.questions[this.actualQuestion].min),
+      Validators.min(this.questions[this.actualQuestion].min)
     ]);
 
     if (
@@ -459,18 +459,18 @@ export class SurveyComponent implements OnInit {
       console.log(this.date);
 
       let fecha = this.date.toString().split(' ');
-      let end = question.dateStart.toString().split(' ');
-      let start = question.dateStart.toString().split(' ');
+      let end = question.dateEnd.toString().split('T');
+      let start = question.dateStart.toString().split('T');
 
+      debugger;
       console.log(this.date);
       if (
         new Date(fecha[0] + ' ' + fecha[1] + ' ' + fecha[2] + ' ' + fecha[3]) <
-          new Date(
-            start[0] + ' ' + start[1] + ' ' + start[2] + ' ' + start[3]
-          ) ||
+          new Date(start[0]) ||
         new Date(fecha[0] + ' ' + fecha[1] + ' ' + fecha[2] + ' ' + fecha[3]) >
-          new Date(end[0] + ' ' + end[1] + ' ' + end[2] + ' ' + end[3])
+          new Date(end[0])
       ) {
+        this.fechaValida = false;
         return false;
       } else {
         return true;
