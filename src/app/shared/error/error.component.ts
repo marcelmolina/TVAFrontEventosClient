@@ -12,11 +12,17 @@ import { ErrorService } from './error.service';
 })
 export class ErrorComponent implements OnInit {
   errorText: any;
-  constructor(public errorService: ErrorService) {
-    this.errorText = 'Página no encontrada';
-  }
+  fondoGracias: any;
+  constructor(public errorService: ErrorService) {}
 
   ngOnInit(): void {
     this.errorText = this.errorService.errorText;
+    this.errorText = 'Gracias por visitarnos';
+
+    if (this.errorText == 'Gracias por visitarnos') {
+      this.fondoGracias = 'background-image: url("/assets/img/gracias.jpg")';
+    } else {
+      this.fondoGracias = 'background-color: #fff';
+    }
   }
 }

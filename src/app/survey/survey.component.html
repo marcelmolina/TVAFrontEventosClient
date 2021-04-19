@@ -356,7 +356,7 @@
             *ngIf="questions[actualQuestion].type == 'textarea'"
             class="type-question"
           >
-            <div class="" style="width: 100%">
+            <div class="" style="width: 100%; position: relative">
               <textarea
                 name="{{ questions[actualQuestion].type }}"
                 class="form-control"
@@ -365,13 +365,21 @@
                 [(ngModel)]="answer.value"
                 maxlength="{{ questions[actualQuestion].max }}"
                 minlength="{{ questions[actualQuestion].min }}"
+                required="{{ questions[actualQuestion].required }}"
+                (ngModelChange)="changueCaractes(answer.value)"
               ></textarea>
+              <span
+                style="position: absolute; bottom: 0; right: 0"
+                class="text-heper"
+                >{{ number_caracter }}/{{ questions[actualQuestion].max }}</span
+              >
             </div>
-            <span class="text-heper"
-              >Caracteres permitidos mínimo de
-              {{ questions[actualQuestion].min }} y máximo de
-              {{ questions[actualQuestion].max }}</span
-            >
+            <div style="display: flex; justify-content: space-between">
+              <span class="text-heper"
+                >Caracteres mínimo {{ questions[actualQuestion].min }} y máximo
+                {{ questions[actualQuestion].max }}</span
+              >
+            </div>
 
             <span class="text-danger" *ngIf="mensajeError"
               >Cantidad de caracteres no permitidos</span
