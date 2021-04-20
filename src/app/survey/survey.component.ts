@@ -71,12 +71,8 @@ export class SurveyComponent implements OnInit {
   onSubmit(form) {}
   activeOtro(suveryForm) {
     this.otroActive = true;
-
-    console.log(suveryForm);
   }
-  cambioRadio() {
-    console.log('asdasd');
-  }
+  cambioRadio() {}
   next(suveryForm, positionQuestion, type) {
     this.activeRadio = null;
     let answer;
@@ -154,7 +150,6 @@ export class SurveyComponent implements OnInit {
             this.questions[positionQuestion],
             answer
           );
-          console.log(this.validateAnswer);
 
           break;
         case 'number':
@@ -193,7 +188,7 @@ export class SurveyComponent implements OnInit {
       this.answer.value = '';
       if (this.actualQuestion < this.questions.length - 1) {
         this.actualQuestion++;
-        console.log(suveryForm);
+
         suveryForm.resetForm();
         this.sizeCristal();
 
@@ -217,14 +212,11 @@ export class SurveyComponent implements OnInit {
           this.questions[this.actualQuestion].type == 'checkbox' ||
           this.questions[this.actualQuestion].type == 'radio'
         ) {
-          console.log('opciones');
-
           let opciones = this.questions[this.actualQuestion].values.length;
           if (this.questions[this.actualQuestion].otro) {
             opciones++;
           }
           if (opciones > 5) {
-            console.log('opciones');
             this.marginCristal = 'margin: 0';
           } else {
             this.marginCristal = 'margin: 0 25%';
@@ -294,14 +286,11 @@ export class SurveyComponent implements OnInit {
     }
   }
   onChangeCheck(event, suveryForm) {
-    console.log(event);
-
     if (event == true) {
       this.contCheck++;
     } else {
       this.contCheck--;
     }
-    console.log(this.contCheck);
   }
   onChangeNumber(event) {
     let rateControl = new FormControl('', [
@@ -374,7 +363,6 @@ export class SurveyComponent implements OnInit {
       radio = document.getElementById('radio-option-otro');
       radio.checked = true;
       this.answer.value = '';
-      console.log(this.answer);
     }
   }
   clickCheck(event, o, suveryForm) {
@@ -388,8 +376,6 @@ export class SurveyComponent implements OnInit {
     this.onChangeCheck(this.activeCheck[o], suveryForm);
   }
   checkOtro(valor) {
-    console.log(valor);
-
     if (valor == 'otro') {
       this.otroActive = !this.otroActive;
     } else {
@@ -454,16 +440,10 @@ export class SurveyComponent implements OnInit {
   }
   validateDate(question, Answer) {
     if (this.date != undefined && this.date != null) {
-      console.log(new Date(question.dateStart));
-      console.log(new Date(question.dateEnd));
-      console.log(this.date);
-
       let fecha = this.date.toString().split(' ');
       let end = question.dateEnd.toString().split('T');
       let start = question.dateStart.toString().split('T');
 
-      debugger;
-      console.log(this.date);
       if (
         new Date(fecha[0] + ' ' + fecha[1] + ' ' + fecha[2] + ' ' + fecha[3]) <
           new Date(start[0]) ||
@@ -480,8 +460,6 @@ export class SurveyComponent implements OnInit {
     }
   }
   validateTextArea(question, Answer) {
-    console.log(Answer);
-
     if (Answer.values == '' || Answer.values == null) {
       return true;
     }
@@ -509,13 +487,11 @@ export class SurveyComponent implements OnInit {
       this.questions[this.actualQuestion].type == 'checkbox' ||
       this.questions[this.actualQuestion].type == 'radio'
     ) {
-      console.log('opciones');
       let opciones = this.questions[this.actualQuestion].values.length;
       if (this.questions[this.actualQuestion].otro) {
         opciones++;
       }
       if (opciones > 5) {
-        console.log('opciones');
         this.marginCristal = 'margin: 0';
       } else {
         this.marginCristal = 'margin: 0 25%';
@@ -526,7 +502,5 @@ export class SurveyComponent implements OnInit {
   }
   changueCaractes(cadena) {
     this.number_caracter = cadena.length;
-
-    console.log(cadena.length);
   }
 }
