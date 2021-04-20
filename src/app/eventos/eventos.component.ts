@@ -108,8 +108,6 @@ export class EventosComponent implements OnInit {
 
             this._apiService.getEventById(id, token).subscribe(
               response => {
-                console.log(response);
-
                 let w = window.innerWidth;
 
                 if (w <= 768) {
@@ -167,7 +165,7 @@ export class EventosComponent implements OnInit {
                     }
                   }
                 }
-                console.log(baux);
+
                 if (baux.length > 0) {
                   this.firtsTime(baux);
                 } else {
@@ -207,8 +205,6 @@ export class EventosComponent implements OnInit {
   }
 
   actions(action) {
-    console.log(this.session_id);
-
     switch (action.name) {
       case 'NEXT':
         if (this.session_id != null) {
@@ -258,9 +254,7 @@ export class EventosComponent implements OnInit {
               response => {
                 goToUrl = response.redirect;
               },
-              error => {
-                console.log(error);
-              },
+              error => {},
               () => {
                 if (goToUrl) {
                   this.processBlocks(this.blocks);
@@ -312,17 +306,12 @@ export class EventosComponent implements OnInit {
           question: questionJson,
           question_pool: question_poolJson
         };
-        console.log(jsonFinal);
 
         this.waitingForApi = true;
 
         this._apiService.saveSurvey(jsonFinal, this.myToken).subscribe(
-          response => {
-            console.log(response);
-          },
-          error => {
-            console.log(error);
-          },
+          response => {},
+          error => {},
           () => {
             this.waitingForApi = false;
             if (
@@ -353,8 +342,6 @@ export class EventosComponent implements OnInit {
 
         this._apiService.saveElection(json, this.myToken).subscribe(
           response => {
-            console.log(response);
-
             swal
               .fire({
                 title: 'Genial!',
@@ -370,9 +357,7 @@ export class EventosComponent implements OnInit {
                 this.actions({ name: 'NEXT' });
               });
           },
-          error => {
-            console.log(error);
-          }
+          error => {}
         );
 
         break;
@@ -431,9 +416,7 @@ export class EventosComponent implements OnInit {
           this.sessionState = 0;
         }
       },
-      error => {
-        console.log(error);
-      }
+      error => {}
     );
   }
 
@@ -461,9 +444,7 @@ export class EventosComponent implements OnInit {
 
           this.totalSteps = this.blocks.length;
         },
-        error => {
-          console.log(error);
-        }
+        error => {}
       );
     } else {
       if (b[this.actualStep].type == 'url-end') {
@@ -474,9 +455,7 @@ export class EventosComponent implements OnInit {
             response => {
               goToUrl = response.redirect;
             },
-            error => {
-              console.log(error);
-            },
+            error => {},
             () => {
               if (goToUrl) {
                 this.processBlocks(b);
@@ -514,9 +493,7 @@ export class EventosComponent implements OnInit {
       (response: any) => {
         this.session_id = response.session_id;
       },
-      error => {
-        console.log(error);
-      },
+      error => {},
       () => {
         if (b[this.actualStep].type == 'url-end') {
           let json = {
@@ -531,9 +508,7 @@ export class EventosComponent implements OnInit {
             (response: any) => {
               this.session_id = response.session_id;
             },
-            error => {
-              console.log(error);
-            },
+            error => {},
             () => {
               if (
                 this.ifQueryString(b[this.actualStep].config.destination_url)

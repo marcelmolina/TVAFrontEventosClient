@@ -38,20 +38,13 @@ export class ResultComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.session_id);
-    console.log(this.token);
-    console.log(this.event_id);
-
     this._apiService
       .results(this.event_id, this.session_id, this.token)
       .subscribe(
         response => {
           this.resultsInfo = response;
-          console.log(response);
         },
-        error => {
-          console.log(error);
-        },
+        error => {},
         () => {
           if (this.resultsInfo.last_updated > 0)
             this.lastUpdated = new Date(this.resultsInfo.last_updated);

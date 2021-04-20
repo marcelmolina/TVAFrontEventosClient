@@ -12,9 +12,7 @@ export class MessageComponent implements OnInit {
   @Input() block: any;
   @Input() backgroundProperty: any;
 
-  ngOnInit(): void {
-    console.log(this.block);
-  }
+  ngOnInit(): void {}
   next() {
     this.action.emit({
       name: 'NEXT'

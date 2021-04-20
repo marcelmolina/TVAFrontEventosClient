@@ -73,8 +73,6 @@ export class ElectionComponent implements OnInit {
 
     this.refreshLayout();
 
-    console.log(this.block);
-
     this.votesTotal = this.block.config.number_votes;
     this.votesAllowed = this.block.config.number_votes_allowed;
     this.frecuencyHours = this.block.config.frequency_hours;
