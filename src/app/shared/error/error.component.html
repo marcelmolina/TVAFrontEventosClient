@@ -1,13 +1,10 @@
 <div class="error-container">
-  <div class="left"><img src="assets/img/logo.png" alt="" width="500" /></div>
+  <div class="left"></div>
   <div class="right" [style]="fondoGracias">
-    <div *ngIf="errorText != 'Gracias por visitarnos'" class="errorCode">
-      404
+    <div class="logo">
+      <img src="assets/img/logoTVA.png" alt="" width="250" />
     </div>
 
-    <div *ngIf="errorText != 'Gracias por visitarnos'"></div>
-    <div *ngIf="errorText != 'Gracias por visitarnos'" class="errorText">
-      {{ errorText }}
-    </div>
+    <div class="info">¡Gracias por tu participación!</div>
   </div>
 </div>
