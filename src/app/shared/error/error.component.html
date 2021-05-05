@@ -1,4 +1,4 @@
-<div class="error-container">
+<div *ngIf="!errorService.codeHtml" class="error-container">
   <div class="left"></div>
   <div class="right" [style]="fondoGracias">
     <div class="logo">
@@ -10,4 +10,7 @@
       tu participación!
     </div>
   </div>
+</div>
+<div *ngIf="errorService.codeHtml">
+  <div [innerHTML]="errorService.codeHtml | safeHtml"></div>
 </div>
