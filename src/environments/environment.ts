@@ -1,6 +1,6 @@
 
 export const environment = {
    production: false,
-   baseURL: "https://kg85vhonp8.execute-api.us-east-2.amazonaws.com/dev",
-   loginURL: "http://d8augfgcn3cw7.cloudfront.net/login"
+   baseURL: "https://6mx1tdn5jb.execute-api.us-east-2.amazonaws.com/dev",
+   loginURL: "https://d3eyeduwkwyhna.cloudfront.net/login"
 };
