@@ -50,10 +50,13 @@ export class EventosComponent implements OnInit {
   ngOnInit(): void {
     this.sessionState = 0;
     this.route.queryParams.subscribe((params) => {
+      console.log(params['device_id']);
+
       if (
         params['token'] != undefined &&
         params['id'] != undefined &&
-        params['cookie-id'] != undefined
+        params['cookie-id'] != undefined &&
+        params['device_id'] != undefined
       ) {
         var token = params['token'];
         this.myToken = token;
@@ -61,8 +64,9 @@ export class EventosComponent implements OnInit {
         this.myEvent = id;
         var cookieID = params['cookie-id'];
         this.myCookieId = cookieID;
+        var device_id = params['device_id'];
 
-        this.validateAuth(token, id, cookieID);
+        this.validateAuth(token, id, cookieID, device_id);
 
         window.history.replaceState({}, document.title, '/');
       } else {
@@ -79,12 +83,12 @@ export class EventosComponent implements OnInit {
         var cookieID = objetoTVA.cookieID;
         this.myCookieId = cookieID;
 
-        this.validateAuth(token, id, cookieID);
+        this.validateAuth(token, id, cookieID, device_id);
       }
     });
   }
 
-  validateAuth(token, id, cookieID) {
+  validateAuth(token, id, cookieID, device_id) {
     fetch(environment.baseURL + '/validate/token', {
       method: 'POST',
       headers: {
@@ -103,6 +107,7 @@ export class EventosComponent implements OnInit {
                 token: token,
                 cookieID: cookieID,
                 eventID: id,
+                device_id: device_id,
               })
             );
 
@@ -111,21 +116,18 @@ export class EventosComponent implements OnInit {
                 let w = window.innerWidth;
 
                 if (w <= 768) {
-                  this.backgroundImage = response.backgrounds.img_mobile.split(
-                    '?'
-                  )[0];
+                  this.backgroundImage =
+                    response.backgrounds.img_mobile.split('?')[0];
                 }
 
                 if (w > 768 && w <= 1024) {
-                  this.backgroundImage = response.backgrounds.img_tablet.split(
-                    '?'
-                  )[0];
+                  this.backgroundImage =
+                    response.backgrounds.img_tablet.split('?')[0];
                 }
 
                 if (w > 1024) {
-                  this.backgroundImage = response.backgrounds.img_desktop.split(
-                    '?'
-                  )[0];
+                  this.backgroundImage =
+                    response.backgrounds.img_desktop.split('?')[0];
                 }
 
                 if (this.backgroundImage == '') {
@@ -284,22 +286,24 @@ export class EventosComponent implements OnInit {
         break;
       case 'SAVE_QUESTION':
         let eventIdJson = this.question.event_id;
-        let questionJson = this.blocks[this.actualStep].questions[
-          action.positionQuestion
-        ].question;
+        let questionJson =
+          this.blocks[this.actualStep].questions[action.positionQuestion]
+            .question;
         let question_poolJson = {
           description_qp: this.blocks[this.actualStep].config.description_qp,
           name_qp: this.blocks[this.actualStep].config.name_qp,
-          question_pools_id: this.blocks[this.actualStep].config
-            .question_pools_id,
+          question_pools_id:
+            this.blocks[this.actualStep].config.question_pools_id,
         };
 
-        questionJson['question_id'] = this.blocks[this.actualStep].questions[
-          action.positionQuestion
-        ].question_id;
-        questionJson['position_qp'] = this.blocks[this.actualStep].questions[
-          action.positionQuestion
-        ].position_qp;
+        questionJson['question_id'] =
+          this.blocks[this.actualStep].questions[
+            action.positionQuestion
+          ].question_id;
+        questionJson['position_qp'] =
+          this.blocks[this.actualStep].questions[
+            action.positionQuestion
+          ].position_qp;
         let answerJson = action.data;
 
         let jsonFinal = {
@@ -328,9 +332,8 @@ export class EventosComponent implements OnInit {
               this.actions(actions);
               actions.name = 'SESSION_1';
               this.actions(actions);
-              window.location.href = this.blocks[
-                this.actualStep
-              ].config.destination_url;
+              window.location.href =
+                this.blocks[this.actualStep].config.destination_url;
             }
           }
         );
