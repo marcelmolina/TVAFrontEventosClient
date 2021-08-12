@@ -8,20 +8,22 @@ import { ResultComponent } from './result/result.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from './shared/error/error.component';
+import { StatsComponent } from './stats/stats.component';
 
 const routes: Routes = [
   { path: 'eventos', component: EventosComponent },
   { path: 'eventos/:id', component: EventosComponent },
   { path: 'eventos/:id/:token', component: EventosComponent },
   { path: 'error', component: ErrorComponent },
+  { path: 'stats/:id', component: StatsComponent },
   {
     path: '',
-    redirectTo: 'eventos',
+    redirectTo: 'stats',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: 'eventos',
+    redirectTo: 'stats',
     pathMatch: 'full'
   }
 ];

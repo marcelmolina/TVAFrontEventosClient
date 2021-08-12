@@ -20,6 +20,8 @@ import es from '@angular/common/locales/es';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { SafeHtmlPipe } from './shared/pipe/safeHtml.pipe';
+import { StatsComponent } from './stats/stats.component';
+import { ChartsModule } from 'ng2-charts';
 
 registerLocaleData(es);
 
@@ -35,6 +37,7 @@ registerLocaleData(es);
     TopBarComponent,
     ErrorComponent,
     SafeHtmlPipe,
+    StatsComponent
   ],
   imports: [
     BrowserModule,
@@ -43,8 +46,9 @@ registerLocaleData(es);
     HttpClientModule,
     BrowserAnimationsModule,
     NzDatePickerModule,
+    ChartsModule
   ],
   providers: [{ provide: NZ_I18N, useValue: es_ES }],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

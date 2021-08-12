@@ -6,7 +6,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApiService {
   _baseURL: string;
@@ -23,10 +23,10 @@ export class ApiService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authorization: 'Bearer ' + token,
-        }),
+          Authorization: 'Bearer ' + token
+        })
       })
-      .pipe(map((data) => data));
+      .pipe(map(data => data));
   }
 
   saveSurvey(json, token): Observable<any> {
@@ -37,10 +37,10 @@ export class ApiService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authorization: 'Bearer ' + token,
-        }),
+          Authorization: 'Bearer ' + token
+        })
       })
-      .pipe(map((data) => data));
+      .pipe(map(data => data));
   }
 
   saveSession(json, token) {
@@ -51,10 +51,10 @@ export class ApiService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authorization: 'Bearer ' + token,
-        }),
+          Authorization: 'Bearer ' + token
+        })
       })
-      .pipe(map((data) => data));
+      .pipe(map(data => data));
   }
 
   saveElection(json, token): Observable<any> {
@@ -65,10 +65,10 @@ export class ApiService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authorization: 'Bearer ' + token,
-        }),
+          Authorization: 'Bearer ' + token
+        })
       })
-      .pipe(map((data) => data));
+      .pipe(map(data => data));
   }
 
   UrlEndByEventUser(id, token): Observable<any> {
@@ -79,10 +79,10 @@ export class ApiService {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authorization: 'Bearer ' + token,
-        }),
+          Authorization: 'Bearer ' + token
+        })
       })
-      .pipe(map((data) => data));
+      .pipe(map(data => data));
   }
 
   results(event_id, session_id, token): Observable<any> {
@@ -96,10 +96,30 @@ export class ApiService {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
             Accept: 'application/json',
-            Authorization: 'Bearer ' + token,
-          }),
+            Authorization: 'Bearer ' + token
+          })
         }
       )
-      .pipe(map((data) => data));
+      .pipe(map(data => data));
+  }
+
+  getResults(id): Observable<any> {
+    const url = `https://9ztkeg04u9.execute-api.us-east-2.amazonaws.com/dev/votes/result`;
+
+    return this.http
+      .post(
+        url,
+        {
+          election_id: id
+        },
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            Accept: '*/*',
+            'x-api-key': 'a47SS207b684e188ec9d7beADA0969'
+          })
+        }
+      )
+      .pipe(map(data => data));
   }
 }
