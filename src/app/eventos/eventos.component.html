@@ -39,6 +39,12 @@
     [token]="myToken"
     (action)="actions($event)"
   ></app-result>
+  <app-video
+    [block]="blocks[actualStep]"
+    *ngIf="blocks[actualStep]?.type == 'video'"
+    (action)="actions($event)"
+    style="display: flex; flex-direction: column; min-height: calc(100% - 50px)"
+  ></app-video>
 </div>
 
 <div

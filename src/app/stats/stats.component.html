@@ -1,4 +1,4 @@
-<div style="padding: 40px 20%;">
+<div style="padding: 40px 20%">
   <div>
     <div style="display: block" *ngIf="barChartData.length > 0">
       <canvas
@@ -11,6 +11,12 @@
         [colors]="chartColors"
       >
       </canvas>
+    </div>
+  </div>
+  <div class="card-votes mt-5">
+    <div class="votes mr-3" *ngFor="let item of data">
+      <p style="flex: 1 0 auto">{{ item.candidate_id }}</p>
+      <p>{{ item.qty }}</p>
     </div>
   </div>
 </div>

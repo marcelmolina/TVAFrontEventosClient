@@ -8,7 +8,7 @@ import { ApiService } from '../services/api.service';
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss']
+  styleUrls: ['./stats.component.scss'],
 })
 export class StatsComponent implements OnInit {
   public barChartOptions: ChartOptions = {
@@ -18,10 +18,10 @@ export class StatsComponent implements OnInit {
     plugins: {
       datalabels: {
         anchor: 'end',
-        align: 'end'
-      }
+        align: 'end',
+      },
     },
-    legend: { display: false }
+    legend: { display: false },
   };
   public barChartLabels: Label[] = [];
   public barChartType: ChartType = 'bar';
@@ -35,23 +35,23 @@ export class StatsComponent implements OnInit {
       pointBackgroundColor: 'rgba(225,10,24,0.2)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(225,10,24,0.2)'
-    }
+      pointHoverBorderColor: 'rgba(225,10,24,0.2)',
+    },
   ];
-
+  public data: Array<any> = [];
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.paintChart();
-    setInterval(() => {
-      this.paintChart();
-    }, 5000);
+    // setInterval(() => {
+    //   this.paintChart();
+    // }, 5000);
   }
 
   // events
   public chartClicked({
     event,
-    active
+    active,
   }: {
     event: MouseEvent;
     active: {}[];
@@ -61,7 +61,7 @@ export class StatsComponent implements OnInit {
 
   public chartHovered({
     event,
-    active
+    active,
   }: {
     event: MouseEvent;
     active: {}[];
@@ -70,11 +70,12 @@ export class StatsComponent implements OnInit {
   }
 
   paintChart() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       let id = params.get('id');
 
-      this.apiService.getResults(id).subscribe(response => {
+      this.apiService.getResults(id).subscribe((response) => {
         console.log(response);
+        this.data = response;
 
         let arrayValues = [];
         let arrayLabels = [];

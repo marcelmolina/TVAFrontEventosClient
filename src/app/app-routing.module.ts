@@ -18,18 +18,18 @@ const routes: Routes = [
   { path: 'stats/:id', component: StatsComponent },
   {
     path: '',
-    redirectTo: 'stats',
-    pathMatch: 'full'
+    redirectTo: 'eventos',
+    pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'stats',
-    pathMatch: 'full'
-  }
+    redirectTo: 'eventos',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -362,7 +362,16 @@ export class EventosComponent implements OnInit {
                 this.actions({ name: 'NEXT' });
               });
           },
-          (error) => {}
+          (error) => {
+            if (error.code == '01') {
+              this.errorService.errorText = 'Evento finalizado';
+            }
+            if (error.code == '02') {
+              this.errorService.errorText = 'Evento no disponible';
+            }
+
+            this.router.navigate(['error']);
+          }
         );
 
         break;
