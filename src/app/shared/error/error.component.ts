@@ -21,7 +21,11 @@ export class ErrorComponent implements OnInit {
     console.log(this.errorService.codeHtml);
 
     this.errorText = this.errorService.errorText;
-    this.errorText = 'Gracias por visitarnos';
+    if (this.errorService.errorText) {
+      this.errorText = this.errorService.errorText;
+    } else {
+      this.errorText = 'Gracias por visitarnos';
+    }
 
     if (this.errorText == 'Gracias por visitarnos') {
       this.fondoGracias = 'background-image: url("/assets/img/bg.jpg")';

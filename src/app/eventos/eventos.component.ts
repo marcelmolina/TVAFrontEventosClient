@@ -363,6 +363,7 @@ export class EventosComponent implements OnInit {
               });
           },
           (error) => {
+            this.errorService.errorText = '';
             if (error.code == '01') {
               this.errorService.errorText = 'Evento finalizado';
             }
