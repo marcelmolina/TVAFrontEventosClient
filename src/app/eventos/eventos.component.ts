@@ -363,11 +363,13 @@ export class EventosComponent implements OnInit {
               });
           },
           (error) => {
+            console.log(error);
+
             this.errorService.errorText = '';
-            if (error.code == '01') {
+            if (error.error.code == '01') {
               this.errorService.errorText = 'Evento finalizado';
             }
-            if (error.code == '02') {
+            if (error.error.code == '02') {
               this.errorService.errorText = 'Evento no disponible';
             }
 
