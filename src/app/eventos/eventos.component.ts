@@ -50,8 +50,6 @@ export class EventosComponent implements OnInit {
   ngOnInit(): void {
     this.sessionState = 0;
     this.route.queryParams.subscribe((params) => {
-      console.log(params['device_id']);
-
       if (
         params['token'] != undefined &&
         params['id'] != undefined &&
@@ -363,8 +361,6 @@ export class EventosComponent implements OnInit {
               });
           },
           (error) => {
-            console.log(error);
-
             this.errorService.errorText = '';
             if (error.error.code == '01') {
               this.errorService.errorText = 'Evento finalizado';
